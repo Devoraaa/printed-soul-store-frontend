@@ -1,11 +1,9 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { Link, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { useParams, useSearchParams } from "react-router-dom"
-import { ArrowLeft, ChevronDown } from "lucide-react"
+import { ChevronDown, Sparkles, SlidersHorizontal, ArrowLeft } from "lucide-react"
 import { motion } from "framer-motion"
 import { productApi, catalogApi } from "../../lib/api"
-import { getImageUrl } from "../../lib/utils"
 import { ProductCard } from "../../components/ui/ProductCard"
 
 export function CategoryPage() {
@@ -21,7 +19,6 @@ export function CategoryPage() {
     } else {
       searchParams.delete(key)
     }
-    // If brand changes, reset model
     if (key === "brand") searchParams.delete("model")
     setSearchParams(searchParams)
   }
@@ -40,7 +37,6 @@ export function CategoryPage() {
   })
   const brands = brandsData?.data?.data || []
 
-  // Find selected brand slug for fetching devices
   const selectedBrandObj = brands.find((b: any) => b._id === selectedBrand)
 
   const { data: devicesData } = useQuery({
@@ -64,110 +60,111 @@ export function CategoryPage() {
   const products = productsData?.data?.data || []
 
   return (
-    <div className="bg-[#FAFAFA] min-h-screen">
+    <div className="bg-[#09090b] min-h-screen text-white antialiased selection:bg-white selection:text-black">
+      
       {/* Clean SEO-friendly Category Header */}
-      <div className="bg-white">
-        <div className="container mx-auto px-4 pt-12 pb-8 md:pt-16 md:pb-12">
+      <div className="bg-zinc-950 border-b border-zinc-800/80">
+        <div className="max-w-[1650px] mx-auto px-4 md:px-8 py-10 md:py-16">
+          
           {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-            <Link to="/" className="hover:text-black transition-colors">Home</Link>
+          <nav className="flex items-center gap-2 text-xs font-semibold text-zinc-500 mb-6">
+            <Link to="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
-            <Link to="/products" className="hover:text-black transition-colors">Collections</Link>
+            <Link to="/products" className="hover:text-white transition-colors">Collections</Link>
             <span>/</span>
-            <span className="text-black font-medium capitalize">{category?.name || slug}</span>
+            <span className="text-amber-400 capitalize">{category?.name || slug}</span>
           </nav>
           
           <div className="max-w-4xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight text-black mb-4 capitalize">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-[10px] font-black tracking-widest text-amber-400 uppercase bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20">
+                CURATED COLLECTION
+              </span>
+              <span className="text-xs font-bold text-zinc-400">
+                • {products.length} Designs Available
+              </span>
+            </div>
+            <h1 className="text-4xl md:text-6xl font-display font-black tracking-tight text-white capitalize mb-4">
               {category?.name || slug} Cases & Covers
             </h1>
-            <p className="text-lg md:text-xl text-gray-500 max-w-2xl leading-relaxed">
-              {category?.description || `Explore our premium collection of ${category?.name || slug} cases and covers. Protect your device in style with our aesthetic and durable designs.`}
+            <p className="text-sm md:text-base text-zinc-400 max-w-2xl leading-relaxed">
+              {category?.description || `Explore our high-definition 3D printed ${category?.name || slug} cases & covers. Precision cutouts and 10ft drop protection for your phone.`}
             </p>
           </div>
+
         </div>
       </div>
 
-      {/* Top Level Filters */}
-      <div className="bg-white border-b border-gray-100 sticky top-16 z-30 shadow-sm">
-        <div className="container mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4 w-full md:w-auto">
-            <span className="text-sm font-semibold text-gray-500 whitespace-nowrap">Filter By:</span>
+      {/* Sticky Quick Filters Bar */}
+      <div className="bg-zinc-950/90 backdrop-blur-2xl border-b border-zinc-800 sticky top-16 z-30 shadow-2xl">
+        <div className="max-w-[1650px] mx-auto px-4 md:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <span className="text-xs font-extrabold text-zinc-400 uppercase tracking-widest whitespace-nowrap">
+              Filter By:
+            </span>
             
-            <div className="relative w-full md:w-48">
+            {/* Brand Select */}
+            <div className="relative w-full sm:w-52">
               <select 
                 value={selectedBrand} 
                 onChange={(e) => handleFilterChange("brand", e.target.value)}
-                className="w-full appearance-none bg-gray-50 border border-gray-200 text-sm font-medium rounded-xl px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-black/5 hover:border-gray-300 transition-colors"
+                className="w-full appearance-none bg-zinc-900 border border-zinc-700 text-xs font-bold rounded-2xl px-4 py-2.5 pr-10 text-white focus:outline-none focus:border-amber-400 transition-colors cursor-pointer"
               >
-                <option value="">All Brands</option>
-                {brands.map((brand: any) => (
-                  <option key={brand._id} value={brand._id}>{brand.name}</option>
+                <option value="" className="bg-zinc-900 text-zinc-400">All Brands</option>
+                {brands.map((b: any) => (
+                  <option key={b._id} value={b._id} className="bg-zinc-900 text-white">{b.name}</option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+              <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 pointer-events-none" />
             </div>
 
-            <div className="relative w-full md:w-48">
+            {/* Model Select */}
+            <div className="relative w-full sm:w-52">
               <select 
                 value={selectedModel} 
                 onChange={(e) => handleFilterChange("model", e.target.value)}
                 disabled={!selectedBrand}
-                className="w-full appearance-none bg-gray-50 border border-gray-200 text-sm font-medium rounded-xl px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-black/5 hover:border-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full appearance-none bg-zinc-900 border border-zinc-700 text-xs font-bold rounded-2xl px-4 py-2.5 pr-10 text-white focus:outline-none focus:border-amber-400 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                <option value="">All Models</option>
-                {devices.map((device: any) => (
-                  <option key={device._id} value={device._id}>{device.displayName}</option>
+                <option value="" className="bg-zinc-900 text-zinc-400">All Models</option>
+                {devices.map((d: any) => (
+                  <option key={d._id} value={d._id} className="bg-zinc-900 text-white">{d.displayName || d.name}</option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+              <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 pointer-events-none" />
             </div>
           </div>
           
-          <div className="text-sm text-gray-500 font-medium">
-            Showing <span className="text-black">{products.length}</span> results
+          <div className="text-xs text-zinc-400 font-bold">
+            Showing <span className="text-white font-black">{products.length}</span> Results
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12 md:py-16">
+      {/* Products Grid */}
+      <div className="max-w-[1650px] mx-auto px-4 md:px-8 py-12 md:py-16">
         {isLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {[...Array(8)].map((_, i) => <div key={i} className="skeleton aspect-[9/16] rounded-[2rem]" />)}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => <div key={i} className="aspect-[4/5] bg-zinc-900 animate-pulse rounded-3xl border border-zinc-800" />)}
           </div>
         ) : products.length === 0 ? (
-          <div className="text-center py-32 bg-white rounded-[3rem] border border-gray-100">
+          <div className="text-center py-32 bg-zinc-950 rounded-[3rem] border border-zinc-800">
             <div className="text-5xl mb-6">✨</div>
-            <h3 className="text-3xl font-display font-bold mb-3">No products yet</h3>
-            <p className="text-gray-500 text-lg">We are crafting new designs for this collection.</p>
+            <h3 className="text-3xl font-display font-bold mb-3 text-white">No Products Yet</h3>
+            <p className="text-zinc-500 text-sm">We are actively adding new designs to this collection.</p>
+            <Link to="/products" className="inline-block mt-6 px-8 py-3 rounded-full bg-white text-black font-black text-xs uppercase tracking-widest hover:bg-amber-400 transition-colors">
+              Explore All Designs
+            </Link>
           </div>
         ) : (
-          <motion.div 
-            initial="hidden"
-            animate="show"
-            variants={{
-              hidden: { opacity: 0 },
-              show: {
-                opacity: 1,
-                transition: { staggerChildren: 0.1 }
-              }
-            }}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-8 md:gap-y-16"
-          >
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12">
             {products.map((product: any) => (
-              <motion.div 
-                key={product._id}
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50, damping: 10 } }
-                }}
-              >
-                <ProductCard product={product} />
-              </motion.div>
+              <ProductCard key={product._id} product={product} />
             ))}
-          </motion.div>
+          </div>
         )}
       </div>
+
     </div>
   )
 }

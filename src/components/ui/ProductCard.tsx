@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
-import { Star, ShoppingBag, Eye } from "lucide-react"
+import { Star, ShoppingBag, Eye, Check } from "lucide-react"
 import { getImageUrl, formatPrice } from "../../lib/utils"
 import { useCart } from "../../context/CartContext"
 
@@ -13,6 +13,7 @@ interface ProductCardProps {
 export function ProductCard({ product, className = "" }: ProductCardProps) {
   const { addToCart } = useCart()
   const [isHovered, setIsHovered] = useState(false)
+  const [added, setAdded] = useState(false)
 
   // Determine images
   const primaryImage = product.images?.[0] ? getImageUrl(product.images[0]) : "/placeholder.png"
@@ -21,6 +22,15 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
   const discountPercent = product.comparePrice && product.comparePrice > product.price
     ? Math.round(((product.comparePrice - product.price) / product.comparePrice) * 100)
     : 0
+
+  const handleQuickAdd = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    if (product.stock > 0) {
+      await addToCart(product._id)
+      setAdded(true)
+      setTimeout(() => setAdded(false), 2000)
+    }
+  }
 
   return (
     <motion.div 
@@ -32,9 +42,9 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image Container with luxury border and hover zoom */}
-      <div className="relative overflow-hidden rounded-[2.2rem] bg-gradient-to-b from-gray-100/90 to-gray-200/50 p-2 border border-gray-200/60 shadow-sm transition-all duration-500 group-hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.12)] group-hover:border-gray-300">
-        <Link to={`/products/${product.slug}`} className="relative block overflow-hidden rounded-[1.8rem] aspect-[4/5] bg-white">
+      {/* Image Container with obsidian luxury border and hover zoom */}
+      <div className="relative overflow-hidden rounded-[2.2rem] bg-zinc-900 p-2 border border-zinc-800/80 shadow-md transition-all duration-500 group-hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] group-hover:border-zinc-600">
+        <Link to={`/products/${product.slug}`} className="relative block overflow-hidden rounded-[1.8rem] aspect-[4/5] bg-zinc-950">
           {/* Primary Image */}
           <img
             src={primaryImage}
@@ -57,22 +67,22 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
           {/* Luxury Floating Badges */}
           <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none z-10">
             {discountPercent > 0 ? (
-              <span className="bg-black/90 backdrop-blur-md text-white text-[10px] uppercase font-extrabold px-3 py-1 rounded-full tracking-widest shadow-md">
+              <span className="bg-black/90 backdrop-blur-md text-white text-[10px] uppercase font-black px-3 py-1 rounded-full tracking-widest shadow-lg border border-white/10">
                 -{discountPercent}% OFF
               </span>
             ) : <span />}
 
             {product.isFeatured && (
-              <span className="bg-amber-400 text-black text-[10px] uppercase font-extrabold px-2.5 py-1 rounded-full tracking-wider shadow-md">
-                ★ FEATURED
+              <span className="bg-amber-400 text-black text-[10px] uppercase font-black px-2.5 py-1 rounded-full tracking-wider shadow-lg">
+                ★ TOP DROP
               </span>
             )}
           </div>
 
           {/* Sold Out Overlay */}
           {product.stock === 0 && (
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20">
-              <span className="bg-white text-black text-xs uppercase font-extrabold px-5 py-2.5 rounded-full tracking-widest shadow-2xl">
+            <div className="absolute inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center z-20">
+              <span className="bg-white text-black text-xs uppercase font-black px-5 py-2.5 rounded-full tracking-widest shadow-2xl">
                 Sold Out
               </span>
             </div>
@@ -83,15 +93,19 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
             isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"
           }`}>
             <button
-              onClick={(e) => {
-                e.preventDefault()
-                if (product.stock > 0) addToCart(product._id)
-              }}
+              onClick={handleQuickAdd}
               disabled={product.stock === 0}
-              className="flex-1 py-2.5 rounded-xl bg-black text-white text-xs font-bold hover:bg-gray-900 active:scale-95 transition-all flex items-center justify-center gap-1.5 shadow-xl disabled:opacity-50"
+              className={`flex-1 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-2xl cursor-pointer ${
+                added 
+                  ? "bg-emerald-600 text-white" 
+                  : "bg-white text-black hover:bg-amber-400 active:scale-95"
+              }`}
             >
-              <ShoppingBag className="h-3.5 w-3.5" />
-              <span>Quick Add</span>
+              {added ? (
+                <><Check className="h-3.5 w-3.5" /> Added</>
+              ) : (
+                <><ShoppingBag className="h-3.5 w-3.5" /> Quick Add</>
+              )}
             </button>
           </div>
         </Link>
@@ -102,7 +116,7 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
         <div className="flex items-center justify-between gap-2 mb-1">
           <Link 
             to={`/products/${product.slug}`} 
-            className="font-display font-bold text-[16px] text-gray-900 tracking-tight line-clamp-1 hover:text-violet-600 transition-colors"
+            className="font-display font-bold text-[15px] text-white tracking-tight line-clamp-1 hover:text-amber-400 transition-colors"
           >
             {product.name}
           </Link>
@@ -114,25 +128,25 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
             {[...Array(5)].map((_, i) => (
               <Star 
                 key={i} 
-                className={`h-3 w-3 ${i < Math.round(product.ratings?.average || 5) ? "fill-amber-400 text-amber-400" : "fill-gray-200 text-gray-200"}`} 
+                className={`h-3 w-3 ${i < Math.round(product.ratings?.average || 5) ? "fill-amber-400 text-amber-400" : "fill-zinc-800 text-zinc-800"}`} 
               />
             ))}
           </div>
-          <span className="text-[11px] text-gray-400 font-semibold tracking-tight">
-            ({product.ratings?.count || 12})
+          <span className="text-[11px] text-zinc-400 font-semibold tracking-tight">
+            ({product.ratings?.count || 14})
           </span>
-          <span className="text-[9px] text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/60 ml-auto">
+          <span className="text-[9px] text-emerald-400 font-black bg-emerald-400/10 px-1.5 py-0.5 rounded border border-emerald-400/20 ml-auto">
             ✓ Verified
           </span>
         </div>
 
         {/* Price & Savings */}
         <div className="flex items-baseline gap-2 mt-auto">
-          <span className="font-display font-black text-lg text-gray-900 tracking-tight">
+          <span className="font-display font-black text-lg text-white tracking-tight">
             ₹{formatPrice(product.price)}
           </span>
           {product.comparePrice && product.comparePrice > product.price && (
-            <span className="text-gray-400 line-through text-xs font-semibold tracking-tight">
+            <span className="text-zinc-500 line-through text-xs font-semibold tracking-tight">
               ₹{formatPrice(product.comparePrice)}
             </span>
           )}
