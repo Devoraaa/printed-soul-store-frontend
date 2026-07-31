@@ -1,18 +1,45 @@
-import React from "react"
+import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { motion } from "framer-motion"
-import { ArrowRight, Zap, ShieldCheck, Truck, Sparkles, CheckCircle2, Star, Award, Layers } from "lucide-react"
+import { 
+  ArrowRight, 
+  Zap, 
+  ShieldCheck, 
+  Truck, 
+  Sparkles, 
+  CheckCircle2, 
+  Star, 
+  Award, 
+  Layers,
+  ChevronRight,
+  TrendingUp,
+  RefreshCw,
+  Lock,
+  ThumbsUp
+} from "lucide-react"
 import { productApi, catalogApi, bannerApi } from "../../lib/api"
 import { getImageUrl } from "../../lib/utils"
 import { ProductCard } from "../../components/ui/ProductCard"
-import { CategorySection } from "../../components/ui/CategorySection"
+import { QuickDeviceFinder } from "../../components/ui/QuickDeviceFinder"
 
 export function HomePage() {
-  const { data: featuredData } = useQuery({ queryKey: ["featured-products"], queryFn: () => productApi.getFeatured() })
-  const { data: categoriesData } = useQuery({ queryKey: ["categories"], queryFn: () => catalogApi.getCategories() })
-  const { data: brandsData } = useQuery({ queryKey: ["brands"], queryFn: () => catalogApi.getBrands() })
-  const { data: bannersData } = useQuery({ queryKey: ["banners"], queryFn: () => bannerApi.getAll() })
+  const { data: featuredData, isLoading: isFeaturedLoading } = useQuery({ 
+    queryKey: ["featured-products"], 
+    queryFn: () => productApi.getFeatured() 
+  })
+  const { data: categoriesData } = useQuery({ 
+    queryKey: ["categories"], 
+    queryFn: () => catalogApi.getCategories() 
+  })
+  const { data: brandsData } = useQuery({ 
+    queryKey: ["brands"], 
+    queryFn: () => catalogApi.getBrands() 
+  })
+  const { data: bannersData } = useQuery({ 
+    queryKey: ["banners"], 
+    queryFn: () => bannerApi.getAll() 
+  })
 
   const featured = featuredData?.data?.data || []
   const categories = categoriesData?.data?.data || []
@@ -22,7 +49,8 @@ export function HomePage() {
   const heroBanners = allBanners.filter((b: any) => b.type === "hero")
   const promoBanners = allBanners.filter((b: any) => b.type === "promo")
 
-  const [currentHero, setCurrentHero] = React.useState(0)
+  const [currentHero, setCurrentHero] = useState(0)
+  const [activeCategoryTab, setActiveCategoryTab] = useState<string>("all")
 
   React.useEffect(() => {
     if (heroBanners.length <= 1) return;
@@ -32,24 +60,34 @@ export function HomePage() {
     return () => clearInterval(timer)
   }, [heroBanners.length])
 
+  // Filter products by active tab
+  const filteredProducts = React.useMemo(() => {
+    if (activeCategoryTab === "all") return featured
+    return featured.filter((p: any) => {
+      const catSlug = p.category?.slug || ""
+      return catSlug.includes(activeCategoryTab)
+    })
+  }, [featured, activeCategoryTab])
+
   return (
-    <div className="bg-[#FAFAFA] text-[#111111] antialiased">
-      {/* Micro Feature Ticker Top Bar */}
-      <div className="bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-950 text-white text-[11px] font-bold py-2.5 px-4 tracking-wider uppercase flex items-center justify-center gap-6 overflow-hidden border-b border-zinc-800">
+    <div className="bg-[#FAFAFA] text-[#111111] antialiased selection:bg-black selection:text-white">
+      
+      {/* 1. Micro Feature Ticker Top Bar */}
+      <div className="bg-zinc-950 text-white text-[11px] font-bold py-2.5 px-4 tracking-wider uppercase flex items-center justify-center gap-6 border-b border-zinc-800/80">
         <span className="flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5 text-amber-400" /> 100% Ultra-Clarity Optical Glass Finish</span>
         <span className="hidden md:flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-emerald-400" /> 10ft Impact Drop Certified</span>
-        <span className="flex items-center gap-1.5"><Truck className="h-3.5 w-3.5 text-violet-400" /> Free Express Air Delivery Above ₹499</span>
+        <span className="flex items-center gap-1.5"><Truck className="h-3.5 w-3.5 text-violet-400" /> Free Air Express Shipping &gt; ₹499</span>
       </div>
 
-      {/* Visual Hero Banner Slider */}
-      <section className="relative h-[82vh] min-h-[580px] w-full bg-zinc-950 overflow-hidden flex items-end justify-center md:justify-start pb-20 md:pb-28 px-4 md:px-16 border-b border-zinc-800/80">
+      {/* 2. Pure E-Commerce Visual Hero Slider Section */}
+      <section className="relative h-[75vh] min-h-[520px] max-h-[700px] w-full bg-zinc-950 overflow-hidden flex items-center justify-center border-b border-zinc-800">
         {heroBanners.length > 0 ? (
           heroBanners.map((banner: any, idx: number) => (
             <motion.div
               key={banner._id}
               initial={{ opacity: 0, scale: 1.02 }}
               animate={{ opacity: idx === currentHero ? 1 : 0, scale: idx === currentHero ? 1 : 1.02 }}
-              transition={{ duration: 0.9 }}
+              transition={{ duration: 0.8 }}
               className="absolute inset-0"
               style={{ pointerEvents: idx === currentHero ? "auto" : "none" }}
             >
@@ -64,39 +102,70 @@ export function HomePage() {
           ))
         ) : (
           <div className="absolute inset-0">
-            <img src="/hero.png" alt="Premium Phone Case" className="w-full h-full object-cover object-center" />
+            <img src="/hero.png" alt="Printed Soul Premium Cases" className="w-full h-full object-cover object-center" />
           </div>
         )}
 
-        {/* Subtle Dark Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none z-10" />
+        {/* Dark Gradient Overlay for text contrast */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20 pointer-events-none z-10" />
 
-        {/* Dots Indicator with Progress Bar */}
+        {/* Hero Content Overlay */}
+        <div className="relative z-20 max-w-7xl mx-auto px-6 w-full text-center md:text-left flex flex-col items-center md:items-start pb-12">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-amber-400 text-[11px] font-extrabold tracking-widest uppercase mb-4 border border-white/20 shadow-lg">
+            <Sparkles className="h-3.5 w-3.5" /> 2026 PREMIUM COLLECTION
+          </span>
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-black text-white tracking-tight leading-none max-w-3xl drop-shadow-lg">
+            Aesthetic Meets Ultimate Armor.
+          </h1>
+          <p className="text-gray-300 text-base sm:text-xl font-medium mt-4 max-w-xl tracking-tight leading-relaxed">
+            High-definition 3D prints, 10ft drop protection, and zero-fade glass finish for 1000+ device models.
+          </p>
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-8">
+            <Link 
+              to="/products" 
+              className="px-8 py-4 rounded-2xl bg-white text-black font-extrabold text-sm hover:bg-gray-100 hover:scale-105 active:scale-95 transition-all shadow-2xl flex items-center gap-2"
+            >
+              <span>Explore All Cases</span>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link 
+              to="/products?sort=new" 
+              className="px-8 py-4 rounded-2xl bg-white/10 backdrop-blur-md text-white font-bold text-sm hover:bg-white/20 border border-white/20 transition-all flex items-center gap-2"
+            >
+              <span>New Arrivals</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Dots Slider Indicator */}
         {heroBanners.length > 1 && (
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2.5 z-20 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+          <div className="absolute bottom-6 right-8 flex items-center gap-2 z-20 bg-black/40 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10">
             {heroBanners.map((_: any, idx: number) => (
               <button
                 key={idx}
                 onClick={() => setCurrentHero(idx)}
-                className={`h-2 rounded-full transition-all duration-500 ${idx === currentHero ? "bg-white w-8" : "bg-white/30 hover:bg-white/60 w-2"}`}
+                className={`h-2 rounded-full transition-all duration-500 ${idx === currentHero ? "bg-white w-7" : "bg-white/30 hover:bg-white/60 w-2"}`}
               />
             ))}
           </div>
         )}
       </section>
 
-      {/* Trust & Luxury Perks Bar */}
-      <section className="py-12 bg-white border-b border-gray-100">
+      {/* 3. Instant Device Model Selector Widget */}
+      <QuickDeviceFinder />
+
+      {/* 4. Trust & Value Proposition Strip */}
+      <section className="py-14 bg-white border-b border-gray-200/70 mt-8">
         <div className="max-w-[1500px] mx-auto px-4 md:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: ShieldCheck, title: "Zero-Fade 3D Prints", desc: "Lifetime vibrant color & scratch guard", color: "text-violet-600 bg-violet-50" },
-              { icon: Zap, title: "Express 48H Dispatch", desc: "Shipped directly via Shiprocket Air", color: "text-amber-600 bg-amber-50" },
+              { icon: ShieldCheck, title: "Zero-Fade 3D Print", desc: "Lifetime color & scratch guard", color: "text-violet-600 bg-violet-50" },
+              { icon: Zap, title: "Express 48H Dispatch", desc: "Direct Air Shipping via Shiprocket", color: "text-amber-600 bg-amber-50" },
               { icon: Layers, title: "Precision Camera Guard", desc: "Raised bezels for 360° lens safety", color: "text-emerald-600 bg-emerald-50" },
-              { icon: Award, title: "1000+ Device Models", desc: "Custom engineered for Apple, Samsung, etc.", color: "text-blue-600 bg-blue-50" },
+              { icon: Award, title: "1000+ Device Models", desc: "Engineered for Apple, Samsung & more", color: "text-blue-600 bg-blue-50" },
             ].map((perk, i) => (
-              <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50/70 border border-gray-200/60 hover:bg-white hover:shadow-lg transition-all duration-300">
-                <div className={`p-3 rounded-xl ${perk.color} shrink-0`}>
+              <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50/80 border border-gray-200/60 hover:bg-white hover:shadow-xl transition-all duration-300">
+                <div className={`p-3 rounded-2xl ${perk.color} shrink-0`}>
                   <perk.icon className="h-6 w-6" />
                 </div>
                 <div>
@@ -109,185 +178,162 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Bento Box Promo / Ads Grid */}
+      {/* 5. Featured Categories Banners (Editorial Grid) */}
       <section className="py-16 px-4 md:px-8 max-w-[1600px] mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <span className="text-xs font-extrabold uppercase tracking-widest text-violet-600 bg-violet-50 px-3 py-1 rounded-full border border-violet-100">
-              EDITORIAL DROPS '26
+            <span className="text-[11px] font-extrabold uppercase tracking-widest text-violet-600 bg-violet-50 px-3 py-1 rounded-full border border-violet-100">
+              POPULAR CATEGORIES
             </span>
-            <h2 className="text-3xl md:text-5xl font-display font-black tracking-tight text-gray-900 mt-2">
-              Curated Collections
+            <h2 className="text-3xl md:text-4xl font-display font-black tracking-tight text-gray-900 mt-2">
+              Explore By Material
             </h2>
           </div>
           <Link to="/products" className="hidden sm:flex items-center gap-2 font-bold text-sm text-gray-900 hover:text-violet-600 transition-colors">
-            View All Series <ArrowRight className="h-4 w-4" />
+            View All Collections <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[620px]">
-          {/* Large Promo 1 */}
-          <Link to={promoBanners[0]?.link || "/categories/glass-case"} className="group relative rounded-[2.5rem] overflow-hidden md:col-span-2 aspect-square md:aspect-auto border border-gray-200 shadow-md">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Glass Case Promo */}
+          <Link to="/categories/glass-case" className="group relative rounded-3xl overflow-hidden aspect-[4/3] md:aspect-auto h-[320px] md:h-[420px] border border-gray-200 shadow-sm hover:shadow-2xl transition-all duration-500">
             <img 
               src={promoBanners[0] ? getImageUrl(promoBanners[0].imageUrl) : "/glass.png"} 
-              alt={promoBanners[0]?.title || "Lifestyle promo"} 
+              alt="Ultra Gloss Glass Cases" 
               className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-colors duration-500" />
-            <div className="absolute bottom-10 left-10 right-10">
-              <span className="bg-white/20 backdrop-blur-md text-white text-xs font-extrabold px-3.5 py-1.5 rounded-full tracking-widest uppercase mb-3 inline-block border border-white/30">
-                ULTRA GLOSS GLASS
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+            <div className="absolute bottom-8 left-8 right-8">
+              <span className="bg-white/20 backdrop-blur-md text-white text-[10px] font-extrabold px-3 py-1 rounded-full tracking-widest uppercase mb-2 inline-block border border-white/30">
+                ULTRA GLOSS
               </span>
-              <h3 className="text-3xl md:text-5xl font-display font-black text-white mb-2 drop-shadow-md">{promoBanners[0]?.title || "Elevate Your Everyday"}</h3>
-              <p className="text-white/90 text-sm font-semibold flex items-center gap-2">Explore Series <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-2" /></p>
+              <h3 className="text-2xl md:text-3xl font-display font-black text-white mb-1">Optical Glass Cases</h3>
+              <p className="text-white/90 text-xs font-semibold flex items-center gap-1.5 mt-2">Shop Collection <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></p>
             </div>
           </Link>
 
-          <div className="grid grid-cols-1 gap-6 h-[620px] md:h-auto">
-            {/* Promo 2 */}
-            <Link to={promoBanners[1]?.link || "/categories/metal-case"} className="group relative rounded-[2.5rem] overflow-hidden h-full border border-gray-200 shadow-md">
-              <img 
-                src={promoBanners[1] ? getImageUrl(promoBanners[1].imageUrl) : "/metal.png"} 
-                alt={promoBanners[1]?.title || "Abstract promo"} 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-              <div className="absolute bottom-8 left-8 right-8">
-                <h3 className="text-2xl font-display font-bold text-white drop-shadow-md mb-1">{promoBanners[1]?.title || "Premium Textures"}</h3>
-                <p className="text-white/90 text-xs font-semibold flex items-center gap-1">Shop Collection <ArrowRight className="h-3.5 w-3.5" /></p>
-              </div>
-            </Link>
+          {/* Dual Protection Case Promo */}
+          <Link to="/categories/dual-protection-case" className="group relative rounded-3xl overflow-hidden aspect-[4/3] md:aspect-auto h-[320px] md:h-[420px] border border-gray-200 shadow-sm hover:shadow-2xl transition-all duration-500">
+            <img 
+              src={promoBanners[2] ? getImageUrl(promoBanners[2].imageUrl) : "/small.png"} 
+              alt="Dual Protection Armor" 
+              className="w-full h-full object-cover opacity-90 transition-transform duration-1000 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+            <div className="absolute bottom-8 left-8 right-8">
+              <span className="bg-emerald-500/90 backdrop-blur-md text-white text-[10px] font-extrabold px-3 py-1 rounded-full tracking-widest uppercase mb-2 inline-block shadow-md">
+                10FT DROP ARMOR
+              </span>
+              <h3 className="text-2xl md:text-3xl font-display font-black text-white mb-1">Dual Protection</h3>
+              <p className="text-white/90 text-xs font-semibold flex items-center gap-1.5 mt-2">Explore Tough Cases <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></p>
+            </div>
+          </Link>
 
-            {/* Promo 3 */}
-            <Link to={promoBanners[2]?.link || "/categories/dual-protection-case"} className="group relative rounded-[2.5rem] overflow-hidden h-full bg-zinc-950 border border-gray-200 shadow-md">
-              <img 
-                src={promoBanners[2] ? getImageUrl(promoBanners[2].imageUrl) : "/small.png"} 
-                alt={promoBanners[2]?.title || "Abstract art promo"} 
-                className="w-full h-full object-cover opacity-80 transition-transform duration-1000 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-              <div className="absolute top-6 left-6">
-                <span className="bg-emerald-500 text-white text-[10px] font-extrabold px-3 py-1 rounded-full tracking-widest uppercase shadow-md">MAX ARMOR</span>
-              </div>
-              <div className="absolute bottom-8 left-8 right-8">
-                <h3 className="text-2xl font-display font-bold text-white drop-shadow-md mb-1">{promoBanners[2]?.title || "Dual Protection"}</h3>
-                <p className="text-white/90 text-xs font-semibold flex items-center gap-1">Shop Now <ArrowRight className="h-3.5 w-3.5" /></p>
-              </div>
+          {/* Metal Texture Case Promo */}
+          <Link to="/categories/metal-case" className="group relative rounded-3xl overflow-hidden aspect-[4/3] md:aspect-auto h-[320px] md:h-[420px] border border-gray-200 shadow-sm hover:shadow-2xl transition-all duration-500">
+            <img 
+              src={promoBanners[1] ? getImageUrl(promoBanners[1].imageUrl) : "/metal.png"} 
+              alt="Premium Metal Cases" 
+              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+            <div className="absolute bottom-8 left-8 right-8">
+              <span className="bg-amber-400 text-black text-[10px] font-extrabold px-3 py-1 rounded-full tracking-widest uppercase mb-2 inline-block">
+                LUXURY TEXTURE
+              </span>
+              <h3 className="text-2xl md:text-3xl font-display font-black text-white mb-1">Metal Finish Covers</h3>
+              <p className="text-white/90 text-xs font-semibold flex items-center gap-1.5 mt-2">Shop Metallic <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></p>
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* 6. Bestseller Showcase with Category Filter Tabs */}
+      <section className="py-16 bg-white border-t border-gray-200/80">
+        <div className="max-w-[1600px] mx-auto px-4 md:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+            <div>
+              <span className="text-[11px] font-extrabold uppercase tracking-widest text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+                TOP RATED DROPS
+              </span>
+              <h2 className="text-3xl md:text-4xl font-display font-black tracking-tight text-gray-900 mt-2">
+                Best Sellers
+              </h2>
+            </div>
+
+            {/* Category Filter Tabs */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+              {[
+                { id: "all", label: "All Cases" },
+                { id: "glass", label: "Glass Covers" },
+                { id: "dual", label: "Dual Armor" },
+                { id: "metal", label: "Metal Finish" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveCategoryTab(tab.id)}
+                  className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                    activeCategoryTab === tab.id
+                      ? "bg-black text-white shadow-lg"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Product Grid */}
+          {isFeaturedLoading ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="aspect-[4/5] rounded-3xl bg-gray-100 animate-pulse" />
+              ))}
+            </div>
+          ) : filteredProducts.length === 0 ? (
+            <div className="text-center py-20 bg-gray-50 rounded-3xl border border-gray-200">
+              <p className="text-gray-500 font-semibold">No products found in this category.</p>
+              <Link to="/products" className="inline-block mt-4 text-xs font-bold text-black underline">View All Products</Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12">
+              {filteredProducts.slice(0, 8).map((product: any) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </div>
+          )}
+
+          <div className="text-center mt-14">
+            <Link 
+              to="/products" 
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gray-100 hover:bg-black hover:text-white transition-all text-xs font-extrabold tracking-wider uppercase border border-gray-200 shadow-sm"
+            >
+              <span>Browse Complete Store</span>
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Featured Products Showcase */}
-      {featured.length > 0 && (
-        <section className="py-16 bg-white border-t border-gray-100">
-          <div className="max-w-[1600px] mx-auto px-4 md:px-8">
-            <div className="flex items-center justify-between mb-10">
-              <div>
-                <span className="text-xs font-extrabold uppercase tracking-widest text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
-                  TOP RATED DROP
-                </span>
-                <h2 className="text-3xl md:text-4xl font-display font-black tracking-tight text-gray-900 mt-2">
-                  Best Sellers
-                </h2>
-              </div>
-              <Link to="/products" className="flex items-center gap-2 font-bold text-sm text-gray-900 hover:text-violet-600 transition-colors">
-                View All Products <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {featured.slice(0, 8).map((product: any) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Custom Sections by Category */}
-      {categories.length > 0 && (
-        <>
-          <CategorySection 
-            categoryId={categories.find((c: any) => c.slug === "dual-protection-case")?._id}
-            title="Max Protection. Zero Compromise."
-            slug="dual-protection-case"
-            subtitle="Explore our heavy-duty dual protection covers."
-          />
-          <CategorySection 
-            categoryId={categories.find((c: any) => c.slug === "glass-case")?._id}
-            title="Sleek Glass Covers"
-            slug="glass-case"
-            subtitle="Premium glossy finish for the ultimate aesthetic."
-          />
-          <CategorySection 
-            categoryId={categories.find((c: any) => c.slug === "metal-case")?._id}
-            title="Premium Metal Textures"
-            slug="metal-case"
-            subtitle="Industrial strength meets modern design."
-          />
-        </>
-      )}
-
-      {/* Visual Collections Grid */}
-      {categories.length > 0 && (
-        <section className="py-24 bg-zinc-950 text-white border-t border-zinc-800">
-          <div className="max-w-[1600px] mx-auto px-4 md:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <span className="text-xs font-extrabold uppercase tracking-widest text-amber-400 bg-amber-400/10 px-4 py-1.5 rounded-full border border-amber-400/20">
-                BROWSE BY STYLE
-              </span>
-              <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight mt-4">
-                Explore All Series
-              </h2>
-              <p className="text-zinc-400 text-sm mt-3">From optical glass cases to desk deskpads and ceramic mugs.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {categories.slice(0, 4).map((cat: any) => {
-                const slug = cat.slug?.toLowerCase() || "";
-                let fallbackImage = null;
-                if (slug.includes("coaster")) fallbackImage = "/costers.png";
-                else if (slug.includes("glass")) fallbackImage = "/glass.png";
-                else if (slug.includes("dual")) fallbackImage = "/small.png";
-                else if (slug.includes("metal")) fallbackImage = "/metal.png";
-                else if (slug.includes("mug")) fallbackImage = "/mug.png";
-                
-                const imgSrc = cat.image ? getImageUrl(cat.image) : fallbackImage;
-                
-                return (
-                  <Link key={cat._id} to={`/categories/${cat.slug}`}
-                    className="group relative overflow-hidden rounded-[2.5rem] aspect-[4/5] bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all duration-500 shadow-2xl">
-                    {imgSrc ? (
-                      <img src={imgSrc} alt={cat.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-zinc-950" />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="absolute bottom-8 left-8 right-8">
-                      <h3 className="font-display font-black text-white text-3xl drop-shadow-md mb-2">{cat.name}</h3>
-                      <span className="text-white/80 font-bold text-xs flex items-center gap-2 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                        Explore Collection <ArrowRight className="h-4 w-4" />
-                      </span>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Brands Bar */}
+      {/* 7. Supported Device Brands Bar */}
       {brands.length > 0 && (
-        <section className="py-20 bg-white border-t border-gray-100">
+        <section className="py-16 bg-gray-50 border-t border-b border-gray-200/80">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-2xl md:text-3xl font-display font-black tracking-tight mb-8 text-gray-900">Supported Devices & Brands</h2>
+            <h3 className="text-xl md:text-2xl font-display font-black tracking-tight text-gray-900 mb-2">
+              Supported Device Brands
+            </h3>
+            <p className="text-xs text-gray-500 mb-8 max-w-md mx-auto">
+              Precision engineered cutouts and button tactile feedback for over 1,000 smartphone models.
+            </p>
             <div className="flex flex-wrap items-center justify-center gap-3 max-w-4xl mx-auto">
               {brands.map((brand: any) => (
-                <Link key={brand._id} to={`/products?brand=${brand._id}`}
-                  className="px-6 py-3 rounded-full bg-gray-50 border border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all font-bold text-xs tracking-wider uppercase shadow-sm">
-                  {brand.name}
+                <Link 
+                  key={brand._id} 
+                  to={`/products?brand=${brand._id}`}
+                  className="px-6 py-3 rounded-2xl bg-white border border-gray-200/80 hover:border-black hover:bg-black hover:text-white transition-all font-extrabold text-xs tracking-wider uppercase shadow-sm flex items-center gap-2"
+                >
+                  <span>{brand.name}</span>
                 </Link>
               ))}
             </div>
@@ -295,36 +341,95 @@ export function HomePage() {
         </section>
       )}
 
-      {/* Customer Trust Rating Banner */}
-      <section className="py-16 bg-gray-50 border-t border-gray-200/60 text-center">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center gap-1 text-amber-400 mb-3">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="h-5 w-5 fill-amber-400 text-amber-400" />
+      {/* 8. Social Proof & Customer Reviews */}
+      <section className="py-20 bg-white border-b border-gray-200/80">
+        <div className="max-w-[1500px] mx-auto px-4 md:px-8">
+          <div className="text-center max-w-xl mx-auto mb-14">
+            <div className="flex items-center justify-center gap-1 text-amber-400 mb-3">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-5 w-5 fill-amber-400 text-amber-400" />
+              ))}
+            </div>
+            <h2 className="text-3xl md:text-4xl font-display font-black tracking-tight text-gray-900">
+              Loved by 15,000+ Customers
+            </h2>
+            <p className="text-sm text-gray-500 mt-2">
+              Rated 4.9/5 stars based on verified buyers across India.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                name: "Aarav Sharma",
+                device: "iPhone 15 Pro",
+                review: "The glass finish is insane! It feels like part of the original phone glass and hasn't scratched even after dropping it twice.",
+                rating: 5,
+                verified: true
+              },
+              {
+                name: "Rhea Kapoor",
+                device: "Samsung S24 Ultra",
+                review: "Super fast shipping! Received in 2 days in Bangalore. The print clarity is super sharp and camera protection is solid.",
+                rating: 5,
+                verified: true
+              },
+              {
+                name: "Karan Patel",
+                device: "OnePlus 12",
+                review: "Dual protection armor case saved my phone! Build quality feels like a ₹2000 case for half the price.",
+                rating: 5,
+                verified: true
+              }
+            ].map((rev, idx) => (
+              <div key={idx} className="p-6 rounded-3xl bg-gray-50/80 border border-gray-200/70 flex flex-col justify-between hover:shadow-lg transition-all duration-300">
+                <div>
+                  <div className="flex items-center gap-1 text-amber-400 mb-4">
+                    {[...Array(rev.rating)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 text-sm font-medium leading-relaxed italic">
+                    "{rev.review}"
+                  </p>
+                </div>
+                <div className="mt-6 pt-4 border-t border-gray-200/60 flex items-center justify-between">
+                  <div>
+                    <h4 className="font-display font-bold text-sm text-gray-900">{rev.name}</h4>
+                    <p className="text-[11px] text-gray-400">{rev.device}</p>
+                  </div>
+                  {rev.verified && (
+                    <span className="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <ThumbsUp className="h-3 w-3" /> Verified
+                    </span>
+                  )}
+                </div>
+              </div>
             ))}
           </div>
-          <h3 className="text-2xl font-display font-extrabold text-gray-900">Loved by 15,000+ Case Enthusiasts</h3>
-          <p className="text-xs text-gray-500 mt-1 max-w-md mx-auto">
-            Rated 4.9/5 stars based on over 2,400 verified reviews across India.
-          </p>
         </div>
       </section>
 
-      {/* Bottom Hero CTA */}
-      <section className="relative py-28 bg-black text-white text-center overflow-hidden border-t border-zinc-800">
+      {/* 9. Final High-Converting Call to Action Banner */}
+      <section className="relative py-24 bg-black text-white text-center overflow-hidden border-t border-zinc-800">
         <div className="relative z-10 container mx-auto px-4">
-          <span className="text-xs font-extrabold uppercase tracking-widest text-violet-400 bg-violet-500/10 px-4 py-1.5 rounded-full border border-violet-500/20">
+          <span className="text-[11px] font-extrabold uppercase tracking-widest text-amber-400 bg-amber-400/10 px-4 py-1.5 rounded-full border border-amber-400/20 inline-block mb-4">
             MAKE YOUR STATEMENT
           </span>
-          <h2 className="text-5xl md:text-7xl font-display font-black mb-4 tracking-tight mt-4">
-            Unleash Your Soul.
+          <h2 className="text-4xl sm:text-6xl font-display font-black tracking-tight">
+            Unleash Your Phone's Soul.
           </h2>
-          <p className="text-gray-400 mb-10 text-lg md:text-xl font-medium tracking-tight max-w-xl mx-auto">
+          <p className="text-gray-400 mt-4 text-base sm:text-lg font-medium tracking-tight max-w-xl mx-auto">
             High-definition 3D prints, impact protection, and optical glass clarity for your daily carry.
           </p>
-          <Link to="/products" className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-white text-black font-extrabold hover:scale-105 transition-transform duration-300 text-base shadow-[0_0_50px_rgba(255,255,255,0.25)]">
-            Explore All Designs <ArrowRight className="h-5 w-5" />
-          </Link>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <Link 
+              to="/products" 
+              className="px-9 py-4 rounded-2xl bg-white text-black font-extrabold text-sm hover:scale-105 transition-transform duration-300 shadow-2xl"
+            >
+              Explore All Designs
+            </Link>
+          </div>
         </div>
       </section>
     </div>
