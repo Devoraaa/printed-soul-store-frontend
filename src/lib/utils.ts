@@ -27,18 +27,26 @@ export function slugify(text: string): string {
 }
 
 export function getImageUrl(img?: any): string {
+  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
   if (!img) return "/placeholder.png"
+  
+  let url = "";
   if (typeof img === "object") {
-    if (img.url) return img.url
-    if (img._id) return `/api/images/${img._id}`
-  }
-  if (typeof img === "string") {
-    if (img.startsWith("http") || img.startsWith("/uploads") || img.startsWith("/api") || img.startsWith("data:")) {
-      return img
+    if (img.url) url = img.url
+    else if (img._id) url = `/api/images/${img._id}`
+  } else if (typeof img === "string") {
+    url = img
+    if (!url.startsWith("http") && !url.startsWith("/uploads") && !url.startsWith("/api") && !url.startsWith("data:")) {
+      url = `/api/images/${url}`
     }
-    return `/api/images/${img}`
   }
-  return "/placeholder.png"
+
+  if (url.startsWith("/uploads") || url.startsWith("/api")) {
+    // Prefix with backend URL
+    return `${apiUrl.replace(/\/$/, "")}${url}`
+  }
+  
+  return url || "/placeholder.png"
 }
 
 export function truncate(text: string, length: number): string {
