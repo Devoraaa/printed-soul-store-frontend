@@ -7,7 +7,7 @@ import { cn } from "../../lib/utils"
 import { AuthModal } from "../ui/AuthModal"
 import { SearchModal } from "../ui/SearchModal"
 import { MegaMenu } from "../ui/MegaMenu"
-import { Breadcrumbs } from "../ui/Breadcrumbs"
+
 
 export function StoreLayout() {
   const { user, isAuthenticated, logout, openAuthModal } = useAuth()
@@ -166,8 +166,7 @@ export function StoreLayout() {
         )}
       </header>
 
-      {/* Breadcrumbs */}
-      <Breadcrumbs />
+      {/* Breadcrumbs removed as per user request to avoid duplication */}
 
       {/* Page content */}
       <main className="flex-1">
