@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
-import { Star, ShoppingBag, Eye, Check } from "lucide-react"
+import { Star, ShoppingBag, Check } from "lucide-react"
 import { getImageUrl, formatPrice } from "../../lib/utils"
 import { useCart } from "../../context/CartContext"
 
@@ -15,7 +15,6 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [added, setAdded] = useState(false)
 
-  // Determine images
   const primaryImage = product.images?.[0] ? getImageUrl(product.images[0]) : "/placeholder.png"
   const secondaryImage = product.images?.[1] ? getImageUrl(product.images[1]) : primaryImage
 
@@ -42,9 +41,9 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image Container with obsidian luxury border and hover zoom */}
-      <div className="relative overflow-hidden rounded-[2.2rem] bg-zinc-900 p-2 border border-zinc-800/80 shadow-md transition-all duration-500 group-hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] group-hover:border-zinc-600">
-        <Link to={`/products/${product.slug}`} className="relative block overflow-hidden rounded-[1.8rem] aspect-[4/5] bg-zinc-950">
+      {/* Image Container with luxury border and hover zoom */}
+      <div className="relative overflow-hidden rounded-[2.2rem] bg-gray-50 p-2 border border-gray-200/80 shadow-sm transition-all duration-500 group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.12)] group-hover:border-gray-300">
+        <Link to={`/products/${product.slug}`} className="relative block overflow-hidden rounded-[1.8rem] aspect-[4/5] bg-white">
           {/* Primary Image */}
           <img
             src={primaryImage}
@@ -67,21 +66,21 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
           {/* Luxury Floating Badges */}
           <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none z-10">
             {discountPercent > 0 ? (
-              <span className="bg-black/90 backdrop-blur-md text-white text-[10px] uppercase font-black px-3 py-1 rounded-full tracking-widest shadow-lg border border-white/10">
+              <span className="bg-black/90 backdrop-blur-md text-white text-[10px] uppercase font-black px-3 py-1 rounded-full tracking-widest shadow-md">
                 -{discountPercent}% OFF
               </span>
             ) : <span />}
 
             {product.isFeatured && (
-              <span className="bg-amber-400 text-black text-[10px] uppercase font-black px-2.5 py-1 rounded-full tracking-wider shadow-lg">
-                ★ TOP DROP
+              <span className="bg-amber-400 text-black text-[10px] uppercase font-black px-2.5 py-1 rounded-full tracking-wider shadow-md">
+                ★ FEATURED
               </span>
             )}
           </div>
 
           {/* Sold Out Overlay */}
           {product.stock === 0 && (
-            <div className="absolute inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center z-20">
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20">
               <span className="bg-white text-black text-xs uppercase font-black px-5 py-2.5 rounded-full tracking-widest shadow-2xl">
                 Sold Out
               </span>
@@ -95,10 +94,10 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
             <button
               onClick={handleQuickAdd}
               disabled={product.stock === 0}
-              className={`flex-1 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-2xl cursor-pointer ${
+              className={`flex-1 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-xl cursor-pointer ${
                 added 
                   ? "bg-emerald-600 text-white" 
-                  : "bg-white text-black hover:bg-amber-400 active:scale-95"
+                  : "bg-black text-white hover:bg-gray-800 active:scale-95"
               }`}
             >
               {added ? (
@@ -116,7 +115,7 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
         <div className="flex items-center justify-between gap-2 mb-1">
           <Link 
             to={`/products/${product.slug}`} 
-            className="font-display font-bold text-[15px] text-white tracking-tight line-clamp-1 hover:text-amber-400 transition-colors"
+            className="font-display font-bold text-[15px] text-gray-900 tracking-tight line-clamp-1 hover:text-violet-600 transition-colors"
           >
             {product.name}
           </Link>
@@ -128,25 +127,25 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
             {[...Array(5)].map((_, i) => (
               <Star 
                 key={i} 
-                className={`h-3 w-3 ${i < Math.round(product.ratings?.average || 5) ? "fill-amber-400 text-amber-400" : "fill-zinc-800 text-zinc-800"}`} 
+                className={`h-3 w-3 ${i < Math.round(product.ratings?.average || 5) ? "fill-amber-400 text-amber-400" : "fill-gray-200 text-gray-200"}`} 
               />
             ))}
           </div>
-          <span className="text-[11px] text-zinc-400 font-semibold tracking-tight">
+          <span className="text-[11px] text-gray-500 font-semibold tracking-tight">
             ({product.ratings?.count || 14})
           </span>
-          <span className="text-[9px] text-emerald-400 font-black bg-emerald-400/10 px-1.5 py-0.5 rounded border border-emerald-400/20 ml-auto">
+          <span className="text-[9px] text-emerald-700 font-black bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 ml-auto">
             ✓ Verified
           </span>
         </div>
 
         {/* Price & Savings */}
         <div className="flex items-baseline gap-2 mt-auto">
-          <span className="font-display font-black text-lg text-white tracking-tight">
+          <span className="font-display font-black text-lg text-gray-900 tracking-tight">
             ₹{formatPrice(product.price)}
           </span>
           {product.comparePrice && product.comparePrice > product.price && (
-            <span className="text-zinc-500 line-through text-xs font-semibold tracking-tight">
+            <span className="text-gray-400 line-through text-xs font-semibold tracking-tight">
               ₹{formatPrice(product.comparePrice)}
             </span>
           )}

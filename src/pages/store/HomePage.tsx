@@ -73,10 +73,10 @@ export function HomePage() {
   }, [featured, activeCategoryTab])
 
   return (
-    <div className="bg-[#09090b] text-white antialiased selection:bg-white selection:text-black">
+    <div className="bg-[#FAFAFA] text-[#111111] antialiased selection:bg-black selection:text-white">
       
-      {/* 1. Ultra-Clean Full-Bleed Hero Slider (NO text overlay clutter on the photo!) */}
-      <section className="relative h-[78vh] min-h-[540px] max-h-[750px] w-full bg-zinc-950 overflow-hidden border-b border-zinc-800/80">
+      {/* 1. Ultra-Clean Hero Slider (CLEAN PHOTO, ZERO text clutter overlay!) */}
+      <section className="relative h-[78vh] min-h-[540px] max-h-[750px] w-full bg-white overflow-hidden border-b border-gray-200/80">
         {heroBanners.length > 0 ? (
           heroBanners.map((banner: any, idx: number) => (
             <motion.div
@@ -102,23 +102,21 @@ export function HomePage() {
           </div>
         )}
 
-        {/* Subtle Dark Gradient fade at bottom for smooth transition */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-transparent to-black/30 pointer-events-none z-10" />
-
-        {/* Minimal Floating Brand Badge & Slide Counter */}
+        {/* Minimal Floating Brand Badge */}
         <div className="absolute top-6 left-6 md:left-12 z-20 pointer-events-none">
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/60 backdrop-blur-2xl text-white text-xs font-black tracking-widest uppercase border border-white/10 shadow-2xl">
-            <Sparkles className="h-3.5 w-3.5 text-amber-400" /> PRINTED SOUL DROP '26
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-2xl text-black text-xs font-black tracking-widest uppercase border border-gray-200/80 shadow-lg">
+            <Sparkles className="h-3.5 w-3.5 text-amber-500" /> PRINTED SOUL COLLECTION
           </span>
         </div>
 
+        {/* Slide Indicators */}
         {heroBanners.length > 1 && (
-          <div className="absolute bottom-10 right-6 md:right-12 z-20 flex items-center gap-2 bg-black/70 backdrop-blur-2xl px-4 py-2 rounded-full border border-white/10">
+          <div className="absolute bottom-10 right-6 md:right-12 z-20 flex items-center gap-2 bg-white/80 backdrop-blur-2xl px-4 py-2 rounded-full border border-gray-200/80 shadow-lg">
             {heroBanners.map((_: any, idx: number) => (
               <button
                 key={idx}
                 onClick={() => setCurrentHero(idx)}
-                className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${idx === currentHero ? "bg-white w-8" : "bg-white/30 hover:bg-white/60 w-2"}`}
+                className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${idx === currentHero ? "bg-black w-8" : "bg-gray-300 hover:bg-gray-500 w-2"}`}
               />
             ))}
           </div>
@@ -128,66 +126,66 @@ export function HomePage() {
       {/* 2. Instant Apple-Style Device Selector Configurator */}
       <QuickDeviceFinder />
 
-      {/* 3. High-Impact Marquee Ticker Bar (Nike/Apple Style) */}
-      <div className="py-6 bg-zinc-950 border-b border-zinc-800/80 overflow-hidden mt-6">
-        <div className="flex items-center gap-12 whitespace-nowrap animate-marquee text-xs font-black tracking-widest uppercase text-zinc-400">
-          <span className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-amber-400" /> 100% OPTICAL GLASS FINISH</span>
+      {/* 3. High-Impact Marquee Ticker Bar */}
+      <div className="py-5 bg-white border-b border-gray-200/80 overflow-hidden mt-6 shadow-sm">
+        <div className="flex items-center gap-12 whitespace-nowrap animate-marquee text-xs font-black tracking-widest uppercase text-gray-700">
+          <span className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-amber-500" /> 100% OPTICAL GLASS FINISH</span>
           <span>•</span>
-          <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-emerald-400" /> MIL-STD 10FT IMPACT CERTIFIED</span>
+          <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-emerald-600" /> 10FT DROP IMPACT CERTIFIED</span>
           <span>•</span>
-          <span className="flex items-center gap-2"><Cpu className="h-4 w-4 text-violet-400" /> CUSTOM ENGINEERED FOR 1000+ MODELS</span>
+          <span className="flex items-center gap-2"><Cpu className="h-4 w-4 text-violet-600" /> CUSTOM ENGINEERED FOR 1000+ MODELS</span>
           <span>•</span>
-          <span className="flex items-center gap-2"><Truck className="h-4 w-4 text-blue-400" /> FREE AIR EXPRESS SHIPPING &gt; ₹499</span>
+          <span className="flex items-center gap-2"><Truck className="h-4 w-4 text-blue-600" /> FREE AIR EXPRESS SHIPPING &gt; ₹499</span>
           <span>•</span>
-          <span className="flex items-center gap-2"><Flame className="h-4 w-4 text-rose-400" /> ZERO-FADE 3D SUBLIMATION PRINT</span>
+          <span className="flex items-center gap-2"><Flame className="h-4 w-4 text-rose-500" /> ZERO-FADE 3D SUBLIMATION PRINT</span>
           <span>•</span>
         </div>
       </div>
 
-      {/* 4. CRAZY BENTO GRID — "BROO THIS IS PREMIUMNESS" */}
+      {/* 4. CLEAN WHITE BENTO GRID — "PURE E-COMMERCE LUXURY" */}
       <section className="py-20 px-4 md:px-8 max-w-[1650px] mx-auto">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="h-2 w-2 rounded-full bg-amber-400 animate-ping" />
-              <span className="text-xs font-black uppercase tracking-widest text-amber-400 bg-amber-400/10 px-3.5 py-1 rounded-full border border-amber-400/20">
+              <span className="h-2.5 w-2.5 rounded-full bg-violet-600 animate-ping" />
+              <span className="text-xs font-black uppercase tracking-widest text-violet-600 bg-violet-50 px-3.5 py-1 rounded-full border border-violet-100">
                 EDITORIAL DROPS 2026
               </span>
             </div>
-            <h2 className="text-4xl md:text-6xl font-display font-black tracking-tight text-white mt-1">
-              Curated Masterpieces
+            <h2 className="text-4xl md:text-6xl font-display font-black tracking-tight text-gray-900 mt-1">
+              Curated Collections
             </h2>
           </div>
           <Link 
             to="/products" 
-            className="inline-flex items-center gap-2 text-sm font-extrabold text-white hover:text-amber-400 transition-colors uppercase tracking-wider group"
+            className="inline-flex items-center gap-2 text-sm font-extrabold text-gray-900 hover:text-violet-600 transition-colors uppercase tracking-wider group"
           >
             <span>Explore All Series</span>
             <ArrowUpRight className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </Link>
         </div>
 
-        {/* Crazy Asymmetric Bento Box */}
+        {/* Bento Grid (Clean White Cards) */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[280px] md:auto-rows-[340px]">
           
           {/* Tile 1: LARGE HERO BENTO (Spans 2 cols, 2 rows) — Glass Case */}
           <Link 
             to={promoBanners[0]?.link || "/categories/glass-case"} 
-            className="group relative rounded-[2.5rem] overflow-hidden md:col-span-2 md:row-span-2 bg-zinc-900 border border-zinc-800 hover:border-zinc-500 transition-all duration-700 shadow-2xl flex flex-col justify-end p-8 md:p-12"
+            className="group relative rounded-[2.5rem] overflow-hidden md:col-span-2 md:row-span-2 bg-white border border-gray-200/80 hover:border-gray-400 transition-all duration-700 shadow-md hover:shadow-2xl flex flex-col justify-end p-8 md:p-12"
           >
             <img 
               src={promoBanners[0] ? getImageUrl(promoBanners[0].imageUrl) : "/glass.png"} 
               alt="Ultra Gloss Glass Case" 
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-90 group-hover:opacity-95 transition-opacity" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent transition-opacity" />
             
             {/* Ambient Corner Glow */}
             <div className="absolute top-6 right-6 z-20">
-              <span className="bg-white/10 backdrop-blur-2xl text-white text-[11px] font-black px-4 py-2 rounded-full tracking-widest uppercase border border-white/20 shadow-xl flex items-center gap-1.5">
-                <Sparkles className="h-3.5 w-3.5 text-amber-400" /> OPTICAL GLASS
+              <span className="bg-white/90 backdrop-blur-2xl text-black text-[11px] font-black px-4 py-2 rounded-full tracking-widest uppercase border border-white shadow-xl flex items-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-amber-500" /> OPTICAL GLASS
               </span>
             </div>
 
@@ -195,10 +193,10 @@ export function HomePage() {
               <span className="text-amber-400 font-mono text-xs font-bold tracking-widest uppercase block mb-2">
                 SERIES 01 // ULTRA CLARITY
               </span>
-              <h3 className="text-3xl md:text-5xl lg:text-6xl font-display font-black text-white leading-tight mb-3 drop-shadow-lg">
-                {promoBanners[0]?.title || "9H Optical Tempered Glass"}
+              <h3 className="text-3xl md:text-5xl lg:text-6xl font-display font-black text-white leading-tight mb-3 drop-shadow-md">
+                {promoBanners[0]?.title || "9H Tempered Glass Cases"}
               </h3>
-              <p className="text-zinc-300 text-sm md:text-base max-w-lg font-medium leading-relaxed mb-6">
+              <p className="text-gray-200 text-sm md:text-base max-w-lg font-medium leading-relaxed mb-6">
                 Engineered with dual-layer tempered glass for high-definition reflection and scratch resistance.
               </p>
 
@@ -212,17 +210,17 @@ export function HomePage() {
           {/* Tile 2: WIDE ARMOR BENTO (Spans 2 cols, 1 row) — Dual Protection */}
           <Link 
             to={promoBanners[2]?.link || "/categories/dual-protection-case"} 
-            className="group relative rounded-[2.5rem] overflow-hidden md:col-span-2 bg-zinc-900 border border-zinc-800 hover:border-zinc-500 transition-all duration-700 shadow-xl flex flex-col justify-end p-8"
+            className="group relative rounded-[2.5rem] overflow-hidden md:col-span-2 bg-white border border-gray-200/80 hover:border-gray-400 transition-all duration-700 shadow-md hover:shadow-2xl flex flex-col justify-end p-8"
           >
             <img 
               src={promoBanners[2] ? getImageUrl(promoBanners[2].imageUrl) : "/small.png"} 
               alt="Dual Protection Armor" 
-              className="absolute inset-0 w-full h-full object-cover opacity-80 transition-transform duration-1000 group-hover:scale-105"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
             
             <div className="absolute top-6 left-6 z-20">
-              <span className="bg-emerald-500/90 backdrop-blur-xl text-white text-[10px] font-black px-3.5 py-1.5 rounded-full tracking-widest uppercase shadow-lg flex items-center gap-1.5">
+              <span className="bg-emerald-500 text-white text-[10px] font-black px-3.5 py-1.5 rounded-full tracking-widest uppercase shadow-md flex items-center gap-1.5">
                 <ShieldCheck className="h-3.5 w-3.5" /> 10FT IMPACT ARMOR
               </span>
             </div>
@@ -232,10 +230,10 @@ export function HomePage() {
                 <h3 className="text-2xl md:text-3xl font-display font-black text-white mb-1">
                   Dual Protection Series
                 </h3>
-                <p className="text-zinc-400 text-xs font-semibold">Shock-absorbing inner TPU + Polycarbonate shell.</p>
+                <p className="text-gray-300 text-xs font-semibold">Shock-absorbing inner TPU + Polycarbonate shell.</p>
               </div>
 
-              <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shrink-0 group-hover:bg-white group-hover:text-black transition-all">
+              <div className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center shrink-0 group-hover:bg-amber-400 transition-all shadow-lg">
                 <ArrowUpRight className="h-5 w-5" />
               </div>
             </div>
@@ -244,17 +242,17 @@ export function HomePage() {
           {/* Tile 3: TALL METALLIC BENTO (1 col, 1 row) — Metal Finish */}
           <Link 
             to={promoBanners[1]?.link || "/categories/metal-case"} 
-            className="group relative rounded-[2.5rem] overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-500 transition-all duration-700 shadow-xl flex flex-col justify-end p-8"
+            className="group relative rounded-[2.5rem] overflow-hidden bg-white border border-gray-200/80 hover:border-gray-400 transition-all duration-700 shadow-md hover:shadow-2xl flex flex-col justify-end p-8"
           >
             <img 
               src={promoBanners[1] ? getImageUrl(promoBanners[1].imageUrl) : "/metal.png"} 
               alt="Metallic Finish" 
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             
             <div className="relative z-20">
-              <span className="text-zinc-400 text-[10px] font-extrabold tracking-widest uppercase block mb-1">
+              <span className="text-gray-300 text-[10px] font-extrabold tracking-widest uppercase block mb-1">
                 BRUSHED FINISH
               </span>
               <h3 className="text-2xl font-display font-black text-white mb-1">
@@ -266,27 +264,27 @@ export function HomePage() {
             </div>
           </Link>
 
-          {/* Tile 4: LIVE STATS BENTO (1 col, 1 row) — Dark Luxury Spec Badge */}
-          <div className="relative rounded-[2.5rem] bg-gradient-to-br from-zinc-900 via-zinc-950 to-black border border-zinc-800 p-8 flex flex-col justify-between shadow-xl">
+          {/* Tile 4: LIVE STATS BENTO (1 col, 1 row) — Clean White Metric Card */}
+          <div className="relative rounded-[2.5rem] bg-white border border-gray-200/80 p-8 flex flex-col justify-between shadow-md">
             <div className="flex items-center justify-between">
               <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[10px] font-black tracking-widest text-zinc-500 uppercase">
-                ENGINEERED PERFECTION
+              <span className="text-[10px] font-black tracking-widest text-gray-400 uppercase">
+                ENGINEERED FIT
               </span>
             </div>
 
             <div className="space-y-4">
               <div>
-                <span className="text-3xl font-display font-black text-white tracking-tight">1,000+</span>
-                <p className="text-xs text-zinc-400 font-medium">Supported Phone Models</p>
+                <span className="text-3xl font-display font-black text-gray-900 tracking-tight">1,000+</span>
+                <p className="text-xs text-gray-500 font-medium">Supported Phone Models</p>
               </div>
-              <div className="pt-3 border-t border-zinc-800 flex items-center justify-between">
+              <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
                 <div>
-                  <span className="text-xl font-display font-bold text-amber-400">4.9 ★</span>
-                  <p className="text-[10px] text-zinc-400">15K+ Verified Buyers</p>
+                  <span className="text-xl font-display font-bold text-amber-500">4.9 ★</span>
+                  <p className="text-[10px] text-gray-400">15K+ Verified Buyers</p>
                 </div>
-                <div className="p-2.5 rounded-2xl bg-zinc-800 text-white">
-                  <Award className="h-5 w-5 text-amber-400" />
+                <div className="p-2.5 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200/60">
+                  <Award className="h-5 w-5" />
                 </div>
               </div>
             </div>
@@ -295,20 +293,20 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* 5. BESTSELLERS SHOWCASE WITH LUXURY GLOW CARDS */}
-      <section className="py-20 bg-zinc-950 border-t border-zinc-800">
+      {/* 5. BESTSELLERS SHOWCASE (Clean White Theme) */}
+      <section className="py-20 bg-white border-t border-gray-200/80">
         <div className="max-w-[1650px] mx-auto px-4 md:px-8">
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Flame className="h-4 w-4 text-rose-500" />
-                <span className="text-xs font-black uppercase tracking-widest text-rose-400 bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/20">
-                  TRENDING DROPS
+                <span className="text-xs font-black uppercase tracking-widest text-rose-600 bg-rose-50 px-3 py-1 rounded-full border border-rose-100">
+                  TOP RATED DROPS
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight text-white mt-1">
-                Top Rated Bestsellers
+              <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight text-gray-900 mt-1">
+                Best Sellers
               </h2>
             </div>
 
@@ -325,8 +323,8 @@ export function HomePage() {
                   onClick={() => setActiveCategoryTab(tab.id)}
                   className={`px-5 py-2.5 rounded-full text-xs font-black transition-all whitespace-nowrap cursor-pointer uppercase tracking-wider ${
                     activeCategoryTab === tab.id
-                      ? "bg-white text-black shadow-xl"
-                      : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white border border-zinc-800"
+                      ? "bg-black text-white shadow-lg"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black border border-gray-200/60"
                   }`}
                 >
                   {tab.label}
@@ -339,13 +337,13 @@ export function HomePage() {
           {isFeaturedLoading ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {[...Array(8)].map((_, i) => (
-                <div key={i} className="aspect-[4/5] rounded-3xl bg-zinc-900 animate-pulse border border-zinc-800" />
+                <div key={i} className="aspect-[4/5] rounded-3xl bg-gray-100 animate-pulse border border-gray-200" />
               ))}
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="text-center py-20 bg-zinc-900/50 rounded-3xl border border-zinc-800">
-              <p className="text-zinc-400 font-semibold">No products found in this filter.</p>
-              <Link to="/products" className="inline-block mt-4 text-xs font-bold text-white underline">Browse Store</Link>
+            <div className="text-center py-20 bg-gray-50 rounded-3xl border border-gray-200">
+              <p className="text-gray-500 font-semibold">No products found in this filter.</p>
+              <Link to="/products" className="inline-block mt-4 text-xs font-bold text-black underline">Browse Store</Link>
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12">
@@ -358,7 +356,7 @@ export function HomePage() {
           <div className="text-center mt-16">
             <Link 
               to="/products" 
-              className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-white text-black font-black text-xs uppercase tracking-widest hover:bg-amber-400 transition-colors shadow-2xl"
+              className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-black text-white font-black text-xs uppercase tracking-widest hover:bg-gray-800 transition-colors shadow-xl"
             >
               <span>Explore Complete Store</span>
               <ArrowRight className="h-4 w-4" />
@@ -367,17 +365,17 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* 6. CRAFTSMANSHIP & MATERIAL BREAKDOWN */}
-      <section className="py-24 bg-[#09090b] border-t border-zinc-800">
+      {/* 6. CRAFTSMANSHIP & MATERIAL BREAKDOWN (Light Mode) */}
+      <section className="py-24 bg-[#FAFAFA] border-t border-gray-200/80">
         <div className="max-w-[1500px] mx-auto px-4 md:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-xs font-black uppercase tracking-widest text-violet-400 bg-violet-500/10 px-4 py-1.5 rounded-full border border-violet-500/20">
+            <span className="text-xs font-black uppercase tracking-widest text-violet-600 bg-violet-50 px-4 py-1.5 rounded-full border border-violet-100">
               THE PRINTED SOUL STANDARD
             </span>
-            <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight text-white mt-4">
+            <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight text-gray-900 mt-4">
               Engineered For Greatness.
             </h2>
-            <p className="text-zinc-400 text-sm mt-3">Why 15,000+ customers trust Printed Soul for their daily carry.</p>
+            <p className="text-gray-500 text-sm mt-3">Why 15,000+ customers trust Printed Soul for their daily carry.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -386,27 +384,27 @@ export function HomePage() {
                 icon: Sparkles,
                 title: "9H Tempered Optical Glass",
                 desc: "Dual-layer optical glass top coat provides high-definition clarity, smooth touch, and zero yellowing over time.",
-                color: "text-amber-400 bg-amber-400/10 border-amber-400/20"
+                color: "text-amber-600 bg-amber-50 border-amber-200/60"
               },
               {
                 icon: Shield,
                 title: "360° Camera & Screen Lip",
                 desc: "Raised 1.5mm bezels prevent direct contact with surfaces, keeping your camera lenses safe during accidental drops.",
-                color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20"
+                color: "text-emerald-600 bg-emerald-50 border-emerald-200/60"
               },
               {
                 icon: Flame,
                 title: "Permanent Sublimation Ink",
                 desc: "High-density heat transfer embeds colors deep into the substrate, guaranteeing scratch-proof and fade-proof art.",
-                color: "text-rose-400 bg-rose-400/10 border-rose-400/20"
+                color: "text-rose-600 bg-rose-50 border-rose-200/60"
               }
             ].map((item, idx) => (
-              <div key={idx} className="p-8 rounded-[2.5rem] bg-zinc-950 border border-zinc-800 hover:border-zinc-600 transition-all duration-500 space-y-4">
+              <div key={idx} className="p-8 rounded-[2.5rem] bg-white border border-gray-200/80 shadow-md hover:shadow-xl transition-all duration-500 space-y-4">
                 <div className={`w-14 h-14 rounded-2xl ${item.color} border flex items-center justify-center`}>
                   <item.icon className="h-7 w-7" />
                 </div>
-                <h3 className="text-xl font-display font-black text-white">{item.title}</h3>
-                <p className="text-zinc-400 text-xs font-medium leading-relaxed">{item.desc}</p>
+                <h3 className="text-xl font-display font-black text-gray-900">{item.title}</h3>
+                <p className="text-gray-500 text-xs font-medium leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -415,12 +413,12 @@ export function HomePage() {
 
       {/* 7. SUPPORTED BRANDS BAR */}
       {brands.length > 0 && (
-        <section className="py-16 bg-zinc-950 border-t border-b border-zinc-800">
+        <section className="py-16 bg-white border-t border-b border-gray-200/80">
           <div className="container mx-auto px-4 text-center">
-            <h3 className="text-xl font-display font-black tracking-tight text-white mb-2">
+            <h3 className="text-xl font-display font-black tracking-tight text-gray-900 mb-2">
               Compatible Smartphone Brands
             </h3>
-            <p className="text-xs text-zinc-500 mb-8 max-w-md mx-auto">
+            <p className="text-xs text-gray-500 mb-8 max-w-md mx-auto">
               Precision cutouts and tactile buttons for all major flagship and budget models.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3 max-w-4xl mx-auto">
@@ -428,7 +426,7 @@ export function HomePage() {
                 <Link 
                   key={brand._id} 
                   to={`/products?brand=${brand._id}`}
-                  className="px-6 py-3 rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-white hover:bg-white hover:text-black transition-all font-black text-xs tracking-wider uppercase shadow-md flex items-center gap-2"
+                  className="px-6 py-3 rounded-2xl bg-gray-50 border border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all font-black text-xs tracking-wider uppercase shadow-sm flex items-center gap-2"
                 >
                   <span>{brand.name}</span>
                 </Link>
@@ -439,7 +437,7 @@ export function HomePage() {
       )}
 
       {/* 8. VERIFIED SOCIAL PROOF REVIEWS */}
-      <section className="py-20 bg-[#09090b]">
+      <section className="py-20 bg-gray-50 border-b border-gray-200/80">
         <div className="max-w-[1500px] mx-auto px-4 md:px-8">
           <div className="text-center max-w-xl mx-auto mb-14">
             <div className="flex items-center justify-center gap-1 text-amber-400 mb-3">
@@ -447,10 +445,10 @@ export function HomePage() {
                 <Star key={i} className="h-5 w-5 fill-amber-400 text-amber-400" />
               ))}
             </div>
-            <h2 className="text-3xl md:text-4xl font-display font-black tracking-tight text-white">
-              Loved By 15,000+ Case Enthusiasts
+            <h2 className="text-3xl md:text-4xl font-display font-black tracking-tight text-gray-900">
+              Loved By 15,000+ Customers
             </h2>
-            <p className="text-xs text-zinc-500 mt-2">
+            <p className="text-xs text-gray-500 mt-2">
               Rated 4.9/5 stars based on verified purchases across India.
             </p>
           </div>
@@ -476,23 +474,23 @@ export function HomePage() {
                 rating: 5,
               }
             ].map((rev, idx) => (
-              <div key={idx} className="p-6 rounded-[2rem] bg-zinc-950 border border-zinc-800 flex flex-col justify-between">
+              <div key={idx} className="p-6 rounded-[2rem] bg-white border border-gray-200/80 shadow-sm flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-1 text-amber-400 mb-4">
                     {[...Array(rev.rating)].map((_, i) => (
                       <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
                     ))}
                   </div>
-                  <p className="text-zinc-300 text-xs font-medium leading-relaxed italic">
+                  <p className="text-gray-700 text-xs font-medium leading-relaxed italic">
                     "{rev.review}"
                   </p>
                 </div>
-                <div className="mt-6 pt-4 border-t border-zinc-800 flex items-center justify-between">
+                <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
                   <div>
-                    <h4 className="font-display font-bold text-sm text-white">{rev.name}</h4>
-                    <p className="text-[11px] text-zinc-500">{rev.device}</p>
+                    <h4 className="font-display font-bold text-sm text-gray-900">{rev.name}</h4>
+                    <p className="text-[11px] text-gray-400">{rev.device}</p>
                   </div>
-                  <span className="text-[10px] font-extrabold text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <span className="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
                     <Check className="h-3 w-3" /> Verified
                   </span>
                 </div>
@@ -503,7 +501,7 @@ export function HomePage() {
       </section>
 
       {/* 9. FINAL BRAND CALL TO ACTION */}
-      <section className="relative py-28 bg-gradient-to-b from-zinc-950 to-black text-white text-center overflow-hidden border-t border-zinc-800">
+      <section className="relative py-28 bg-black text-white text-center overflow-hidden">
         <div className="relative z-10 container mx-auto px-4">
           <span className="text-[11px] font-extrabold uppercase tracking-widest text-amber-400 bg-amber-400/10 px-4 py-1.5 rounded-full border border-amber-400/20 inline-block mb-4">
             MAKE YOUR STATEMENT
@@ -511,7 +509,7 @@ export function HomePage() {
           <h2 className="text-5xl md:text-7xl font-display font-black tracking-tight">
             Unleash Your Phone's Soul.
           </h2>
-          <p className="text-zinc-400 mt-4 text-base md:text-xl font-medium max-w-xl mx-auto">
+          <p className="text-gray-400 mt-4 text-base md:text-xl font-medium max-w-xl mx-auto">
             High-definition 3D prints, impact protection, and optical glass clarity for your daily carry.
           </p>
           <div className="mt-8">

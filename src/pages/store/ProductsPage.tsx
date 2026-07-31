@@ -1,17 +1,14 @@
 import React, { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { useSearchParams, Link, useNavigate } from "react-router-dom"
-import { Filter, X, Search, SlidersHorizontal, Sparkles, Check, ChevronRight } from "lucide-react"
-import { motion } from "framer-motion"
+import { Filter, X, Search, SlidersHorizontal } from "lucide-react"
 import { productApi, catalogApi } from "../../lib/api"
 import { ProductCard } from "../../components/ui/ProductCard"
-import { useCart } from "../../context/CartContext"
 
 export function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [showFilters, setShowFilters] = useState(false)
   const navigate = useNavigate()
-  const { addToCart } = useCart()
 
   const search = searchParams.get("search") || ""
   const categoryParam = searchParams.get("category") || ""
@@ -24,7 +21,6 @@ export function ProductsPage() {
   const categories = categoriesData?.data?.data || []
   const brands = brandsData?.data?.data || []
 
-  // Resolve slugs to IDs for the API call
   const selectedCategoryObj = categories.find((c: any) => c.slug === categoryParam || c._id === categoryParam)
   const categoryId = selectedCategoryObj ? selectedCategoryObj._id : categoryParam
 
@@ -67,27 +63,27 @@ export function ProductsPage() {
   const hasFilters = search || (categoryParam && categoryParam !== "all") || (brandParam && brandParam !== "all")
 
   return (
-    <div className="bg-[#09090b] min-h-screen text-white antialiased selection:bg-white selection:text-black">
+    <div className="bg-[#FAFAFA] min-h-screen text-gray-900 antialiased selection:bg-black selection:text-white">
       
       {/* Header Banner */}
-      <div className="bg-zinc-950 border-b border-zinc-800/80">
+      <div className="bg-white border-b border-gray-200/80">
         <div className="max-w-[1650px] mx-auto px-4 md:px-8 py-12 md:py-16">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <span className="text-[10px] font-black tracking-widest text-amber-400 uppercase bg-amber-400/10 px-3.5 py-1 rounded-full border border-amber-400/20 inline-block mb-3">
+              <span className="text-[10px] font-black tracking-widest text-violet-600 uppercase bg-violet-50 px-3.5 py-1 rounded-full border border-violet-100 inline-block mb-3">
                 CATALOG 2026
               </span>
-              <h1 className="text-4xl md:text-6xl font-display font-black tracking-tight text-white">
+              <h1 className="text-4xl md:text-6xl font-display font-black tracking-tight text-gray-900">
                 All Masterpiece Designs
               </h1>
-              <p className="text-zinc-400 text-sm mt-2 max-w-xl">
+              <p className="text-gray-500 text-sm mt-2 max-w-xl">
                 Explore 3D optical glass, 10ft drop armor, and brushed metal covers for 1000+ devices.
               </p>
             </div>
 
             {meta.total && (
-              <span className="text-xs font-bold text-zinc-400 bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full self-start md:self-auto">
-                Showing <strong className="text-white">{meta.total}</strong> Designs
+              <span className="text-xs font-bold text-gray-600 bg-gray-50 border border-gray-200 px-4 py-2 rounded-full self-start md:self-auto">
+                Showing <strong className="text-black">{meta.total}</strong> Designs
               </span>
             )}
           </div>
@@ -99,12 +95,12 @@ export function ProductsPage() {
           
           {/* Filters Sidebar */}
           <aside className={`md:w-64 shrink-0 ${showFilters ? "block" : "hidden md:block"}`}>
-            <div className="sticky top-24 space-y-6 bg-zinc-950/90 backdrop-blur-2xl p-6 rounded-[2.5rem] border border-zinc-800 shadow-2xl">
+            <div className="sticky top-24 space-y-6 bg-white p-6 rounded-[2.5rem] border border-gray-200/80 shadow-md">
               
               <div className="flex items-center justify-between">
-                <h3 className="font-display font-black text-xs uppercase tracking-widest text-zinc-400">Filters</h3>
+                <h3 className="font-display font-black text-xs uppercase tracking-widest text-gray-400">Filters</h3>
                 {hasFilters && (
-                  <button onClick={clearFilters} className="text-xs text-amber-400 font-bold hover:underline flex items-center gap-1 cursor-pointer">
+                  <button onClick={clearFilters} className="text-xs text-violet-600 font-bold hover:underline flex items-center gap-1 cursor-pointer">
                     <X className="h-3 w-3" /> Reset
                   </button>
                 )}
@@ -112,23 +108,23 @@ export function ProductsPage() {
 
               {/* Search */}
               <div className="relative">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <input
                   value={search}
                   onChange={(e) => setFilter("search", e.target.value)}
                   placeholder="Search design..."
-                  className="w-full pl-10 pr-4 py-3 text-xs font-semibold rounded-2xl border border-zinc-800 bg-zinc-900 text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400 transition-all"
+                  className="w-full pl-10 pr-4 py-3 text-xs font-semibold rounded-2xl border border-gray-200 bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-all"
                 />
               </div>
 
               {/* Categories */}
               <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-400 mb-3">Category</h4>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-gray-400 mb-3">Category</h4>
                 <div className="space-y-1.5">
                   <button 
                     onClick={() => setFilter("category", "")} 
                     className={`w-full text-left text-xs font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer ${
-                      !categoryParam ? "bg-white text-black shadow-md" : "hover:bg-zinc-900 text-zinc-400 hover:text-white"
+                      !categoryParam ? "bg-black text-white shadow-md" : "hover:bg-gray-100 text-gray-600 hover:text-black"
                     }`}
                   >
                     All Categories
@@ -139,8 +135,8 @@ export function ProductsPage() {
                       onClick={() => setFilter("category", cat.slug || cat._id)}
                       className={`w-full text-left text-xs font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer ${
                         categoryParam === cat.slug || categoryParam === cat._id 
-                          ? "bg-white text-black shadow-md" 
-                          : "hover:bg-zinc-900 text-zinc-400 hover:text-white"
+                          ? "bg-black text-white shadow-md" 
+                          : "hover:bg-gray-100 text-gray-600 hover:text-black"
                       }`}
                     >
                       {cat.name}
@@ -152,12 +148,12 @@ export function ProductsPage() {
               {/* Brands */}
               {isCaseCategory && (
                 <div>
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-400 mb-3">Brand</h4>
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-gray-400 mb-3">Brand</h4>
                   <div className="space-y-1.5">
                     <button 
                       onClick={() => setFilter("brand", "")} 
                       className={`w-full text-left text-xs font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer ${
-                        !brandParam ? "bg-white text-black shadow-md" : "hover:bg-zinc-900 text-zinc-400 hover:text-white"
+                        !brandParam ? "bg-black text-white shadow-md" : "hover:bg-gray-100 text-gray-600 hover:text-black"
                       }`}
                     >
                       All Brands
@@ -168,8 +164,8 @@ export function ProductsPage() {
                         onClick={() => setFilter("brand", b.slug || b._id)}
                         className={`w-full text-left text-xs font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer ${
                           brandParam === b.slug || brandParam === b._id 
-                            ? "bg-white text-black shadow-md" 
-                            : "hover:bg-zinc-900 text-zinc-400 hover:text-white"
+                            ? "bg-black text-white shadow-md" 
+                            : "hover:bg-gray-100 text-gray-600 hover:text-black"
                         }`}
                       >
                         {b.name}
@@ -186,10 +182,10 @@ export function ProductsPage() {
             
             {/* Mobile Filter Toggle */}
             <div className="flex items-center justify-between mb-6 md:hidden">
-              <span className="text-xs font-bold text-zinc-400">{products.length} Products</span>
+              <span className="text-xs font-bold text-gray-500">{products.length} Products</span>
               <button 
                 onClick={() => setShowFilters(!showFilters)} 
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-zinc-800 bg-zinc-900 text-xs font-extrabold text-white"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 bg-white text-xs font-extrabold text-gray-900 shadow-sm"
               >
                 <SlidersHorizontal className="h-4 w-4" /> Filters
               </button>
@@ -198,15 +194,15 @@ export function ProductsPage() {
             {isLoading ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {[...Array(8)].map((_, i) => (
-                  <div key={i} className="aspect-[4/5] rounded-3xl bg-zinc-900 animate-pulse border border-zinc-800" />
+                  <div key={i} className="aspect-[4/5] rounded-3xl bg-gray-100 animate-pulse border border-gray-200" />
                 ))}
               </div>
             ) : products.length === 0 ? (
-              <div className="text-center py-28 bg-zinc-950 rounded-[3rem] border border-zinc-800">
+              <div className="text-center py-28 bg-white rounded-[3rem] border border-gray-200 shadow-sm">
                 <div className="text-5xl mb-4">✨</div>
-                <h3 className="text-2xl font-display font-bold text-white mb-2">No Designs Found</h3>
-                <p className="text-zinc-500 text-sm">Try resetting your filters or search term.</p>
-                <button onClick={clearFilters} className="mt-6 px-8 py-3 rounded-full bg-white text-black font-black text-xs uppercase tracking-widest hover:bg-amber-400 transition-colors">
+                <h3 className="text-2xl font-display font-bold text-gray-900 mb-2">No Designs Found</h3>
+                <p className="text-gray-500 text-sm">Try resetting your filters or search term.</p>
+                <button onClick={clearFilters} className="mt-6 px-8 py-3 rounded-full bg-black text-white font-black text-xs uppercase tracking-widest hover:bg-gray-800 transition-colors">
                   Reset Filters
                 </button>
               </div>
@@ -224,18 +220,18 @@ export function ProductsPage() {
                     {page > 1 && (
                       <button 
                         onClick={() => setFilter("page", String(page - 1))} 
-                        className="px-6 py-3 rounded-full border border-zinc-800 bg-zinc-900 text-white font-bold text-xs hover:border-white transition-all cursor-pointer"
+                        className="px-6 py-3 rounded-full border border-gray-200 bg-white text-gray-900 font-bold text-xs hover:border-black transition-all cursor-pointer shadow-sm"
                       >
                         Previous Page
                       </button>
                     )}
-                    <span className="px-6 py-3 text-xs font-bold text-zinc-400 flex items-center">
+                    <span className="px-6 py-3 text-xs font-bold text-gray-500 flex items-center">
                       Page {page} of {Math.ceil(meta.total / 20)}
                     </span>
                     {page * 20 < meta.total && (
                       <button 
                         onClick={() => setFilter("page", String(page + 1))} 
-                        className="px-6 py-3 rounded-full border border-zinc-800 bg-zinc-900 text-white font-bold text-xs hover:border-white transition-all cursor-pointer"
+                        className="px-6 py-3 rounded-full border border-gray-200 bg-white text-gray-900 font-bold text-xs hover:border-black transition-all cursor-pointer shadow-sm"
                       >
                         Next Page
                       </button>
