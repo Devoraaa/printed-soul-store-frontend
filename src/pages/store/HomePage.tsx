@@ -152,32 +152,72 @@ export function HomePage() {
         )}
       </section>
 
-      {/* 4. VISUAL PROMO PHOTO BANNERS GRID */}
-      {promoBanners.length > 0 && (
+      {/* 4. VISUAL PROMO PHOTO BENTO GRID */}
+      {promoBanners.length >= 3 && (
         <section className="py-8 max-w-[1650px] mx-auto px-4 md:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {promoBanners.slice(0, 3).map((banner: any, idx: number) => (
-              <Link 
-                key={banner._id || idx} 
-                to={banner.link || "/products"} 
-                className="group relative rounded-[2rem] overflow-hidden aspect-[16/9] md:aspect-[4/3] border border-gray-200 shadow-md hover:shadow-2xl transition-all duration-500"
-              >
-                <img 
-                  src={getImageUrl(banner.imageUrl)} 
-                  alt={banner.title || "Promo Photo"} 
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6">
-                  <h3 className="text-2xl font-display font-black text-white mb-1 drop-shadow-md">
-                    {banner.title}
-                  </h3>
-                  <span className="text-white/90 text-xs font-bold flex items-center gap-1">
-                    Shop Now <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                </div>
-              </Link>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 md:h-[500px]">
+            {/* Main Featured Promo (Left, spans 2 cols on desktop) */}
+            <Link 
+              to={promoBanners[0].link || "/products"} 
+              className="group relative rounded-[2rem] overflow-hidden aspect-square md:aspect-auto md:col-span-2 md:row-span-2 border border-gray-200 shadow-md hover:shadow-2xl transition-all duration-500"
+            >
+              <img 
+                src={getImageUrl(promoBanners[0].imageUrl)} 
+                alt={promoBanners[0].title || "Promo"} 
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute bottom-8 left-8 right-8">
+                <h3 className="text-3xl md:text-5xl font-display font-black text-white mb-2 drop-shadow-md">
+                  {promoBanners[0].title}
+                </h3>
+                <span className="text-white text-sm font-bold flex items-center gap-2">
+                  Shop Now <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </div>
+            </Link>
+
+            {/* Top Right Promo */}
+            <Link 
+              to={promoBanners[1].link || "/products"} 
+              className="group relative rounded-[2rem] overflow-hidden aspect-[16/9] md:aspect-auto border border-gray-200 shadow-md hover:shadow-2xl transition-all duration-500"
+            >
+              <img 
+                src={getImageUrl(promoBanners[1].imageUrl)} 
+                alt={promoBanners[1].title || "Promo"} 
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <h3 className="text-xl md:text-2xl font-display font-black text-white mb-1 drop-shadow-md">
+                  {promoBanners[1].title}
+                </h3>
+                <span className="text-white/90 text-xs font-bold flex items-center gap-1">
+                  Explore <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </div>
+            </Link>
+
+            {/* Bottom Right Promo */}
+            <Link 
+              to={promoBanners[2].link || "/products"} 
+              className="group relative rounded-[2rem] overflow-hidden aspect-[16/9] md:aspect-auto border border-gray-200 shadow-md hover:shadow-2xl transition-all duration-500"
+            >
+              <img 
+                src={getImageUrl(promoBanners[2].imageUrl)} 
+                alt={promoBanners[2].title || "Promo"} 
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <h3 className="text-xl md:text-2xl font-display font-black text-white mb-1 drop-shadow-md">
+                  {promoBanners[2].title}
+                </h3>
+                <span className="text-white/90 text-xs font-bold flex items-center gap-1">
+                  Explore <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </div>
+            </Link>
           </div>
         </section>
       )}
