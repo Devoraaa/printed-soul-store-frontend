@@ -65,41 +65,28 @@ export function CategoryPage() {
 
   return (
     <div className="bg-[#FAFAFA] min-h-screen">
-      {/* Editorial Category Header */}
-      <section className="relative h-[60vh] min-h-[400px] w-full bg-black overflow-hidden flex items-end justify-start pb-16 px-4 md:px-16">
-        <Link to="/products" className="absolute top-8 left-4 md:left-16 z-20 inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/20 hover:bg-black/60 transition-colors text-sm font-semibold">
-          <ArrowLeft className="h-4 w-4" /> All Collections
-        </Link>
-        
-        {/* Massive Background Image */}
-        <div className="absolute inset-0">
-          {category?.image ? (
-            <img 
-              src={getImageUrl(category.image)} 
-              alt={category?.name || "Category"} 
-              className="w-full h-full object-cover opacity-60"
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-gray-900 to-black" />
-          )}
-          {/* Gradient Overlay for Text Readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-        </div>
-
-        <div className="relative z-10 max-w-4xl">
-          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white font-bold tracking-widest text-[10px] uppercase mb-6 border border-white/20">
-            {products.length} Products
-          </span>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-4 tracking-tighter text-white">
-            {category?.name || "Collection"}
-          </h1>
-          {category?.description && (
-            <p className="text-xl md:text-2xl text-gray-300 max-w-2xl font-medium tracking-tight">
-              {category.description}
+      {/* Clean SEO-friendly Category Header */}
+      <div className="bg-white">
+        <div className="container mx-auto px-4 pt-12 pb-8 md:pt-16 md:pb-12">
+          {/* Breadcrumbs */}
+          <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
+            <Link to="/" className="hover:text-black transition-colors">Home</Link>
+            <span>/</span>
+            <Link to="/products" className="hover:text-black transition-colors">Collections</Link>
+            <span>/</span>
+            <span className="text-black font-medium capitalize">{category?.name || slug}</span>
+          </nav>
+          
+          <div className="max-w-4xl">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight text-black mb-4 capitalize">
+              {category?.name || slug} Cases & Covers
+            </h1>
+            <p className="text-lg md:text-xl text-gray-500 max-w-2xl leading-relaxed">
+              {category?.description || `Explore our premium collection of ${category?.name || slug} cases and covers. Protect your device in style with our aesthetic and durable designs.`}
             </p>
-          )}
+          </div>
         </div>
-      </section>
+      </div>
 
       {/* Top Level Filters */}
       <div className="bg-white border-b border-gray-100 sticky top-16 z-30 shadow-sm">
