@@ -14,9 +14,12 @@ import {
   Layers,
   ChevronRight,
   TrendingUp,
-  RefreshCw,
-  Lock,
-  ThumbsUp
+  Cpu,
+  Flame,
+  ArrowUpRight,
+  Shield,
+  Smartphone,
+  Check
 } from "lucide-react"
 import { productApi, catalogApi, bannerApi } from "../../lib/api"
 import { getImageUrl } from "../../lib/utils"
@@ -70,24 +73,17 @@ export function HomePage() {
   }, [featured, activeCategoryTab])
 
   return (
-    <div className="bg-[#FAFAFA] text-[#111111] antialiased selection:bg-black selection:text-white">
+    <div className="bg-[#09090b] text-white antialiased selection:bg-white selection:text-black">
       
-      {/* 1. Micro Feature Ticker Top Bar */}
-      <div className="bg-zinc-950 text-white text-[11px] font-bold py-2.5 px-4 tracking-wider uppercase flex items-center justify-center gap-6 border-b border-zinc-800/80">
-        <span className="flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5 text-amber-400" /> 100% Ultra-Clarity Optical Glass Finish</span>
-        <span className="hidden md:flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-emerald-400" /> 10ft Impact Drop Certified</span>
-        <span className="flex items-center gap-1.5"><Truck className="h-3.5 w-3.5 text-violet-400" /> Free Air Express Shipping &gt; ₹499</span>
-      </div>
-
-      {/* 2. Pure E-Commerce Visual Hero Slider Section */}
-      <section className="relative h-[75vh] min-h-[520px] max-h-[700px] w-full bg-zinc-950 overflow-hidden flex items-center justify-center border-b border-zinc-800">
+      {/* 1. Ultra-Clean Full-Bleed Hero Slider (NO text overlay clutter on the photo!) */}
+      <section className="relative h-[78vh] min-h-[540px] max-h-[750px] w-full bg-zinc-950 overflow-hidden border-b border-zinc-800/80">
         {heroBanners.length > 0 ? (
           heroBanners.map((banner: any, idx: number) => (
             <motion.div
               key={banner._id}
               initial={{ opacity: 0, scale: 1.02 }}
               animate={{ opacity: idx === currentHero ? 1 : 0, scale: idx === currentHero ? 1 : 1.02 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.9 }}
               className="absolute inset-0"
               style={{ pointerEvents: idx === currentHero ? "auto" : "none" }}
             >
@@ -102,180 +98,235 @@ export function HomePage() {
           ))
         ) : (
           <div className="absolute inset-0">
-            <img src="/hero.png" alt="Printed Soul Premium Cases" className="w-full h-full object-cover object-center" />
+            <img src="/hero.png" alt="Printed Soul Clean Hero" className="w-full h-full object-cover object-center" />
           </div>
         )}
 
-        {/* Dark Gradient Overlay for text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20 pointer-events-none z-10" />
+        {/* Subtle Dark Gradient fade at bottom for smooth transition */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-transparent to-black/30 pointer-events-none z-10" />
 
-        {/* Hero Content Overlay */}
-        <div className="relative z-20 max-w-7xl mx-auto px-6 w-full text-center md:text-left flex flex-col items-center md:items-start pb-12">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-amber-400 text-[11px] font-extrabold tracking-widest uppercase mb-4 border border-white/20 shadow-lg">
-            <Sparkles className="h-3.5 w-3.5" /> 2026 PREMIUM COLLECTION
+        {/* Minimal Floating Brand Badge & Slide Counter */}
+        <div className="absolute top-6 left-6 md:left-12 z-20 pointer-events-none">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/60 backdrop-blur-2xl text-white text-xs font-black tracking-widest uppercase border border-white/10 shadow-2xl">
+            <Sparkles className="h-3.5 w-3.5 text-amber-400" /> PRINTED SOUL DROP '26
           </span>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-black text-white tracking-tight leading-none max-w-3xl drop-shadow-lg">
-            Aesthetic Meets Ultimate Armor.
-          </h1>
-          <p className="text-gray-300 text-base sm:text-xl font-medium mt-4 max-w-xl tracking-tight leading-relaxed">
-            High-definition 3D prints, 10ft drop protection, and zero-fade glass finish for 1000+ device models.
-          </p>
-          <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-8">
-            <Link 
-              to="/products" 
-              className="px-8 py-4 rounded-2xl bg-white text-black font-extrabold text-sm hover:bg-gray-100 hover:scale-105 active:scale-95 transition-all shadow-2xl flex items-center gap-2"
-            >
-              <span>Explore All Cases</span>
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link 
-              to="/products?sort=new" 
-              className="px-8 py-4 rounded-2xl bg-white/10 backdrop-blur-md text-white font-bold text-sm hover:bg-white/20 border border-white/20 transition-all flex items-center gap-2"
-            >
-              <span>New Arrivals</span>
-            </Link>
-          </div>
         </div>
 
-        {/* Dots Slider Indicator */}
         {heroBanners.length > 1 && (
-          <div className="absolute bottom-6 right-8 flex items-center gap-2 z-20 bg-black/40 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10">
+          <div className="absolute bottom-10 right-6 md:right-12 z-20 flex items-center gap-2 bg-black/70 backdrop-blur-2xl px-4 py-2 rounded-full border border-white/10">
             {heroBanners.map((_: any, idx: number) => (
               <button
                 key={idx}
                 onClick={() => setCurrentHero(idx)}
-                className={`h-2 rounded-full transition-all duration-500 ${idx === currentHero ? "bg-white w-7" : "bg-white/30 hover:bg-white/60 w-2"}`}
+                className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${idx === currentHero ? "bg-white w-8" : "bg-white/30 hover:bg-white/60 w-2"}`}
               />
             ))}
           </div>
         )}
       </section>
 
-      {/* 3. Instant Device Model Selector Widget */}
+      {/* 2. Instant Apple-Style Device Selector Configurator */}
       <QuickDeviceFinder />
 
-      {/* 4. Trust & Value Proposition Strip */}
-      <section className="py-14 bg-white border-b border-gray-200/70 mt-8">
-        <div className="max-w-[1500px] mx-auto px-4 md:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: ShieldCheck, title: "Zero-Fade 3D Print", desc: "Lifetime color & scratch guard", color: "text-violet-600 bg-violet-50" },
-              { icon: Zap, title: "Express 48H Dispatch", desc: "Direct Air Shipping via Shiprocket", color: "text-amber-600 bg-amber-50" },
-              { icon: Layers, title: "Precision Camera Guard", desc: "Raised bezels for 360° lens safety", color: "text-emerald-600 bg-emerald-50" },
-              { icon: Award, title: "1000+ Device Models", desc: "Engineered for Apple, Samsung & more", color: "text-blue-600 bg-blue-50" },
-            ].map((perk, i) => (
-              <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50/80 border border-gray-200/60 hover:bg-white hover:shadow-xl transition-all duration-300">
-                <div className={`p-3 rounded-2xl ${perk.color} shrink-0`}>
-                  <perk.icon className="h-6 w-6" />
-                </div>
-                <div>
-                  <h4 className="font-display font-bold text-sm text-gray-900">{perk.title}</h4>
-                  <p className="text-xs text-gray-500 mt-0.5">{perk.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* 3. High-Impact Marquee Ticker Bar (Nike/Apple Style) */}
+      <div className="py-6 bg-zinc-950 border-b border-zinc-800/80 overflow-hidden mt-6">
+        <div className="flex items-center gap-12 whitespace-nowrap animate-marquee text-xs font-black tracking-widest uppercase text-zinc-400">
+          <span className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-amber-400" /> 100% OPTICAL GLASS FINISH</span>
+          <span>•</span>
+          <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-emerald-400" /> MIL-STD 10FT IMPACT CERTIFIED</span>
+          <span>•</span>
+          <span className="flex items-center gap-2"><Cpu className="h-4 w-4 text-violet-400" /> CUSTOM ENGINEERED FOR 1000+ MODELS</span>
+          <span>•</span>
+          <span className="flex items-center gap-2"><Truck className="h-4 w-4 text-blue-400" /> FREE AIR EXPRESS SHIPPING &gt; ₹499</span>
+          <span>•</span>
+          <span className="flex items-center gap-2"><Flame className="h-4 w-4 text-rose-400" /> ZERO-FADE 3D SUBLIMATION PRINT</span>
+          <span>•</span>
         </div>
-      </section>
+      </div>
 
-      {/* 5. Featured Categories Banners (Editorial Grid) */}
-      <section className="py-16 px-4 md:px-8 max-w-[1600px] mx-auto">
-        <div className="flex items-center justify-between mb-8">
+      {/* 4. CRAZY BENTO GRID — "BROO THIS IS PREMIUMNESS" */}
+      <section className="py-20 px-4 md:px-8 max-w-[1650px] mx-auto">
+        
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
-            <span className="text-[11px] font-extrabold uppercase tracking-widest text-violet-600 bg-violet-50 px-3 py-1 rounded-full border border-violet-100">
-              POPULAR CATEGORIES
-            </span>
-            <h2 className="text-3xl md:text-4xl font-display font-black tracking-tight text-gray-900 mt-2">
-              Explore By Material
+            <div className="flex items-center gap-2 mb-2">
+              <span className="h-2 w-2 rounded-full bg-amber-400 animate-ping" />
+              <span className="text-xs font-black uppercase tracking-widest text-amber-400 bg-amber-400/10 px-3.5 py-1 rounded-full border border-amber-400/20">
+                EDITORIAL DROPS 2026
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-6xl font-display font-black tracking-tight text-white mt-1">
+              Curated Masterpieces
             </h2>
           </div>
-          <Link to="/products" className="hidden sm:flex items-center gap-2 font-bold text-sm text-gray-900 hover:text-violet-600 transition-colors">
-            View All Collections <ArrowRight className="h-4 w-4" />
+          <Link 
+            to="/products" 
+            className="inline-flex items-center gap-2 text-sm font-extrabold text-white hover:text-amber-400 transition-colors uppercase tracking-wider group"
+          >
+            <span>Explore All Series</span>
+            <ArrowUpRight className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Glass Case Promo */}
-          <Link to="/categories/glass-case" className="group relative rounded-3xl overflow-hidden aspect-[4/3] md:aspect-auto h-[320px] md:h-[420px] border border-gray-200 shadow-sm hover:shadow-2xl transition-all duration-500">
+        {/* Crazy Asymmetric Bento Box */}
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[280px] md:auto-rows-[340px]">
+          
+          {/* Tile 1: LARGE HERO BENTO (Spans 2 cols, 2 rows) — Glass Case */}
+          <Link 
+            to={promoBanners[0]?.link || "/categories/glass-case"} 
+            className="group relative rounded-[2.5rem] overflow-hidden md:col-span-2 md:row-span-2 bg-zinc-900 border border-zinc-800 hover:border-zinc-500 transition-all duration-700 shadow-2xl flex flex-col justify-end p-8 md:p-12"
+          >
             <img 
               src={promoBanners[0] ? getImageUrl(promoBanners[0].imageUrl) : "/glass.png"} 
-              alt="Ultra Gloss Glass Cases" 
-              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              alt="Ultra Gloss Glass Case" 
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-            <div className="absolute bottom-8 left-8 right-8">
-              <span className="bg-white/20 backdrop-blur-md text-white text-[10px] font-extrabold px-3 py-1 rounded-full tracking-widest uppercase mb-2 inline-block border border-white/30">
-                ULTRA GLOSS
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-90 group-hover:opacity-95 transition-opacity" />
+            
+            {/* Ambient Corner Glow */}
+            <div className="absolute top-6 right-6 z-20">
+              <span className="bg-white/10 backdrop-blur-2xl text-white text-[11px] font-black px-4 py-2 rounded-full tracking-widest uppercase border border-white/20 shadow-xl flex items-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-amber-400" /> OPTICAL GLASS
               </span>
-              <h3 className="text-2xl md:text-3xl font-display font-black text-white mb-1">Optical Glass Cases</h3>
-              <p className="text-white/90 text-xs font-semibold flex items-center gap-1.5 mt-2">Shop Collection <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></p>
+            </div>
+
+            <div className="relative z-20">
+              <span className="text-amber-400 font-mono text-xs font-bold tracking-widest uppercase block mb-2">
+                SERIES 01 // ULTRA CLARITY
+              </span>
+              <h3 className="text-3xl md:text-5xl lg:text-6xl font-display font-black text-white leading-tight mb-3 drop-shadow-lg">
+                {promoBanners[0]?.title || "9H Optical Tempered Glass"}
+              </h3>
+              <p className="text-zinc-300 text-sm md:text-base max-w-lg font-medium leading-relaxed mb-6">
+                Engineered with dual-layer tempered glass for high-definition reflection and scratch resistance.
+              </p>
+
+              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black font-black text-xs uppercase tracking-wider group-hover:bg-amber-400 transition-colors shadow-2xl">
+                <span>Shop Glass Series</span>
+                <ArrowRight className="h-4 w-4" />
+              </div>
             </div>
           </Link>
 
-          {/* Dual Protection Case Promo */}
-          <Link to="/categories/dual-protection-case" className="group relative rounded-3xl overflow-hidden aspect-[4/3] md:aspect-auto h-[320px] md:h-[420px] border border-gray-200 shadow-sm hover:shadow-2xl transition-all duration-500">
+          {/* Tile 2: WIDE ARMOR BENTO (Spans 2 cols, 1 row) — Dual Protection */}
+          <Link 
+            to={promoBanners[2]?.link || "/categories/dual-protection-case"} 
+            className="group relative rounded-[2.5rem] overflow-hidden md:col-span-2 bg-zinc-900 border border-zinc-800 hover:border-zinc-500 transition-all duration-700 shadow-xl flex flex-col justify-end p-8"
+          >
             <img 
               src={promoBanners[2] ? getImageUrl(promoBanners[2].imageUrl) : "/small.png"} 
               alt="Dual Protection Armor" 
-              className="w-full h-full object-cover opacity-90 transition-transform duration-1000 group-hover:scale-105"
+              className="absolute inset-0 w-full h-full object-cover opacity-80 transition-transform duration-1000 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-            <div className="absolute bottom-8 left-8 right-8">
-              <span className="bg-emerald-500/90 backdrop-blur-md text-white text-[10px] font-extrabold px-3 py-1 rounded-full tracking-widest uppercase mb-2 inline-block shadow-md">
-                10FT DROP ARMOR
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+            
+            <div className="absolute top-6 left-6 z-20">
+              <span className="bg-emerald-500/90 backdrop-blur-xl text-white text-[10px] font-black px-3.5 py-1.5 rounded-full tracking-widest uppercase shadow-lg flex items-center gap-1.5">
+                <ShieldCheck className="h-3.5 w-3.5" /> 10FT IMPACT ARMOR
               </span>
-              <h3 className="text-2xl md:text-3xl font-display font-black text-white mb-1">Dual Protection</h3>
-              <p className="text-white/90 text-xs font-semibold flex items-center gap-1.5 mt-2">Explore Tough Cases <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></p>
+            </div>
+
+            <div className="relative z-20 flex items-end justify-between gap-4">
+              <div>
+                <h3 className="text-2xl md:text-3xl font-display font-black text-white mb-1">
+                  Dual Protection Series
+                </h3>
+                <p className="text-zinc-400 text-xs font-semibold">Shock-absorbing inner TPU + Polycarbonate shell.</p>
+              </div>
+
+              <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shrink-0 group-hover:bg-white group-hover:text-black transition-all">
+                <ArrowUpRight className="h-5 w-5" />
+              </div>
             </div>
           </Link>
 
-          {/* Metal Texture Case Promo */}
-          <Link to="/categories/metal-case" className="group relative rounded-3xl overflow-hidden aspect-[4/3] md:aspect-auto h-[320px] md:h-[420px] border border-gray-200 shadow-sm hover:shadow-2xl transition-all duration-500">
+          {/* Tile 3: TALL METALLIC BENTO (1 col, 1 row) — Metal Finish */}
+          <Link 
+            to={promoBanners[1]?.link || "/categories/metal-case"} 
+            className="group relative rounded-[2.5rem] overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-500 transition-all duration-700 shadow-xl flex flex-col justify-end p-8"
+          >
             <img 
               src={promoBanners[1] ? getImageUrl(promoBanners[1].imageUrl) : "/metal.png"} 
-              alt="Premium Metal Cases" 
-              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              alt="Metallic Finish" 
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-            <div className="absolute bottom-8 left-8 right-8">
-              <span className="bg-amber-400 text-black text-[10px] font-extrabold px-3 py-1 rounded-full tracking-widest uppercase mb-2 inline-block">
-                LUXURY TEXTURE
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+            
+            <div className="relative z-20">
+              <span className="text-zinc-400 text-[10px] font-extrabold tracking-widest uppercase block mb-1">
+                BRUSHED FINISH
               </span>
-              <h3 className="text-2xl md:text-3xl font-display font-black text-white mb-1">Metal Finish Covers</h3>
-              <p className="text-white/90 text-xs font-semibold flex items-center gap-1.5 mt-2">Shop Metallic <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></p>
+              <h3 className="text-2xl font-display font-black text-white mb-1">
+                Metallic Textures
+              </h3>
+              <span className="text-xs text-amber-400 font-bold flex items-center gap-1 mt-2">
+                Explore Metal <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+              </span>
             </div>
           </Link>
+
+          {/* Tile 4: LIVE STATS BENTO (1 col, 1 row) — Dark Luxury Spec Badge */}
+          <div className="relative rounded-[2.5rem] bg-gradient-to-br from-zinc-900 via-zinc-950 to-black border border-zinc-800 p-8 flex flex-col justify-between shadow-xl">
+            <div className="flex items-center justify-between">
+              <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[10px] font-black tracking-widest text-zinc-500 uppercase">
+                ENGINEERED PERFECTION
+              </span>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <span className="text-3xl font-display font-black text-white tracking-tight">1,000+</span>
+                <p className="text-xs text-zinc-400 font-medium">Supported Phone Models</p>
+              </div>
+              <div className="pt-3 border-t border-zinc-800 flex items-center justify-between">
+                <div>
+                  <span className="text-xl font-display font-bold text-amber-400">4.9 ★</span>
+                  <p className="text-[10px] text-zinc-400">15K+ Verified Buyers</p>
+                </div>
+                <div className="p-2.5 rounded-2xl bg-zinc-800 text-white">
+                  <Award className="h-5 w-5 text-amber-400" />
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
-      {/* 6. Bestseller Showcase with Category Filter Tabs */}
-      <section className="py-16 bg-white border-t border-gray-200/80">
-        <div className="max-w-[1600px] mx-auto px-4 md:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+      {/* 5. BESTSELLERS SHOWCASE WITH LUXURY GLOW CARDS */}
+      <section className="py-20 bg-zinc-950 border-t border-zinc-800">
+        <div className="max-w-[1650px] mx-auto px-4 md:px-8">
+          
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div>
-              <span className="text-[11px] font-extrabold uppercase tracking-widest text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
-                TOP RATED DROPS
-              </span>
-              <h2 className="text-3xl md:text-4xl font-display font-black tracking-tight text-gray-900 mt-2">
-                Best Sellers
+              <div className="flex items-center gap-2 mb-2">
+                <Flame className="h-4 w-4 text-rose-500" />
+                <span className="text-xs font-black uppercase tracking-widest text-rose-400 bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/20">
+                  TRENDING DROPS
+                </span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight text-white mt-1">
+                Top Rated Bestsellers
               </h2>
             </div>
 
-            {/* Category Filter Tabs */}
+            {/* Filter Tabs */}
             <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
               {[
                 { id: "all", label: "All Cases" },
-                { id: "glass", label: "Glass Covers" },
+                { id: "glass", label: "Glass Series" },
                 { id: "dual", label: "Dual Armor" },
-                { id: "metal", label: "Metal Finish" },
+                { id: "metal", label: "Metal Textures" },
               ].map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveCategoryTab(tab.id)}
-                  className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                  className={`px-5 py-2.5 rounded-full text-xs font-black transition-all whitespace-nowrap cursor-pointer uppercase tracking-wider ${
                     activeCategoryTab === tab.id
-                      ? "bg-black text-white shadow-lg"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black"
+                      ? "bg-white text-black shadow-xl"
+                      : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white border border-zinc-800"
                   }`}
                 >
                   {tab.label}
@@ -288,13 +339,13 @@ export function HomePage() {
           {isFeaturedLoading ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {[...Array(8)].map((_, i) => (
-                <div key={i} className="aspect-[4/5] rounded-3xl bg-gray-100 animate-pulse" />
+                <div key={i} className="aspect-[4/5] rounded-3xl bg-zinc-900 animate-pulse border border-zinc-800" />
               ))}
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="text-center py-20 bg-gray-50 rounded-3xl border border-gray-200">
-              <p className="text-gray-500 font-semibold">No products found in this category.</p>
-              <Link to="/products" className="inline-block mt-4 text-xs font-bold text-black underline">View All Products</Link>
+            <div className="text-center py-20 bg-zinc-900/50 rounded-3xl border border-zinc-800">
+              <p className="text-zinc-400 font-semibold">No products found in this filter.</p>
+              <Link to="/products" className="inline-block mt-4 text-xs font-bold text-white underline">Browse Store</Link>
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12">
@@ -304,34 +355,80 @@ export function HomePage() {
             </div>
           )}
 
-          <div className="text-center mt-14">
+          <div className="text-center mt-16">
             <Link 
               to="/products" 
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gray-100 hover:bg-black hover:text-white transition-all text-xs font-extrabold tracking-wider uppercase border border-gray-200 shadow-sm"
+              className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-white text-black font-black text-xs uppercase tracking-widest hover:bg-amber-400 transition-colors shadow-2xl"
             >
-              <span>Browse Complete Store</span>
+              <span>Explore Complete Store</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 7. Supported Device Brands Bar */}
+      {/* 6. CRAFTSMANSHIP & MATERIAL BREAKDOWN */}
+      <section className="py-24 bg-[#09090b] border-t border-zinc-800">
+        <div className="max-w-[1500px] mx-auto px-4 md:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <span className="text-xs font-black uppercase tracking-widest text-violet-400 bg-violet-500/10 px-4 py-1.5 rounded-full border border-violet-500/20">
+              THE PRINTED SOUL STANDARD
+            </span>
+            <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight text-white mt-4">
+              Engineered For Greatness.
+            </h2>
+            <p className="text-zinc-400 text-sm mt-3">Why 15,000+ customers trust Printed Soul for their daily carry.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: Sparkles,
+                title: "9H Tempered Optical Glass",
+                desc: "Dual-layer optical glass top coat provides high-definition clarity, smooth touch, and zero yellowing over time.",
+                color: "text-amber-400 bg-amber-400/10 border-amber-400/20"
+              },
+              {
+                icon: Shield,
+                title: "360° Camera & Screen Lip",
+                desc: "Raised 1.5mm bezels prevent direct contact with surfaces, keeping your camera lenses safe during accidental drops.",
+                color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20"
+              },
+              {
+                icon: Flame,
+                title: "Permanent Sublimation Ink",
+                desc: "High-density heat transfer embeds colors deep into the substrate, guaranteeing scratch-proof and fade-proof art.",
+                color: "text-rose-400 bg-rose-400/10 border-rose-400/20"
+              }
+            ].map((item, idx) => (
+              <div key={idx} className="p-8 rounded-[2.5rem] bg-zinc-950 border border-zinc-800 hover:border-zinc-600 transition-all duration-500 space-y-4">
+                <div className={`w-14 h-14 rounded-2xl ${item.color} border flex items-center justify-center`}>
+                  <item.icon className="h-7 w-7" />
+                </div>
+                <h3 className="text-xl font-display font-black text-white">{item.title}</h3>
+                <p className="text-zinc-400 text-xs font-medium leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 7. SUPPORTED BRANDS BAR */}
       {brands.length > 0 && (
-        <section className="py-16 bg-gray-50 border-t border-b border-gray-200/80">
+        <section className="py-16 bg-zinc-950 border-t border-b border-zinc-800">
           <div className="container mx-auto px-4 text-center">
-            <h3 className="text-xl md:text-2xl font-display font-black tracking-tight text-gray-900 mb-2">
-              Supported Device Brands
+            <h3 className="text-xl font-display font-black tracking-tight text-white mb-2">
+              Compatible Smartphone Brands
             </h3>
-            <p className="text-xs text-gray-500 mb-8 max-w-md mx-auto">
-              Precision engineered cutouts and button tactile feedback for over 1,000 smartphone models.
+            <p className="text-xs text-zinc-500 mb-8 max-w-md mx-auto">
+              Precision cutouts and tactile buttons for all major flagship and budget models.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3 max-w-4xl mx-auto">
               {brands.map((brand: any) => (
                 <Link 
                   key={brand._id} 
                   to={`/products?brand=${brand._id}`}
-                  className="px-6 py-3 rounded-2xl bg-white border border-gray-200/80 hover:border-black hover:bg-black hover:text-white transition-all font-extrabold text-xs tracking-wider uppercase shadow-sm flex items-center gap-2"
+                  className="px-6 py-3 rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-white hover:bg-white hover:text-black transition-all font-black text-xs tracking-wider uppercase shadow-md flex items-center gap-2"
                 >
                   <span>{brand.name}</span>
                 </Link>
@@ -341,8 +438,8 @@ export function HomePage() {
         </section>
       )}
 
-      {/* 8. Social Proof & Customer Reviews */}
-      <section className="py-20 bg-white border-b border-gray-200/80">
+      {/* 8. VERIFIED SOCIAL PROOF REVIEWS */}
+      <section className="py-20 bg-[#09090b]">
         <div className="max-w-[1500px] mx-auto px-4 md:px-8">
           <div className="text-center max-w-xl mx-auto mb-14">
             <div className="flex items-center justify-center gap-1 text-amber-400 mb-3">
@@ -350,11 +447,11 @@ export function HomePage() {
                 <Star key={i} className="h-5 w-5 fill-amber-400 text-amber-400" />
               ))}
             </div>
-            <h2 className="text-3xl md:text-4xl font-display font-black tracking-tight text-gray-900">
-              Loved by 15,000+ Customers
+            <h2 className="text-3xl md:text-4xl font-display font-black tracking-tight text-white">
+              Loved By 15,000+ Case Enthusiasts
             </h2>
-            <p className="text-sm text-gray-500 mt-2">
-              Rated 4.9/5 stars based on verified buyers across India.
+            <p className="text-xs text-zinc-500 mt-2">
+              Rated 4.9/5 stars based on verified purchases across India.
             </p>
           </div>
 
@@ -365,44 +462,39 @@ export function HomePage() {
                 device: "iPhone 15 Pro",
                 review: "The glass finish is insane! It feels like part of the original phone glass and hasn't scratched even after dropping it twice.",
                 rating: 5,
-                verified: true
               },
               {
                 name: "Rhea Kapoor",
                 device: "Samsung S24 Ultra",
                 review: "Super fast shipping! Received in 2 days in Bangalore. The print clarity is super sharp and camera protection is solid.",
                 rating: 5,
-                verified: true
               },
               {
                 name: "Karan Patel",
                 device: "OnePlus 12",
                 review: "Dual protection armor case saved my phone! Build quality feels like a ₹2000 case for half the price.",
                 rating: 5,
-                verified: true
               }
             ].map((rev, idx) => (
-              <div key={idx} className="p-6 rounded-3xl bg-gray-50/80 border border-gray-200/70 flex flex-col justify-between hover:shadow-lg transition-all duration-300">
+              <div key={idx} className="p-6 rounded-[2rem] bg-zinc-950 border border-zinc-800 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-1 text-amber-400 mb-4">
                     {[...Array(rev.rating)].map((_, i) => (
                       <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
                     ))}
                   </div>
-                  <p className="text-gray-700 text-sm font-medium leading-relaxed italic">
+                  <p className="text-zinc-300 text-xs font-medium leading-relaxed italic">
                     "{rev.review}"
                   </p>
                 </div>
-                <div className="mt-6 pt-4 border-t border-gray-200/60 flex items-center justify-between">
+                <div className="mt-6 pt-4 border-t border-zinc-800 flex items-center justify-between">
                   <div>
-                    <h4 className="font-display font-bold text-sm text-gray-900">{rev.name}</h4>
-                    <p className="text-[11px] text-gray-400">{rev.device}</p>
+                    <h4 className="font-display font-bold text-sm text-white">{rev.name}</h4>
+                    <p className="text-[11px] text-zinc-500">{rev.device}</p>
                   </div>
-                  {rev.verified && (
-                    <span className="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
-                      <ThumbsUp className="h-3 w-3" /> Verified
-                    </span>
-                  )}
+                  <span className="text-[10px] font-extrabold text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <Check className="h-3 w-3" /> Verified
+                  </span>
                 </div>
               </div>
             ))}
@@ -410,28 +502,30 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* 9. Final High-Converting Call to Action Banner */}
-      <section className="relative py-24 bg-black text-white text-center overflow-hidden border-t border-zinc-800">
+      {/* 9. FINAL BRAND CALL TO ACTION */}
+      <section className="relative py-28 bg-gradient-to-b from-zinc-950 to-black text-white text-center overflow-hidden border-t border-zinc-800">
         <div className="relative z-10 container mx-auto px-4">
           <span className="text-[11px] font-extrabold uppercase tracking-widest text-amber-400 bg-amber-400/10 px-4 py-1.5 rounded-full border border-amber-400/20 inline-block mb-4">
             MAKE YOUR STATEMENT
           </span>
-          <h2 className="text-4xl sm:text-6xl font-display font-black tracking-tight">
+          <h2 className="text-5xl md:text-7xl font-display font-black tracking-tight">
             Unleash Your Phone's Soul.
           </h2>
-          <p className="text-gray-400 mt-4 text-base sm:text-lg font-medium tracking-tight max-w-xl mx-auto">
+          <p className="text-zinc-400 mt-4 text-base md:text-xl font-medium max-w-xl mx-auto">
             High-definition 3D prints, impact protection, and optical glass clarity for your daily carry.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <div className="mt-8">
             <Link 
               to="/products" 
-              className="px-9 py-4 rounded-2xl bg-white text-black font-extrabold text-sm hover:scale-105 transition-transform duration-300 shadow-2xl"
+              className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-white text-black font-black text-xs uppercase tracking-widest hover:bg-amber-400 transition-colors shadow-2xl"
             >
-              Explore All Designs
+              <span>Explore All Designs</span>
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
       </section>
+
     </div>
   )
 }
