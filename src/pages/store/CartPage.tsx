@@ -44,7 +44,7 @@ export function CartPage() {
                 <div className="flex-1 min-w-0">
                   <Link to={`/products/${product.slug}`} className="font-semibold text-sm hover:text-primary line-clamp-1">{product.name}</Link>
                   <p className="text-sm text-muted-foreground mt-0.5">{formatPrice(item.price)} each</p>
-                  <div className="flex items-center justify-between mt-3">
+                  <div className="flex items-center justify-between mt-3 flex-wrap gap-3">
                     <div className="flex items-center border rounded-lg overflow-hidden">
                       <button onClick={() => updateQuantity(product._id, item.quantity - 1)} disabled={isLoading} className="px-2.5 py-1.5 hover:bg-muted text-sm">
                         <Minus className="h-3 w-3" />
@@ -69,7 +69,7 @@ export function CartPage() {
 
         {/* Summary */}
         <div className="lg:col-span-1">
-          <div className="sticky top-24 rounded-2xl border bg-card p-6 space-y-4">
+          <div className="lg:sticky lg:top-24 rounded-2xl border bg-card p-6 space-y-4">
             <h3 className="font-bold text-lg">Order Summary</h3>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">

@@ -95,7 +95,7 @@ export function ProductsPage() {
           
           {/* Filters Sidebar */}
           <aside className={`md:w-64 shrink-0 ${showFilters ? "block" : "hidden md:block"}`}>
-            <div className="sticky top-24 space-y-6 bg-white p-6 rounded-[2.5rem] border border-gray-200/80 shadow-md">
+            <div className="md:sticky md:top-24 space-y-6 bg-white p-6 rounded-[2.5rem] border border-gray-200/80 shadow-md">
               
               <div className="flex items-center justify-between">
                 <h3 className="font-display font-black text-xs uppercase tracking-widest text-gray-400">Filters</h3>

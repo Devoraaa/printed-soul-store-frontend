@@ -58,6 +58,8 @@ export function CategoryPage() {
 
   const products = productsData?.data?.data || []
 
+  const isPhoneCategory = category?.slug?.match(/case|cover|glass|armor|silicone|phone/i) || category?.name?.match(/case|cover|glass|armor|silicone|phone/i);
+
   return (
     <div className="bg-[#FAFAFA] min-h-screen text-gray-900 antialiased selection:bg-black selection:text-white">
       
@@ -84,10 +86,10 @@ export function CategoryPage() {
               </span>
             </div>
             <h1 className="text-4xl md:text-6xl font-display font-black tracking-tight text-gray-900 capitalize mb-4">
-              {category?.name || slug} Cases & Covers
+              {category?.name || slug} {!isPhoneCategory && !category?.name?.toLowerCase().includes("collection") ? "Collection" : ""}
             </h1>
             <p className="text-sm md:text-base text-gray-500 max-w-2xl leading-relaxed">
-              {category?.description || `Explore our high-definition 3D printed ${category?.name || slug} cases & covers. Precision cutouts and 10ft drop protection for your phone.`}
+              {category?.description || `Explore our premium ${category?.name || slug}. Expertly crafted with precision and style.`}
             </p>
           </div>
 
@@ -97,42 +99,51 @@ export function CategoryPage() {
       {/* Sticky Quick Filters Bar */}
       <div className="bg-white/90 backdrop-blur-2xl border-b border-gray-200/80 sticky top-16 z-30 shadow-sm">
         <div className="max-w-[1650px] mx-auto px-4 md:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <span className="text-xs font-extrabold text-gray-500 uppercase tracking-widest whitespace-nowrap">
-              Filter By:
-            </span>
-            
-            {/* Brand Select */}
-            <div className="relative w-full sm:w-52">
-              <select 
-                value={selectedBrand} 
-                onChange={(e) => handleFilterChange("brand", e.target.value)}
-                className="w-full appearance-none bg-gray-50 border border-gray-200 text-xs font-bold rounded-2xl px-4 py-2.5 pr-10 text-gray-900 focus:outline-none focus:border-black transition-colors cursor-pointer"
-              >
-                <option value="">All Brands</option>
-                {brands.map((b: any) => (
-                  <option key={b._id} value={b._id}>{b.name}</option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
-            </div>
+          
+          {isPhoneCategory ? (
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <span className="text-xs font-extrabold text-gray-500 uppercase tracking-widest whitespace-nowrap">
+                Filter By:
+              </span>
+              
+              {/* Brand Select */}
+              <div className="relative w-full sm:w-52">
+                <select 
+                  value={selectedBrand} 
+                  onChange={(e) => handleFilterChange("brand", e.target.value)}
+                  className="w-full appearance-none bg-gray-50 border border-gray-200 text-xs font-bold rounded-2xl px-4 py-2.5 pr-10 text-gray-900 focus:outline-none focus:border-black transition-colors cursor-pointer"
+                >
+                  <option value="">All Brands</option>
+                  {brands.map((b: any) => (
+                    <option key={b._id} value={b._id}>{b.name}</option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+              </div>
 
-            {/* Model Select */}
-            <div className="relative w-full sm:w-52">
-              <select 
-                value={selectedModel} 
-                onChange={(e) => handleFilterChange("model", e.target.value)}
-                disabled={!selectedBrand}
-                className="w-full appearance-none bg-gray-50 border border-gray-200 text-xs font-bold rounded-2xl px-4 py-2.5 pr-10 text-gray-900 focus:outline-none focus:border-black transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <option value="">All Models</option>
-                {devices.map((d: any) => (
-                  <option key={d._id} value={d._id}>{d.displayName || d.name}</option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+              {/* Model Select */}
+              <div className="relative w-full sm:w-52">
+                <select 
+                  value={selectedModel} 
+                  onChange={(e) => handleFilterChange("model", e.target.value)}
+                  disabled={!selectedBrand}
+                  className="w-full appearance-none bg-gray-50 border border-gray-200 text-xs font-bold rounded-2xl px-4 py-2.5 pr-10 text-gray-900 focus:outline-none focus:border-black transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <option value="">All Models</option>
+                  {devices.map((d: any) => (
+                    <option key={d._id} value={d._id}>{d.displayName || d.name}</option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <span className="text-xs font-extrabold text-gray-500 uppercase tracking-widest">
+                Viewing Entire Collection
+              </span>
+            </div>
+          )}
           
           <div className="text-xs text-gray-500 font-bold">
             Showing <span className="text-black font-black">{products.length}</span> Results

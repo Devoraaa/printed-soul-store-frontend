@@ -56,7 +56,7 @@ export function HomePage() {
     <div className="bg-[#FAFAFA] text-[#111111] antialiased selection:bg-black selection:text-white">
       
       {/* 1. Main Clean Hero Photo Banner */}
-      <section className="relative h-[65vh] min-h-[480px] max-h-[680px] w-full bg-white overflow-hidden border-b border-gray-200/80">
+      <section className="relative aspect-[16/9] md:aspect-auto md:h-[65vh] md:min-h-[480px] max-h-[680px] w-full bg-black/5 overflow-hidden border-b border-gray-200/80">
         {heroBanners.length > 0 ? (
           heroBanners.map((banner: any, idx: number) => (
             <motion.div
@@ -64,21 +64,21 @@ export function HomePage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: idx === currentHero ? 1 : 0 }}
               transition={{ duration: 0.8 }}
-              className="absolute inset-0"
+              className="absolute inset-0 flex items-center justify-center"
               style={{ pointerEvents: idx === currentHero ? "auto" : "none" }}
             >
               {banner.link ? (
                 <Link to={banner.link} className="block w-full h-full">
-                  <img src={getImageUrl(banner.imageUrl)} alt={banner.title} className="w-full h-full object-cover object-center" />
+                  <img src={getImageUrl(banner.imageUrl)} alt={banner.title} className="w-full h-full object-contain md:object-cover object-center" />
                 </Link>
               ) : (
-                <img src={getImageUrl(banner.imageUrl)} alt={banner.title} className="w-full h-full object-cover object-center" />
+                <img src={getImageUrl(banner.imageUrl)} alt={banner.title} className="w-full h-full object-contain md:object-cover object-center" />
               )}
             </motion.div>
           ))
         ) : (
           <div className="absolute inset-0">
-            <img src="/hero.png" alt="Printed Soul Clean Hero" className="w-full h-full object-cover object-center" />
+            <img src="/hero.png" alt="Printed Soul Clean Hero" className="w-full h-full object-contain md:object-cover object-center" />
           </div>
         )}
 
@@ -96,11 +96,29 @@ export function HomePage() {
         )}
       </section>
 
+      {/* Trust & Quality Ticker (Professional Marquee) */}
+      <div className="bg-black text-white py-3 overflow-hidden flex whitespace-nowrap">
+        <motion.div 
+          className="flex gap-16 items-center text-[11px] font-black uppercase tracking-[0.2em]"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+        >
+          {Array(4).fill(0).map((_, i) => (
+            <React.Fragment key={i}>
+              <span className="flex items-center gap-2"><Sparkles className="h-3.5 w-3.5 text-amber-400" /> PREMIUM MATERIALS</span>
+              <span className="flex items-center gap-2"><Sparkles className="h-3.5 w-3.5 text-amber-400" /> 10,000+ HAPPY CUSTOMERS</span>
+              <span className="flex items-center gap-2"><Sparkles className="h-3.5 w-3.5 text-amber-400" /> FREE SHIPPING OVER ₹499</span>
+              <span className="flex items-center gap-2"><Sparkles className="h-3.5 w-3.5 text-amber-400" /> 100% SECURE CHECKOUT</span>
+            </React.Fragment>
+          ))}
+        </motion.div>
+      </div>
+
       {/* 2. Brand Visual Selector Bar (Photos & Icons) */}
       {brands.length > 0 && (
         <section className="py-6 bg-white border-b border-gray-200/80 shadow-xs">
           <div className="max-w-[1650px] mx-auto px-4">
-            <div className="flex items-center justify-between gap-4 overflow-x-auto pb-2 scrollbar-none">
+            <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-none">
               <span className="text-xs font-black uppercase tracking-widest text-gray-400 shrink-0">
                 BRANDS:
               </span>
@@ -159,15 +177,15 @@ export function HomePage() {
             {/* Main Featured Promo (Left, spans 2 cols on desktop) */}
             <Link 
               to={promoBanners[0].link || "/products"} 
-              className="group relative rounded-[2rem] overflow-hidden aspect-square md:aspect-auto md:col-span-2 md:row-span-2 border border-gray-200 shadow-md hover:shadow-2xl transition-all duration-500"
+              className="group relative rounded-[2rem] overflow-hidden md:col-span-2 md:row-span-2 border border-gray-200 shadow-md hover:shadow-2xl transition-all duration-500 block"
             >
               <img 
                 src={getImageUrl(promoBanners[0].imageUrl)} 
                 alt={promoBanners[0].title || "Promo"} 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                className="w-full h-auto md:h-full md:object-cover transition-transform duration-1000 group-hover:scale-105 block"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute bottom-8 left-8 right-8">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+              <div className="absolute bottom-8 left-8 right-8 pointer-events-none">
                 <h3 className="text-3xl md:text-5xl font-display font-black text-white mb-2 drop-shadow-md">
                   {promoBanners[0].title}
                 </h3>
@@ -180,15 +198,15 @@ export function HomePage() {
             {/* Top Right Promo */}
             <Link 
               to={promoBanners[1].link || "/products"} 
-              className="group relative rounded-[2rem] overflow-hidden aspect-[16/9] md:aspect-auto border border-gray-200 shadow-md hover:shadow-2xl transition-all duration-500"
+              className="group relative rounded-[2rem] overflow-hidden border border-gray-200 shadow-md hover:shadow-2xl transition-all duration-500 block"
             >
               <img 
                 src={getImageUrl(promoBanners[1].imageUrl)} 
                 alt={promoBanners[1].title || "Promo"} 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                className="w-full h-auto md:h-full md:object-cover transition-transform duration-1000 group-hover:scale-105 block"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+              <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
                 <h3 className="text-xl md:text-2xl font-display font-black text-white mb-1 drop-shadow-md">
                   {promoBanners[1].title}
                 </h3>
@@ -201,15 +219,15 @@ export function HomePage() {
             {/* Bottom Right Promo */}
             <Link 
               to={promoBanners[2].link || "/products"} 
-              className="group relative rounded-[2rem] overflow-hidden aspect-[16/9] md:aspect-auto border border-gray-200 shadow-md hover:shadow-2xl transition-all duration-500"
+              className="group relative rounded-[2rem] overflow-hidden border border-gray-200 shadow-md hover:shadow-2xl transition-all duration-500 block"
             >
               <img 
                 src={getImageUrl(promoBanners[2].imageUrl)} 
                 alt={promoBanners[2].title || "Promo"} 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                className="w-full h-auto md:h-full md:object-cover transition-transform duration-1000 group-hover:scale-105 block"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+              <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
                 <h3 className="text-xl md:text-2xl font-display font-black text-white mb-1 drop-shadow-md">
                   {promoBanners[2].title}
                 </h3>

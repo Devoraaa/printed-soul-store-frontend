@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useQuery, useMutation } from "@tanstack/react-query"
-import { Plus, CreditCard, Truck, CheckCircle, Loader2 } from "lucide-react"
+import { Plus, CreditCard, Truck, CheckCircle, Loader2, Lock } from "lucide-react"
 import { addressApi, orderApi } from "../../lib/api"
 import { useCart } from "../../context/CartContext"
 import { formatPrice } from "../../lib/utils"
@@ -157,7 +157,7 @@ export function CheckoutPage() {
 
         {/* Order Summary */}
         <div className="lg:col-span-1">
-          <div className="sticky top-24 rounded-2xl border bg-card p-6 shadow-sm">
+          <div className="lg:sticky lg:top-24 rounded-2xl border bg-card p-6 shadow-sm">
             <h3 className="font-bold text-base mb-4">Order Summary</h3>
             <div className="space-y-3 mb-4">
               {items.map((item: any) => (
@@ -178,11 +178,19 @@ export function CheckoutPage() {
             <button
               onClick={handlePlaceOrder}
               disabled={placeOrderMutation.isPending || !selectedAddressId}
-              className="w-full mt-4 py-3 rounded-xl bg-violet-600 text-white font-bold hover:bg-violet-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 shadow-sm"
+              className="w-full mt-6 py-4 rounded-xl bg-violet-600 text-white font-black hover:bg-violet-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 shadow-lg shadow-violet-500/20"
             >
-              {placeOrderMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle className="h-4 w-4" />}
-              Proceed to PayU ({formatPrice(grandTotal)})
+              {placeOrderMutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : <Lock className="h-4 w-4" />}
+              Pay {formatPrice(grandTotal)} Securely
             </button>
+            <div className="mt-4 pt-4 border-t flex flex-col items-center gap-2">
+              <span className="text-[10px] uppercase font-bold tracking-widest text-gray-400">Guaranteed Safe Checkout</span>
+              <div className="flex items-center justify-center gap-3 grayscale opacity-60">
+                <div className="h-5 w-8 bg-gray-100 rounded flex items-center justify-center text-[8px] font-black text-black border border-gray-200">VISA</div>
+                <div className="h-5 w-8 bg-gray-100 rounded flex items-center justify-center text-[8px] font-black text-black border border-gray-200">MC</div>
+                <div className="h-5 w-8 bg-gray-100 rounded flex items-center justify-center text-[8px] font-black text-black border border-gray-200">UPI</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

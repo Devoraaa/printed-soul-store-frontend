@@ -64,15 +64,15 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
           )}
 
           {/* Luxury Floating Badges */}
-          <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none z-10">
-            {discountPercent > 0 ? (
-              <span className="bg-black/90 backdrop-blur-md text-white text-[10px] uppercase font-black px-3 py-1 rounded-full tracking-widest shadow-md">
+          <div className="absolute top-3.5 left-3.5 right-3.5 flex flex-col items-start gap-1.5 pointer-events-none z-10">
+            {discountPercent > 0 && (
+              <span className="bg-black/90 backdrop-blur-md text-white text-[9px] md:text-[10px] uppercase font-black px-2 md:px-3 py-1 rounded-full tracking-widest shadow-md">
                 -{discountPercent}% OFF
               </span>
-            ) : <span />}
+            )}
 
             {product.isFeatured && (
-              <span className="bg-amber-400 text-black text-[10px] uppercase font-black px-2.5 py-1 rounded-full tracking-wider shadow-md">
+              <span className="bg-amber-400 text-black text-[9px] md:text-[10px] uppercase font-black px-2 md:px-2.5 py-1 rounded-full tracking-wider shadow-md">
                 ★ FEATURED
               </span>
             )}
@@ -87,9 +87,9 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
             </div>
           )}
 
-          {/* Quick Action Floating Bar on Hover */}
-          <div className={`absolute bottom-3 left-3 right-3 flex items-center gap-2 transition-all duration-300 z-20 ${
-            isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"
+          {/* Quick Action Floating Bar (Visible on mobile, hover on desktop) */}
+          <div className={`absolute bottom-3 left-3 right-3 flex items-center gap-2 transition-all duration-300 z-20 md:opacity-0 md:translate-y-3 md:pointer-events-none ${
+            isHovered ? "md:!opacity-100 md:!translate-y-0 md:!pointer-events-auto" : "opacity-100 translate-y-0 pointer-events-auto"
           }`}>
             <button
               onClick={handleQuickAdd}
@@ -142,11 +142,11 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
         {/* Price & Savings */}
         <div className="flex items-baseline gap-2 mt-auto">
           <span className="font-display font-black text-lg text-gray-900 tracking-tight">
-            ₹{formatPrice(product.price)}
+            {formatPrice(product.price)}
           </span>
           {product.comparePrice && product.comparePrice > product.price && (
             <span className="text-gray-400 line-through text-xs font-semibold tracking-tight">
-              ₹{formatPrice(product.comparePrice)}
+              {formatPrice(product.comparePrice)}
             </span>
           )}
         </div>

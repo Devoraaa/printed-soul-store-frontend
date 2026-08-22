@@ -27,7 +27,8 @@ export function slugify(text: string): string {
 }
 
 export function getImageUrl(img?: any): string {
-  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  // Use VITE_IMAGE_URL if provided (e.g. for remote server images), else VITE_API_URL
+  const apiUrl = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_API_URL || "http://localhost:5000";
   if (!img) return "/placeholder.png"
   
   let url = "";
@@ -36,14 +37,19 @@ export function getImageUrl(img?: any): string {
     else if (img._id) url = `/api/images/${img._id}`
   } else if (typeof img === "string") {
     url = img
-    if (!url.startsWith("http") && !url.startsWith("/uploads") && !url.startsWith("/api") && !url.startsWith("data:")) {
+    if (!url.startsWith("http") && !url.startsWith("/") && !url.startsWith("data:")) {
       url = `/api/images/${url}`
     }
   }
 
-  if (url.startsWith("/uploads") || url.startsWith("/api")) {
-    // Prefix with backend URL
+  if (url.startsWith("/uploads") || url.startsWith("/api/images/")) {
+    // Prefix with backend URL for uploads and database images
     return `${apiUrl.replace(/\/$/, "")}${url}`
+  }
+
+  // If we have a remote image server configured (local dev) and path starts with /
+  if (url.startsWith("/") && import.meta.env.VITE_IMAGE_URL) {
+    return `${import.meta.env.VITE_IMAGE_URL.replace(/\/$/, "")}${url}`
   }
   
   return url || "/placeholder.png"

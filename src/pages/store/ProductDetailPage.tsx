@@ -15,7 +15,8 @@ import {
   Zap,
   Share2,
   Lock,
-  ChevronDown
+  ChevronDown,
+  Award
 } from "lucide-react"
 import { productApi, reviewApi } from "../../lib/api"
 import { getImageUrl, formatPrice } from "../../lib/utils"
@@ -141,7 +142,7 @@ export function ProductDetailPage() {
         <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-start">
           
           {/* Left Column: Gallery */}
-          <div className="space-y-4 sticky top-24">
+          <div className="space-y-4 md:sticky md:top-24">
             <motion.div 
               className="relative aspect-square overflow-hidden rounded-[2.5rem] bg-white border border-gray-200/80 shadow-md group"
               layoutId={`product-${product._id}`}
@@ -251,11 +252,11 @@ export function ProductDetailPage() {
               <div>
                 <div className="flex items-baseline gap-3">
                   <span className="text-3xl sm:text-4xl font-display font-black text-gray-900 tracking-tight">
-                    ₹{formatPrice(product.price)}
+                    {formatPrice(product.price)}
                   </span>
                   {product.comparePrice > product.price && (
                     <span className="text-lg text-gray-400 line-through font-semibold">
-                      ₹{formatPrice(product.comparePrice)}
+                      {formatPrice(product.comparePrice)}
                     </span>
                   )}
                 </div>
@@ -344,6 +345,22 @@ export function ProductDetailPage() {
                   <Zap className="h-5 w-5 fill-white text-white" />
                   <span>Buy Now (Fast Checkout)</span>
                 </button>
+
+                {/* Secure Checkout Badges */}
+                <div className="pt-4 mt-4 border-t border-gray-100 flex items-center justify-center gap-4 text-gray-400">
+                  <div className="flex items-center gap-1.5" title="100% Secure Checkout">
+                    <ShieldCheck className="h-4 w-4" /> <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Secure</span>
+                  </div>
+                  <div className="w-1 h-1 rounded-full bg-gray-200"></div>
+                  <div className="flex items-center gap-1.5" title="Free Delivery over ₹499">
+                    <Truck className="h-4 w-4" /> <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Free Del</span>
+                  </div>
+                  <div className="w-1 h-1 rounded-full bg-gray-200"></div>
+                  <div className="flex items-center gap-1.5" title="Armor Grade Protection">
+                    <Award className="h-4 w-4" /> <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Quality</span>
+                  </div>
+                </div>
+
               </div>
             ) : (
               <div className="p-5 rounded-2xl bg-red-50 text-red-700 border border-red-200 text-center font-bold text-sm">
@@ -456,16 +473,16 @@ export function ProductDetailPage() {
 
       {/* Mobile Sticky Bottom Action Bar */}
       {product.stock > 0 && (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-2xl border-t border-gray-200/80 p-3 flex items-center gap-3 shadow-[0_-10px_25px_rgba(0,0,0,0.08)]">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-2xl border-t border-gray-200/80 p-2.5 flex items-center gap-2 shadow-[0_-10px_25px_rgba(0,0,0,0.08)]">
           <div>
             <span className="text-[10px] text-gray-400 font-bold block uppercase">Price</span>
-            <span className="text-lg font-black text-gray-900">₹{formatPrice(product.price)}</span>
+            <span className="text-lg font-black text-gray-900">{formatPrice(product.price)}</span>
           </div>
 
           <button
             onClick={handleAddToCart}
             disabled={cartLoading}
-            className={`flex-1 py-3 px-4 rounded-2xl font-extrabold text-xs transition-all shadow-md flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-3 px-2 rounded-2xl font-extrabold text-xs transition-all shadow-md flex items-center justify-center gap-1.5 ${
               addedToCart ? "bg-emerald-600 text-white" : "bg-black text-white active:scale-95"
             }`}
           >
@@ -474,7 +491,7 @@ export function ProductDetailPage() {
 
           <button
             onClick={handleBuyNow}
-            className="flex-1 py-3 px-4 rounded-2xl bg-violet-600 text-white font-extrabold text-xs active:scale-95 shadow-md flex items-center justify-center gap-1"
+            className="flex-1 py-3 px-2 rounded-2xl bg-violet-600 text-white font-extrabold text-xs active:scale-95 shadow-md flex items-center justify-center gap-1"
           >
             <Zap className="h-4 w-4 fill-white" />
             <span>Buy Now</span>
