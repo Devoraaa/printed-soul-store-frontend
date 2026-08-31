@@ -24,7 +24,7 @@
     --border: 0 0% 90%;     /* #E5E7EB roughly */
     --input: 0 0% 90%;
     --ring: 0 0% 0%;        /* Black focus ring */
-    --radius: 1rem;
+    --radius: 0.375rem;
   }
 
   .dark {
@@ -83,9 +83,8 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-violet-600 via-fuchsia-600 to-indigo-600;
   }
 
-  /* Premium Product card hover with glow */
   .product-card {
-    @apply group relative overflow-hidden rounded-[2rem] bg-white transition-all duration-500 hover:shadow-[0_20px_40px_-15px_rgba(124,58,237,0.15)] hover:-translate-y-2 border border-gray-100/80;
+    @apply group relative overflow-hidden rounded-sm bg-white transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border border-gray-100/80;
   }
 }
 

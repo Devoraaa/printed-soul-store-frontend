@@ -27,36 +27,38 @@ export function CartPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-8">Shopping Cart ({items.reduce((s, i) => s + i.quantity, 0)} items)</h1>
-      <div className="grid lg:grid-cols-3 gap-8">
+    <div className="max-w-[1200px] mx-auto px-4 py-8">
+      <h1 className="text-2xl font-black uppercase tracking-widest mb-6">Shopping Cart ({items.reduce((s, i) => s + i.quantity, 0)} items)</h1>
+      <div className="grid lg:grid-cols-3 gap-6">
         {/* Items */}
-        <div className="lg:col-span-2 space-y-4">
+        <div className="lg:col-span-2 space-y-3">
           {items.map((item: any) => {
             const product = item.product
             return (
-              <div key={product._id} className="flex gap-4 p-4 rounded-2xl border bg-card">
+              <div key={product._id} className="flex gap-4 p-4 rounded-sm border bg-white shadow-sm">
                 <img
                   src={product.images?.[0] ? getImageUrl(product.images[0]) : "/placeholder.png"}
                   alt={product.name}
-                  className="w-20 h-20 object-cover rounded-xl bg-muted shrink-0"
+                  className="w-20 h-20 object-cover rounded-sm bg-gray-50 border border-gray-100 shrink-0"
                 />
                 <div className="flex-1 min-w-0">
-                  <Link to={`/products/${product.slug}`} className="font-semibold text-sm hover:text-primary line-clamp-1">{product.name}</Link>
-                  <p className="text-sm text-muted-foreground mt-0.5">{formatPrice(item.price)} each</p>
+                  <Link to={`/products/${product.slug}`} className="font-bold text-sm text-gray-900 hover:text-black line-clamp-1">
+                    {product.name}
+                  </Link>
+                  <p className="text-xs font-medium text-gray-500 mt-1">{formatPrice(item.price)} each</p>
                   <div className="flex items-center justify-between mt-3 flex-wrap gap-3">
-                    <div className="flex items-center border rounded-lg overflow-hidden">
-                      <button onClick={() => updateQuantity(product._id, item.quantity - 1)} disabled={isLoading} className="px-2.5 py-1.5 hover:bg-muted text-sm">
+                    <div className="flex items-center border border-gray-300 rounded-sm overflow-hidden bg-white h-8">
+                      <button onClick={() => updateQuantity(product._id, item.quantity - 1)} disabled={isLoading} className="w-8 h-full flex items-center justify-center hover:bg-gray-50 border-r border-gray-300 transition-colors">
                         <Minus className="h-3 w-3" />
                       </button>
-                      <span className="px-3 py-1.5 font-semibold text-sm border-x">{item.quantity}</span>
-                      <button onClick={() => updateQuantity(product._id, item.quantity + 1)} disabled={isLoading || item.quantity >= product.stock} className="px-2.5 py-1.5 hover:bg-muted text-sm">
+                      <span className="w-8 h-full flex items-center justify-center font-bold text-xs">{item.quantity}</span>
+                      <button onClick={() => updateQuantity(product._id, item.quantity + 1)} disabled={isLoading || item.quantity >= product.stock} className="w-8 h-full flex items-center justify-center hover:bg-gray-50 border-l border-gray-300 transition-colors">
                         <Plus className="h-3 w-3" />
                       </button>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-bold">{formatPrice(item.price * item.quantity)}</span>
-                      <button onClick={() => removeFromCart(product._id)} disabled={isLoading} className="text-muted-foreground hover:text-destructive transition-colors">
+                    <div className="flex items-center gap-4">
+                      <span className="font-black text-sm text-gray-900">{formatPrice(item.price * item.quantity)}</span>
+                      <button onClick={() => removeFromCart(product._id)} disabled={isLoading} className="text-gray-400 hover:text-red-600 transition-colors">
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
@@ -69,33 +71,42 @@ export function CartPage() {
 
         {/* Summary */}
         <div className="lg:col-span-1">
-          <div className="lg:sticky lg:top-24 rounded-2xl border bg-card p-6 space-y-4">
-            <h3 className="font-bold text-lg">Order Summary</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Subtotal</span>
-                <span>{formatPrice(totalAmount)}</span>
+          <div className="lg:sticky lg:top-20 rounded-sm border border-gray-200 bg-white p-5 shadow-sm space-y-4">
+            <h3 className="font-black text-sm uppercase tracking-widest text-gray-900 border-b border-gray-100 pb-3">Order Summary</h3>
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between font-medium">
+                <span className="text-gray-500">Subtotal</span>
+                <span className="text-gray-900 font-bold">{formatPrice(totalAmount)}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Shipping</span>
-                <span className={shippingCharge === 0 ? "text-green-600 font-medium" : ""}>{shippingCharge === 0 ? "FREE" : formatPrice(shippingCharge)}</span>
+              <div className="flex justify-between font-medium">
+                <span className="text-gray-500">Shipping</span>
+                <span className={shippingCharge === 0 ? "text-emerald-600 font-bold" : "text-gray-900 font-bold"}>
+                  {shippingCharge === 0 ? "FREE" : formatPrice(shippingCharge)}
+                </span>
               </div>
               {shippingCharge > 0 && (
-                <p className="text-xs text-muted-foreground">Add {formatPrice(499 - totalAmount)} more for free shipping</p>
+                <p className="text-[10px] uppercase font-bold text-gray-400">Add {formatPrice(499 - totalAmount)} more for free shipping</p>
               )}
             </div>
-            <div className="border-t pt-4 flex justify-between font-bold text-lg">
-              <span>Total</span>
-              <span>{formatPrice(grandTotal)}</span>
+            
+            <div className="border-t border-gray-100 pt-4 space-y-1">
+              <div className="flex justify-between font-black text-lg text-gray-900">
+                <span>Total</span>
+                <span>{formatPrice(grandTotal)}</span>
+              </div>
+              <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-widest text-right">
+                GST Included
+              </p>
             </div>
+
             <button
               onClick={() => isAuthenticated ? navigate("/checkout") : navigate("/login")}
-              className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+              className="w-full py-3.5 rounded-sm bg-black text-white font-black text-xs uppercase tracking-widest hover:bg-gray-900 active:scale-95 transition-all flex items-center justify-center gap-2 mt-4"
             >
               {isAuthenticated ? "Proceed to Checkout" : "Login to Checkout"} <ArrowRight className="h-4 w-4" />
             </button>
-            <Link to="/products" className="block text-center text-sm text-muted-foreground hover:text-foreground">
-              ← Continue Shopping
+            <Link to="/products" className="block text-center text-[11px] font-bold uppercase tracking-widest text-gray-400 hover:text-black transition-colors">
+              Continue Shopping
             </Link>
           </div>
         </div>

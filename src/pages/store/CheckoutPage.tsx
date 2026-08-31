@@ -140,17 +140,17 @@ export function CheckoutPage() {
             )}
           </div>
 
-          {/* Payment Method - 100% Prepaid via PayU */}
-          <div className="rounded-2xl border bg-card p-6 border-violet-100 bg-violet-50/20">
+          {/* Payment — PayU Only (No COD) */}
+          <div className="border bg-card p-6 border-violet-100 bg-violet-50/20">
             <h2 className="font-bold text-base mb-3 flex items-center gap-2 text-gray-900">
-              <CreditCard className="h-5 w-5 text-violet-600" /> Payment Gateway (PayU)
+              <CreditCard className="h-5 w-5 text-violet-600" /> Secure Payment (PayU)
             </h2>
-            <div className="p-4 rounded-xl border border-violet-200 bg-white flex items-center justify-between">
+            <div className="p-4 border border-violet-200 bg-white flex items-center justify-between">
               <div>
-                <p className="font-bold text-sm text-gray-900">Prepaid Payment (UPI, Credit/Debit Cards, Netbanking)</p>
-                <p className="text-xs text-gray-500 mt-0.5">Instant confirmation & auto-dispatch to Shiprocket</p>
+                <p className="font-bold text-sm text-gray-900">Pay via UPI, Cards, Netbanking</p>
+                <p className="text-xs text-gray-500 mt-0.5">Instant confirmation • Auto-dispatched via Delhivery</p>
               </div>
-              <span className="text-xs font-bold px-2.5 py-1 bg-violet-100 text-violet-700 rounded-full">Secure PayU</span>
+              <span className="text-xs font-bold px-2.5 py-1 bg-violet-100 text-violet-700">Powered by PayU</span>
             </div>
           </div>
         </div>

@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
-import { motion } from "framer-motion"
 import { Star, ShoppingBag, Check } from "lucide-react"
 import { getImageUrl, formatPrice } from "../../lib/utils"
 import { useCart } from "../../context/CartContext"
@@ -24,6 +23,7 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
 
   const handleQuickAdd = async (e: React.MouseEvent) => {
     e.preventDefault()
+    e.stopPropagation()
     if (product.stock > 0) {
       await addToCart(product._id)
       setAdded(true)
@@ -32,72 +32,68 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
   }
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 15 }} 
-      whileInView={{ opacity: 1, y: 0 }} 
-      viewport={{ once: true, margin: "-30px" }} 
-      transition={{ duration: 0.4 }}
-      className={`group relative flex flex-col ${className}`}
+    <div
+      className={`group flex flex-col w-full ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image Container with luxury border and hover zoom */}
-      <div className="relative overflow-hidden rounded-[2.2rem] bg-gray-50 p-2 border border-gray-200/80 shadow-sm transition-all duration-500 group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.12)] group-hover:border-gray-300">
-        <Link to={`/products/${product.slug}`} className="relative block overflow-hidden rounded-[1.8rem] aspect-[4/5] bg-white">
+      {/* Image Box */}
+      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-sm bg-[#F5F5F5] border border-neutral-200/60 transition-all duration-200 group-hover:shadow-md">
+        <Link to={`/products/${product.slug}`} className="block w-full h-full">
           {/* Primary Image */}
           <img
             src={primaryImage}
             alt={product.name}
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-105 ${
-              isHovered && product.images?.length > 1 ? "opacity-0" : "opacity-100"
+            loading="lazy"
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-400 ${
+              isHovered && product.images?.length > 1 ? "opacity-0 scale-105" : "opacity-100 scale-100"
             }`}
           />
-          {/* Secondary Image (Hover view) */}
+
+          {/* Hover Image */}
           {product.images?.length > 1 && (
             <img
               src={secondaryImage}
-              alt={`${product.name} alternate`}
-              className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-105 ${
-                isHovered ? "opacity-100" : "opacity-0"
+              alt={`${product.name} alt`}
+              loading="lazy"
+              className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-400 ${
+                isHovered ? "opacity-100 scale-105" : "opacity-0 scale-100"
               }`}
             />
           )}
 
-          {/* Luxury Floating Badges */}
-          <div className="absolute top-3.5 left-3.5 right-3.5 flex flex-col items-start gap-1.5 pointer-events-none z-10">
+          {/* Badges */}
+          <div className="absolute top-2 left-2 flex flex-col gap-1 z-10 pointer-events-none">
             {discountPercent > 0 && (
-              <span className="bg-black/90 backdrop-blur-md text-white text-[9px] md:text-[10px] uppercase font-black px-2 md:px-3 py-1 rounded-full tracking-widest shadow-md">
-                -{discountPercent}% OFF
+              <span className="bg-red-600 text-white text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-sm shadow">
+                -{discountPercent}%
               </span>
             )}
-
             {product.isFeatured && (
-              <span className="bg-amber-400 text-black text-[9px] md:text-[10px] uppercase font-black px-2 md:px-2.5 py-1 rounded-full tracking-wider shadow-md">
-                ★ FEATURED
+              <span className="bg-amber-400 text-black text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-sm shadow">
+                ★ Featured
               </span>
             )}
           </div>
 
-          {/* Sold Out Overlay */}
+          {/* Out of Stock Overlay */}
           {product.stock === 0 && (
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20">
-              <span className="bg-white text-black text-xs uppercase font-black px-5 py-2.5 rounded-full tracking-widest shadow-2xl">
-                Sold Out
+            <div className="absolute inset-0 bg-white/70 backdrop-blur-[1px] flex items-center justify-center z-20">
+              <span className="bg-gray-900 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-sm">
+                Out of Stock
               </span>
             </div>
           )}
 
-          {/* Quick Action Floating Bar (Visible on mobile, hover on desktop) */}
-          <div className={`absolute bottom-3 left-3 right-3 flex items-center gap-2 transition-all duration-300 z-20 md:opacity-0 md:translate-y-3 md:pointer-events-none ${
-            isHovered ? "md:!opacity-100 md:!translate-y-0 md:!pointer-events-auto" : "opacity-100 translate-y-0 pointer-events-auto"
-          }`}>
+          {/* Quick Add Button — appears on hover */}
+          <div className="hidden md:block absolute bottom-0 left-0 right-0 z-20 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200">
             <button
               onClick={handleQuickAdd}
               disabled={product.stock === 0}
-              className={`flex-1 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-xl cursor-pointer ${
-                added 
-                  ? "bg-emerald-600 text-white" 
-                  : "bg-black text-white hover:bg-gray-800 active:scale-95"
+              className={`w-full py-2.5 font-bold text-[10px] uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                added
+                  ? "bg-emerald-600 text-white"
+                  : "bg-black text-white hover:bg-neutral-800"
               }`}
             >
               {added ? (
@@ -110,47 +106,37 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
         </Link>
       </div>
 
-      {/* Info Details */}
-      <div className="flex flex-col flex-1 px-1.5 pt-3.5 pb-1">
-        <div className="flex items-center justify-between gap-2 mb-1">
-          <Link 
-            to={`/products/${product.slug}`} 
-            className="font-display font-bold text-[15px] text-gray-900 tracking-tight line-clamp-1 hover:text-violet-600 transition-colors"
-          >
-            {product.name}
-          </Link>
-        </div>
+      {/* Product Info */}
+      <div className="flex flex-col pt-2 pb-1 gap-0.5">
+        <span className="text-[9px] font-semibold uppercase tracking-wider text-neutral-400 truncate">
+          {product.category?.name || ""}
+        </span>
 
-        {/* Rating stars & verified badge */}
-        <div className="flex items-center gap-1.5 mb-2">
-          <div className="flex items-center text-amber-400">
-            {[...Array(5)].map((_, i) => (
-              <Star 
-                key={i} 
-                className={`h-3 w-3 ${i < Math.round(product.ratings?.average || 5) ? "fill-amber-400 text-amber-400" : "fill-gray-200 text-gray-200"}`} 
-              />
-            ))}
-          </div>
-          <span className="text-[11px] text-gray-500 font-semibold tracking-tight">
-            ({product.ratings?.count || 14})
-          </span>
-          <span className="text-[9px] text-emerald-700 font-black bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 ml-auto">
-            ✓ Verified
-          </span>
-        </div>
+        <Link
+          to={`/products/${product.slug}`}
+          className="font-semibold text-[12px] leading-tight text-neutral-900 line-clamp-2 hover:text-neutral-600 transition-colors"
+        >
+          {product.name}
+        </Link>
 
-        {/* Price & Savings */}
-        <div className="flex items-baseline gap-2 mt-auto">
-          <span className="font-display font-black text-lg text-gray-900 tracking-tight">
-            {formatPrice(product.price)}
-          </span>
-          {product.comparePrice && product.comparePrice > product.price && (
-            <span className="text-gray-400 line-through text-xs font-semibold tracking-tight">
-              {formatPrice(product.comparePrice)}
+        <div className="flex items-center justify-between mt-1">
+          <div className="flex items-baseline gap-1.5">
+            <span className="font-bold text-sm text-neutral-900">
+              {formatPrice(product.price)}
             </span>
-          )}
+            {product.comparePrice && product.comparePrice > product.price && (
+              <span className="text-neutral-400 line-through text-[11px]">
+                {formatPrice(product.comparePrice)}
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-0.5 text-[10px] font-semibold text-neutral-500">
+            <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
+            <span>{(product.ratings?.average || 4.9).toFixed(1)}</span>
+          </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }

@@ -54,6 +54,7 @@ export const productApi = {
   getBySlug: (slug: string) => api.get(`/products/${slug}`),
   getFeatured: () => api.get("/products/featured"),
   getByDevice: (deviceSlug: string) => api.get(`/products/by-device/${deviceSlug}`),
+  getDesignVariants: (designSlug: string, deviceModel?: string) => api.get(`/products/design/${designSlug}`, { params: { deviceModel } }),
   // Admin
   adminGetAll: (params?: any) => api.get("/products/admin/all", { params }),
   create: (data: FormData) => api.post("/products", data, { headers: { "Content-Type": "multipart/form-data" } }),
@@ -149,4 +150,9 @@ export const imageApi = {
 // ── Banners ───────────────────────────────────────────────────────────────
 export const bannerApi = {
   getAll: () => api.get("/banners"),
+}
+
+// ── Social Posts ──────────────────────────────────────────────────────────
+export const socialPostApi = {
+  getActive: () => api.get("/social-posts/active"),
 }

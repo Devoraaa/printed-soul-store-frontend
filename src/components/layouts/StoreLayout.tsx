@@ -1,13 +1,13 @@
 import React, { useState } from "react"
 import { Outlet, Link, useNavigate } from "react-router-dom"
 import { ShoppingBag, Search, Menu, X, User, Package, LogOut, ChevronDown } from "lucide-react"
+import { useQuery } from "@tanstack/react-query"
 import { useAuth } from "../../context/AuthContext"
 import { useCart } from "../../context/CartContext"
-import { cn } from "../../lib/utils"
 import { AuthModal } from "../ui/AuthModal"
 import { SearchModal } from "../ui/SearchModal"
-import { MegaMenu } from "../ui/MegaMenu"
-
+import { CartDrawer } from "../ui/CartDrawer"
+import { catalogApi } from "../../lib/api"
 
 export function StoreLayout() {
   const { user, isAuthenticated, logout, openAuthModal } = useAuth()
@@ -15,247 +15,261 @@ export function StoreLayout() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
-  const [megaMenuOpen, setMegaMenuOpen] = useState(false)
-  const [megaMenuType, setMegaMenuType] = useState<"categories" | "brands" | null>(null)
+  const [cartDrawerOpen, setCartDrawerOpen] = useState(false)
   const navigate = useNavigate()
 
+  // Fetch categories dynamically for navbar
+  const { data: categoriesData } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => catalogApi.getCategories(),
+    staleTime: 60 * 60 * 1000,
+  })
 
-
-  const navLinks = [
-    { title: "Home", href: "/" },
-    { title: "New Arrivals", href: "/products?sort=new" },
-    { title: "Categories", href: "/products?category=all" },
-    { title: "Brands", href: "/products?brand=all" },
-    { title: "Shop All", href: "/products" },
-  ]
+  const categories = (categoriesData?.data?.data || []).filter((c: any) => !c.parentCategory)
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-white">
       <AuthModal />
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      <CartDrawer isOpen={cartDrawerOpen} onClose={() => setCartDrawerOpen(false)} />
+
       {/* Announcement bar */}
-      <div className="bg-black text-white text-center text-xs py-2 px-4 font-medium tracking-wide">
-        🚚 Free shipping on orders above ₹499 &nbsp;|&nbsp; 📱 Custom cases for 1000+ devices
+      <div className="bg-black text-white text-center text-[11px] py-1.5 px-4 font-medium tracking-wide">
+        🚚 Free shipping on orders above ₹499 &nbsp;|&nbsp; 📱 Custom cases for 1000+ devices &nbsp;|&nbsp; ⚡ Same-day dispatch
       </div>
 
-      {/* Navbar */}
-      <header className="sticky top-0 z-50 w-full border-b border-gray-200/80 bg-white/90 backdrop-blur-2xl shadow-[0_4px_25px_rgba(0,0,0,0.03)]">
-        <div className="max-w-[1600px] mx-auto px-4 md:px-8">
-          <div className="flex h-18 items-center justify-between gap-6 py-1">
-            {/* Brand Logo */}
-            <Link to="/" className="flex items-center gap-3 shrink-0 group">
-              <div className="w-9 h-9 rounded-2xl bg-black flex items-center justify-center transition-all duration-300 group-hover:scale-105 shadow-md">
-                <span className="text-white font-black text-base tracking-tighter">PS</span>
+      {/* ─── Main Navbar ───────────────────────────── */}
+      <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="flex h-14 items-center justify-between gap-4">
+
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-2 shrink-0 group">
+              <div className="w-8 h-8 bg-black flex items-center justify-center">
+                <span className="text-white font-black text-sm tracking-tighter">PS</span>
               </div>
-              <div className="flex flex-col">
-                <span className="font-display font-black text-xl tracking-tight text-gray-900 leading-none">
-                  PRINTED SOUL
-                </span>
-                <span className="text-[9px] font-bold text-violet-600 tracking-widest uppercase mt-0.5">
-                  PREMIUM CASES & DESIGN
-                </span>
+              <div className="hidden sm:flex flex-col leading-none">
+                <span className="font-black text-[15px] tracking-tight text-gray-900">PRINTED SOUL</span>
+                <span className="text-[8px] font-bold text-violet-600 tracking-widest uppercase">PREMIUM CASES & DESIGN</span>
               </div>
             </Link>
 
-            {/* Navigation Links */}
-            <div className="hidden md:flex flex-1 justify-center">
-              <nav className="flex items-center gap-9">
-                {navLinks.map((link) => (
-                  <div key={link.href} className="h-16 flex items-center relative group"
-                    onMouseEnter={() => {
-                      if (link.title === "Categories") { setMegaMenuType("categories"); setMegaMenuOpen(true) }
-                      else if (link.title === "Brands") { setMegaMenuType("brands"); setMegaMenuOpen(true) }
-                    }}
-                    onMouseLeave={() => setMegaMenuOpen(false)}
-                    onClick={() => setMegaMenuOpen(false)}
-                  >
-                    <Link to={link.href} className="text-[14px] font-bold text-gray-600 hover:text-black transition-colors py-2 tracking-tight">
-                      {link.title}
-                    </Link>
-                    <span className="absolute bottom-3 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full" />
-                  </div>
-                ))}
-              </nav>
-            </div>
+            {/* ─── Category Nav (desktop) ───────────── */}
+            <nav className="hidden lg:flex items-center gap-0 flex-1 overflow-x-auto hide-scrollbar">
+              <Link
+                to="/"
+                className="px-3 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
+              >
+                Home
+              </Link>
+              <Link
+                to="/products?sort=new"
+                className="px-3 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
+              >
+                New Arrivals
+              </Link>
 
-            {/* Action Bar */}
-            <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
-              {/* Search Pill Button */}
-              <button 
+              {/* Dynamic categories from DB */}
+              {categories.map((cat: any) => (
+                <Link
+                  key={cat._id}
+                  to={`/products?category=${cat.slug || cat._id}`}
+                  className="px-3 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
+                >
+                  {cat.name}
+                </Link>
+              ))}
+
+              <Link
+                to="/products"
+                className="px-3 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
+              >
+                Shop All
+              </Link>
+            </nav>
+
+            {/* ─── Action Icons ────────────────────── */}
+            <div className="flex items-center gap-1 shrink-0">
+              {/* Search */}
+              <button
                 onClick={() => setSearchOpen(true)}
-                className="flex items-center gap-2.5 p-2 md:px-3.5 md:py-2 rounded-full bg-gray-100/80 hover:bg-gray-200/80 text-gray-600 transition-all text-xs font-semibold border border-gray-200/60"
+                className="flex items-center gap-2 px-3 py-1.5 text-[11px] font-semibold text-gray-500 bg-gray-100 hover:bg-gray-200 border border-gray-200 transition-all cursor-pointer rounded-sm"
                 aria-label="Search"
               >
-                <Search className="h-4 w-4 text-gray-500" strokeWidth={2.2} />
-                <span className="hidden lg:inline text-gray-400 font-medium">Search cases…</span>
-                <kbd className="hidden lg:inline-block bg-white text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded border shadow-2xs">⌘K</kbd>
+                <Search className="h-3.5 w-3.5" strokeWidth={2.5} />
+                <span className="hidden lg:inline">Search…</span>
               </button>
 
-              {/* Cart Button */}
-              <Link to="/cart" className="relative p-2.5 rounded-full hover:bg-gray-100 transition-colors group">
-                <ShoppingBag className="h-5 w-5 text-gray-900 group-hover:scale-110 transition-transform" strokeWidth={2} />
+              {/* Cart */}
+              <button
+                onClick={() => setCartDrawerOpen(true)}
+                className="relative p-2 hover:bg-gray-100 transition-colors group cursor-pointer rounded-sm"
+              >
+                <ShoppingBag className="h-5 w-5 text-gray-900" strokeWidth={2} />
                 {totalItems > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 h-5 w-5 rounded-full bg-violet-600 text-white text-[10px] font-black flex items-center justify-center shadow-md animate-pulse">
+                  <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-red-600 text-white text-[9px] font-black flex items-center justify-center shadow-sm">
                     {totalItems > 9 ? "9+" : totalItems}
                   </span>
                 )}
-              </Link>
+              </button>
 
-              {/* Account Dropdown */}
+              {/* Account */}
               {isAuthenticated ? (
                 <div className="relative">
-                  <button onClick={() => setAccountOpen(!accountOpen)} className="flex items-center gap-1.5 p-1.5 rounded-full hover:bg-gray-100 transition-colors">
-                    <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                  <button
+                    onClick={() => setAccountOpen(!accountOpen)}
+                    className="flex items-center gap-1 p-1 hover:bg-gray-100 transition-colors cursor-pointer rounded-sm"
+                  >
+                    <div className="w-7 h-7 bg-black flex items-center justify-center text-white text-[11px] font-bold">
                       {user?.name[0].toUpperCase()}
                     </div>
                     <ChevronDown className="h-3 w-3 text-gray-500 hidden md:block" />
                   </button>
                   {accountOpen && (
-                    <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-gray-200 bg-white shadow-2xl py-2 z-50 animate-fade-in" onMouseLeave={() => setAccountOpen(false)}>
-                      <div className="px-4 py-2.5 border-b">
-                        <p className="text-sm font-bold text-gray-900">{user?.name}</p>
-                        <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                    <div
+                      className="absolute right-0 mt-1 w-52 border border-gray-200 bg-white shadow-xl py-1 z-50"
+                      onMouseLeave={() => setAccountOpen(false)}
+                    >
+                      <div className="px-3 py-2 border-b">
+                        <p className="text-xs font-bold text-gray-900">{user?.name}</p>
+                        <p className="text-[10px] text-gray-500 truncate">{user?.email}</p>
                       </div>
-                      <Link to="/account" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
-                        <User className="h-4 w-4 text-gray-500" /> My Account
+                      <Link to="/account" onClick={() => setAccountOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+                        <User className="h-3.5 w-3.5 text-gray-500" /> My Account
                       </Link>
-                      <Link to="/account/orders" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
-                        <Package className="h-4 w-4 text-gray-500" /> Track My Orders
+                      <Link to="/account/orders" onClick={() => setAccountOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+                        <Package className="h-3.5 w-3.5 text-gray-500" /> My Orders
                       </Link>
-                      <div className="border-t my-1"></div>
-                      <button onClick={() => { logout(); setAccountOpen(false) }} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors">
-                        <LogOut className="h-4 w-4" /> Sign Out
+                      <div className="border-t my-1" />
+                      <button onClick={() => { logout(); setAccountOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors cursor-pointer">
+                        <LogOut className="h-3.5 w-3.5" /> Sign Out
                       </button>
                     </div>
                   )}
                 </div>
               ) : (
-                <button onClick={openAuthModal} className="hidden md:flex items-center justify-center px-5 py-2.5 text-xs font-bold tracking-wide rounded-full bg-black text-white hover:bg-gray-900 active:scale-95 transition-all shadow-md">
+                <button
+                  onClick={openAuthModal}
+                  className="hidden md:flex items-center justify-center px-4 py-1.5 text-[11px] font-bold tracking-wide bg-black text-white hover:bg-gray-900 active:scale-95 transition-all cursor-pointer"
+                >
                   Sign In
                 </button>
               )}
 
-              {/* Mobile Menu Toggle */}
-              <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-full">
+              {/* Mobile Menu */}
+              <button onClick={() => setMobileOpen(!mobileOpen)} className="lg:hidden p-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
                 {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mega Menu Integration */}
-        <MegaMenu 
-          isOpen={megaMenuOpen} 
-          type={megaMenuType}
-          onMouseEnter={() => setMegaMenuOpen(true)} 
-          onMouseLeave={() => setMegaMenuOpen(false)}
-          onClose={() => setMegaMenuOpen(false)} 
-        />
-
-        {/* Mobile menu */}
+        {/* Mobile Menu */}
         {mobileOpen && (
-          <div className="md:hidden border-t bg-background py-4 px-4">
-            <nav className="flex flex-col gap-1">
-              {navLinks.map((link) => (
-                <Link key={link.href} to={link.href} onClick={() => setMobileOpen(false)} className="py-2 px-3 text-sm font-medium rounded-lg hover:bg-muted">
-                  {link.title}
+          <div className="lg:hidden border-t bg-white py-3 px-4">
+            <nav className="flex flex-col gap-0">
+              <Link to="/" onClick={() => setMobileOpen(false)} className="py-2.5 px-2 text-sm font-semibold text-gray-700 border-b border-gray-100 hover:bg-gray-50">Home</Link>
+              <Link to="/products?sort=new" onClick={() => setMobileOpen(false)} className="py-2.5 px-2 text-sm font-semibold text-gray-700 border-b border-gray-100 hover:bg-gray-50">New Arrivals</Link>
+              {categories.map((cat: any) => (
+                <Link
+                  key={cat._id}
+                  to={`/products?category=${cat.slug || cat._id}`}
+                  onClick={() => setMobileOpen(false)}
+                  className="py-2.5 px-2 text-sm font-semibold text-gray-700 border-b border-gray-100 hover:bg-gray-50"
+                >
+                  {cat.name}
                 </Link>
               ))}
+              <Link to="/products" onClick={() => setMobileOpen(false)} className="py-2.5 px-2 text-sm font-semibold text-gray-700 hover:bg-gray-50">Shop All</Link>
+              {!isAuthenticated && (
+                <button onClick={() => { openAuthModal(); setMobileOpen(false) }} className="mt-3 w-full py-2.5 bg-black text-white text-sm font-bold text-center cursor-pointer">
+                  Sign In / Register
+                </button>
+              )}
             </nav>
           </div>
         )}
       </header>
 
-      {/* Breadcrumbs removed as per user request to avoid duplication */}
-
-      {/* Page content */}
+      {/* Page Content */}
       <main className="flex-1">
         <Outlet />
       </main>
 
-      {/* Trust Features Section */}
-      <section className="bg-white border-t border-gray-200 py-12 md:py-16">
-        <div className="max-w-[1600px] mx-auto px-4 md:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mb-4">
-                <Package className="h-6 w-6 text-violet-600" />
+      {/* Trust Strip */}
+      <section className="bg-neutral-50 border-t border-gray-200 py-6">
+        <div className="max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { icon: "🚚", title: "Free Shipping", sub: "On orders above ₹499" },
+              { icon: "🛡️", title: "Premium Quality", sub: "Armor grade protection" },
+              { icon: "🔒", title: "Secure Payments", sub: "100% safe checkout" },
+              { icon: "⭐", title: "Top Rated", sub: "Loved by 10,000+ buyers" },
+            ].map((item) => (
+              <div key={item.title} className="flex items-center gap-3">
+                <span className="text-2xl">{item.icon}</span>
+                <div>
+                  <p className="text-xs font-bold text-gray-900 uppercase tracking-wide">{item.title}</p>
+                  <p className="text-[11px] text-gray-500">{item.sub}</p>
+                </div>
               </div>
-              <h4 className="font-display font-black text-sm text-gray-900 uppercase tracking-widest mb-1">Free Shipping</h4>
-              <p className="text-xs text-gray-500 font-medium">On all orders above ₹499</p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mb-4">
-                <svg className="h-6 w-6 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-              </div>
-              <h4 className="font-display font-black text-sm text-gray-900 uppercase tracking-widest mb-1">Premium Quality</h4>
-              <p className="text-xs text-gray-500 font-medium">Armor grade drop protection</p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mb-4">
-                <svg className="h-6 w-6 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-              </div>
-              <h4 className="font-display font-black text-sm text-gray-900 uppercase tracking-widest mb-1">Secure Payments</h4>
-              <p className="text-xs text-gray-500 font-medium">100% secure checkout</p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mb-4">
-                <svg className="h-6 w-6 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.514"></path></svg>
-              </div>
-              <h4 className="font-display font-black text-sm text-gray-900 uppercase tracking-widest mb-1">Top Rated</h4>
-              <p className="text-xs text-gray-500 font-medium">Loved by 10,000+ customers</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#111] text-gray-400 border-t border-black">
-        <div className="container mx-auto px-4 py-16">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-12">
-            <div className="col-span-2 md:col-span-2">
-              <Link to="/" className="inline-flex items-center gap-2 mb-6 opacity-90 hover:opacity-100 transition-opacity">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                  <span className="text-black font-bold text-sm tracking-tighter">PS</span>
+      <footer className="bg-[#0f0f0f] text-gray-400 border-t border-neutral-900">
+        <div className="max-w-[1700px] mx-auto px-4 py-10 md:py-14">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+            <div className="col-span-2">
+              <Link to="/" className="inline-flex items-center gap-2 mb-4 opacity-90 hover:opacity-100">
+                <div className="w-7 h-7 bg-white flex items-center justify-center">
+                  <span className="text-black font-bold text-xs tracking-tighter">PS</span>
                 </div>
-                <span className="font-display font-bold text-xl text-white tracking-tight">Printed Soul</span>
+                <span className="font-bold text-lg text-white tracking-tight">Printed Soul</span>
               </Link>
-              <p className="text-sm leading-relaxed text-gray-500 max-w-sm">Premium custom phone cases for every personality and device. Make it yours.</p>
+              <p className="text-xs leading-relaxed text-gray-500 max-w-sm">
+                Premium custom phone cases for every personality and device. Make it yours.
+              </p>
             </div>
             <div>
-              <h4 className="font-display font-semibold mb-4 text-sm text-white">Shop</h4>
-              <ul className="space-y-3 text-sm">
+              <h4 className="font-semibold mb-3 text-xs text-white uppercase tracking-widest">Shop</h4>
+              <ul className="space-y-2 text-xs">
                 <li><Link to="/products" className="hover:text-white transition-colors">All Products</Link></li>
                 <li><Link to="/products?featured=true" className="hover:text-white transition-colors">Featured</Link></li>
-                <li><Link to="/products?category=all" className="hover:text-white transition-colors">Categories</Link></li>
+                {categories.slice(0, 4).map((cat: any) => (
+                  <li key={cat._id}>
+                    <Link to={`/products?category=${cat.slug}`} className="hover:text-white transition-colors">{cat.name}</Link>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
-              <h4 className="font-display font-semibold mb-4 text-sm text-white">Support</h4>
-              <ul className="space-y-3 text-sm">
+              <h4 className="font-semibold mb-3 text-xs text-white uppercase tracking-widest">Support</h4>
+              <ul className="space-y-2 text-xs">
                 <li><a href="mailto:support@printedsoul.com" className="hover:text-white transition-colors">Contact Us</a></li>
                 <li><Link to="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
                 <li><Link to="/returns" className="hover:text-white transition-colors">Returns</Link></li>
               </ul>
             </div>
-            <div className="col-span-2 md:col-span-1">
-              <h4 className="font-display font-semibold mb-4 text-sm text-white">Stay in the Loop</h4>
-              <p className="text-xs text-gray-500 mb-3">Subscribe for exclusive drops & discounts.</p>
+            <div>
+              <h4 className="font-semibold mb-3 text-xs text-white uppercase tracking-widest">Newsletter</h4>
+              <p className="text-[11px] text-gray-500 mb-3">Get exclusive drops & discounts.</p>
               <form className="flex" onSubmit={(e) => e.preventDefault()}>
-                <input type="email" placeholder="Email address" className="bg-gray-900 border border-gray-800 text-white text-xs rounded-l-xl px-3 py-2 w-full focus:outline-none focus:border-gray-600" required />
-                <button type="submit" className="bg-white text-black font-bold px-3 py-2 rounded-r-xl text-xs hover:bg-gray-200 transition-colors">Join</button>
+                <input type="email" placeholder="Email address" className="bg-neutral-900 border border-neutral-800 text-white text-xs px-2.5 py-2 w-full focus:outline-none focus:border-gray-600" required />
+                <button type="submit" className="bg-white text-black font-bold px-3 py-2 text-xs hover:bg-gray-200 transition-colors cursor-pointer">OK</button>
               </form>
             </div>
           </div>
-          <div className="mt-16 pt-8 border-t border-gray-900 flex flex-col md:flex-row items-center justify-between text-sm gap-6">
+          <div className="mt-10 pt-6 border-t border-neutral-900 flex flex-col md:flex-row items-center justify-between text-[11px] gap-4">
             <p>© {new Date().getFullYear()} Printed Soul Store. All rights reserved.</p>
-            <div className="flex items-center gap-3 grayscale opacity-60 hover:opacity-100 transition-opacity">
-              <div className="h-6 w-10 bg-white rounded flex items-center justify-center text-[10px] font-black text-black">VISA</div>
-              <div className="h-6 w-10 bg-white rounded flex items-center justify-center text-[10px] font-black text-black">MC</div>
-              <div className="h-6 w-10 bg-white rounded flex items-center justify-center text-[10px] font-black text-black">UPI</div>
-              <div className="h-6 w-10 bg-white rounded flex items-center justify-center text-[10px] font-black text-black">RUPAY</div>
+            <div className="flex items-center gap-2 grayscale opacity-60 hover:opacity-100 transition-opacity">
+              {["VISA", "MC", "UPI", "RUPAY"].map(m => (
+                <div key={m} className="h-5 w-9 bg-white flex items-center justify-center text-[9px] font-black text-black">{m}</div>
+              ))}
             </div>
-            <div className="flex gap-6">
+            <div className="flex gap-4">
               <Link to="/privacy" className="hover:text-white transition-colors">Privacy</Link>
               <Link to="/terms" className="hover:text-white transition-colors">Terms</Link>
             </div>
