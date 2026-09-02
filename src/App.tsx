@@ -60,8 +60,8 @@ export default function App() {
                 <Route path="categories/:slug" element={<CategoryPage />} />
                 <Route path="cart" element={<CartPage />} />
                 <Route path="track" element={<OrderTrackingPage />} />
-                <Route path="checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
-                <Route path="order-success/:id" element={<ProtectedRoute><OrderSuccessPage /></ProtectedRoute>} />
+                <Route path="checkout" element={<CheckoutPage />} />
+                <Route path="order-success/:id" element={<OrderSuccessPage />} />
               </Route>
 
               {/* Auth */}

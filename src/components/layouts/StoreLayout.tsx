@@ -34,12 +34,12 @@ export function StoreLayout() {
       <CartDrawer isOpen={cartDrawerOpen} onClose={() => setCartDrawerOpen(false)} />
 
       {/* Announcement bar */}
-      <div className="bg-black text-white text-center text-[11px] py-1.5 px-4 font-medium tracking-wide">
+      {/* <div className="bg-black text-white text-center text-[11px] py-1.5 px-4 font-medium tracking-wide">
         🚚 Free shipping on orders above ₹499 &nbsp;|&nbsp; 📱 Custom cases for 1000+ devices &nbsp;|&nbsp; ⚡ Same-day dispatch
-      </div>
+      </div> */}
 
       {/* ─── Main Navbar ───────────────────────────── */}
-      <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm">
+      <header className="sticky top-0 z-50 w-full bg-white border-b-2 border-black shadow-sm">
         <div className="max-w-[1700px] mx-auto px-3 md:px-6">
           <div className="flex h-14 items-center justify-between gap-4">
 

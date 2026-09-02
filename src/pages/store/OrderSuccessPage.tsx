@@ -7,8 +7,8 @@ import { formatPrice, formatDate, ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } fro
 import { motion } from "framer-motion"
 
 export function OrderSuccessPage() {
-  const { id } = useParams<{ id: string }>()
-  const { data } = useQuery({ queryKey: ["order", id], queryFn: () => orderApi.getMyOrderById(id!) })
+  const { id } = useParams<{ id: string }>() // This is actually the orderNumber now
+  const { data } = useQuery({ queryKey: ["order", id], queryFn: () => orderApi.trackOrder(id!) })
   const order = data?.data?.data
 
   return (
