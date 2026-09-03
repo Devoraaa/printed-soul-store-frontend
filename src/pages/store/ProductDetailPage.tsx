@@ -36,6 +36,15 @@ export function ProductDetailPage() {
   const [selectedDeviceModel, setSelectedDeviceModel] = useState<string>("")
   const [activeAccordion, setActiveAccordion] = useState<string | null>("features")
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["product", slug],
+    queryFn: () => productApi.getBySlug(slug!),
+    enabled: !!slug,
+  })
+
+  const product = data?.data?.data
+  const productCatId = typeof product?.category === "object" ? product?.category?._id : product?.category
+
   React.useEffect(() => {
     setActiveImageIdx(0)
     if (product?.deviceModels?.length > 0) {
@@ -43,20 +52,11 @@ export function ProductDetailPage() {
     }
   }, [slug, product])
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["product", slug],
-    queryFn: () => productApi.getBySlug(slug!),
-    enabled: !!slug,
-  })
-
   const { data: reviewsData } = useQuery({
-    queryKey: ["reviews", data?.data?.data?._id],
-    queryFn: () => reviewApi.getForProduct(data?.data?.data?._id),
-    enabled: !!data?.data?.data?._id,
+    queryKey: ["reviews", product?._id],
+    queryFn: () => reviewApi.getForProduct(product?._id),
+    enabled: !!product?._id,
   })
-
-  const product = data?.data?.data
-  const productCatId = typeof product?.category === "object" ? product?.category?._id : product?.category
 
   const { data: similarData } = useQuery({
     queryKey: ["similar-products", productCatId],
