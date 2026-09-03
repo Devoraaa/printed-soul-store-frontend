@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { Package } from "lucide-react"
+import { Package, Download } from "lucide-react"
 import { orderApi } from "../../lib/api"
 import { formatDate, formatPrice, ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from "../../lib/utils"
 
@@ -35,12 +35,24 @@ export function OrdersPage() {
                 <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${ORDER_STATUS_COLORS[order.status]}`}>
                   {ORDER_STATUS_LABELS[order.status]}
                 </span>
-                <Link
-                  to={`/track?query=${order.orderNumber}`}
-                  className="text-xs font-bold text-violet-600 hover:text-violet-700 bg-violet-50 hover:bg-violet-100 px-2.5 py-1 rounded-lg transition-colors mt-1"
-                >
-                  Track Package →
-                </Link>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <a
+                    href={orderApi.getInvoiceUrl(order.orderNumber)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    download={`Invoice-${order.orderNumber}.pdf`}
+                    title="Download Invoice (PDF)"
+                    className="text-xs font-bold text-gray-700 hover:text-black bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded-lg transition-colors flex items-center gap-1"
+                  >
+                    <Download className="h-3 w-3" /> Invoice
+                  </a>
+                  <Link
+                    to={`/track?query=${order.orderNumber}`}
+                    className="text-xs font-bold text-violet-600 hover:text-violet-700 bg-violet-50 hover:bg-violet-100 px-2.5 py-1 rounded-lg transition-colors"
+                  >
+                    Track →
+                  </Link>
+                </div>
               </div>
             </div>
           ))}

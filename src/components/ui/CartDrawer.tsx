@@ -1,7 +1,9 @@
 import React, { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, ShoppingBag, Minus, Plus, Trash2, ArrowRight, Truck } from "lucide-react"
+import { X, ShoppingBag, Minus, Plus, Trash2, ArrowRight } from "lucide-react"
+import { useQuery } from "@tanstack/react-query"
+import { productApi } from "../../lib/api"
 import { useCart } from "../../context/CartContext"
 import { getImageUrl, formatPrice } from "../../lib/utils"
 
@@ -11,7 +13,7 @@ interface CartDrawerProps {
 }
 
 export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
-  const { items: cart, removeFromCart, updateQuantity, totalItems, totalAmount: totalPrice } = useCart()
+  const { items: cart, removeFromCart, updateQuantity, totalItems, totalAmount: totalPrice, addToCart } = useCart()
   const navigate = useNavigate()
   
   // Close on Escape key
@@ -30,9 +32,24 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
     return () => { document.body.style.overflow = "unset" }
   }, [isOpen])
 
-  const freeShippingThreshold = 499
-  const amountToFreeShipping = Math.max(0, freeShippingThreshold - totalPrice)
-  const progressPercentage = Math.min(100, (totalPrice / freeShippingThreshold) * 100)
+  // Intelligent Related Products in Cart
+  const cartProductIds = cart.map((i: any) => i.product?._id).filter(Boolean)
+  const firstCategory = cart[0]?.product?.category?._id || cart[0]?.product?.category
+
+  const { data: upsellData } = useQuery({
+    queryKey: ["cart-intelligent-upsell", firstCategory],
+    queryFn: () => productApi.getAll({ 
+      category: typeof firstCategory === "string" ? firstCategory : undefined,
+      limit: 10 
+    }),
+    enabled: cart.length > 0,
+    staleTime: 60 * 1000,
+  })
+
+  const allProducts = upsellData?.data?.data || []
+  const relatedProducts = allProducts
+    .filter((p: any) => !cartProductIds.includes(p._id) && p.images && p.images.length > 0)
+    .slice(0, 3)
 
   const handleCheckout = () => {
     onClose()
@@ -73,29 +90,6 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 <X className="h-5 w-5" />
               </button>
             </div>
-
-            {/* Free Shipping Progress */}
-            {totalItems > 0 && (
-              <div className="bg-gray-50 px-6 py-4 border-b border-gray-100">
-                <div className="flex items-center gap-2 mb-2">
-                  <Truck className={`h-4 w-4 ${amountToFreeShipping === 0 ? 'text-emerald-600' : 'text-violet-600'}`} />
-                  <p className="text-xs font-bold text-gray-700">
-                    {amountToFreeShipping === 0 
-                      ? <span className="text-emerald-600">You've unlocked Free Shipping! 🎉</span>
-                      : <span>Add <span className="font-black text-violet-600">{formatPrice(amountToFreeShipping)}</span> more to get Free Shipping!</span>
-                    }
-                  </p>
-                </div>
-                <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: `${progressPercentage}%` }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className={`h-full rounded-full ${amountToFreeShipping === 0 ? 'bg-emerald-500' : 'bg-violet-600'}`}
-                  />
-                </div>
-              </div>
-            )}
 
             {/* Cart Items */}
             <div className="flex-1 overflow-y-auto p-6 scrollbar-none">
@@ -168,22 +162,48 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     </div>
                   ))}
                   
-                  {/* Upsell Section */}
-                  <div className="pt-6 border-t border-gray-100 mt-6">
-                    <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-gray-500 mb-3">You might also like</h4>
-                    <div className="flex items-center gap-3 p-3 rounded-2xl border border-gray-200 bg-gray-50/50">
-                      <div className="w-12 h-12 rounded-xl bg-white border border-gray-200 shadow-sm flex items-center justify-center text-2xl shrink-0">
-                        🛡️
+                  {/* Intelligent Related Products Section */}
+                  {relatedProducts.length > 0 && (
+                    <div className="pt-6 border-t border-gray-100 mt-6">
+                      <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-gray-500 mb-3">
+                        You might also like
+                      </h4>
+                      <div className="space-y-2.5">
+                        {relatedProducts.map((p: any) => (
+                          <div 
+                            key={p._id} 
+                            className="flex items-center gap-3 p-2.5 rounded-2xl border border-gray-200 bg-gray-50/60 hover:bg-gray-50 transition-all"
+                          >
+                            <div 
+                              className="w-12 h-12 rounded-xl overflow-hidden bg-white border border-gray-200 shadow-sm shrink-0 cursor-pointer"
+                              onClick={() => { onClose(); navigate(`/product/${p.slug}`) }}
+                            >
+                              <img 
+                                src={p.images?.[0] ? getImageUrl(p.images[0]) : "/placeholder.png"} 
+                                alt={p.name} 
+                                className="w-full h-full object-cover" 
+                              />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p 
+                                className="text-xs font-bold text-gray-900 truncate cursor-pointer hover:text-violet-600 transition-colors"
+                                onClick={() => { onClose(); navigate(`/product/${p.slug}`) }}
+                              >
+                                {p.name}
+                              </p>
+                              <p className="text-[11px] font-extrabold text-gray-700 mt-0.5">{formatPrice(p.price)}</p>
+                            </div>
+                            <button 
+                              onClick={() => addToCart(p._id, 1)}
+                              className="px-3 py-1.5 rounded-full bg-black text-white text-xs font-bold hover:bg-gray-800 transition-all active:scale-95 shrink-0 shadow-sm cursor-pointer"
+                            >
+                              + Add
+                            </button>
+                          </div>
+                        ))}
                       </div>
-                      <div className="flex-1">
-                        <p className="text-xs font-bold text-gray-900">Tempered Glass</p>
-                        <p className="text-[10px] text-gray-500 font-medium">Add armor protection</p>
-                      </div>
-                      <button className="px-3 py-1.5 rounded-full bg-white border border-gray-200 shadow-sm text-xs font-bold text-gray-900 hover:border-black transition-colors cursor-pointer active:scale-95">
-                        + ₹199
-                      </button>
                     </div>
-                  </div>
+                  )}
                 </div>
               )}
             </div>
@@ -198,16 +218,20 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   </div>
                   <div className="flex justify-between text-sm text-gray-500 font-medium">
                     <span>Shipping</span>
-                    {amountToFreeShipping === 0 ? (
-                      <span className="font-bold text-emerald-600 uppercase text-xs tracking-wider">Free</span>
-                    ) : (
-                      <span className="font-semibold text-gray-900">Calculated</span>
-                    )}
+                    <span className="font-semibold text-gray-900">
+                      {totalPrice >= 499 ? (
+                        <span className="font-bold text-emerald-600 uppercase text-xs tracking-wider">Free</span>
+                      ) : (
+                        formatPrice(49)
+                      )}
+                    </span>
                   </div>
                   <div className="flex justify-between items-end pt-3 border-t border-gray-100">
                     <span className="text-base font-bold text-gray-900">Total</span>
                     <div className="text-right">
-                      <span className="text-2xl font-black text-gray-900 block leading-none">{formatPrice(totalPrice)}</span>
+                      <span className="text-2xl font-black text-gray-900 block leading-none">
+                        {formatPrice(totalPrice + (totalPrice >= 499 ? 0 : 49))}
+                      </span>
                       <span className="text-[10px] text-gray-400 block mt-1 font-medium">Taxes included</span>
                     </div>
                   </div>

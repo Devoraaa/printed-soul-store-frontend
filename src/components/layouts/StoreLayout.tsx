@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import { Outlet, Link, useNavigate } from "react-router-dom"
 import { ShoppingBag, Search, Menu, X, User, Package, LogOut, ChevronDown } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
@@ -7,6 +7,7 @@ import { useCart } from "../../context/CartContext"
 import { AuthModal } from "../ui/AuthModal"
 import { SearchModal } from "../ui/SearchModal"
 import { CartDrawer } from "../ui/CartDrawer"
+import { CategoryHoverMenu, type HoverCategoryItem } from "../ui/CategoryHoverMenu"
 import { catalogApi } from "../../lib/api"
 
 export function StoreLayout() {
@@ -17,6 +18,39 @@ export function StoreLayout() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false)
   const navigate = useNavigate()
+
+  // Category Hover Menu State
+  const [hoveredCategory, setHoveredCategory] = useState<HoverCategoryItem | null>(null)
+  const [isHoverMenuOpen, setIsHoverMenuOpen] = useState(false)
+  const closeTimerRef = useRef<any>(null)
+
+  const handleCategoryMouseEnter = (catItem: HoverCategoryItem) => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+    setHoveredCategory(catItem)
+    setIsHoverMenuOpen(true)
+  }
+
+  const handleCategoryMouseLeave = () => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+    closeTimerRef.current = setTimeout(() => {
+      setIsHoverMenuOpen(false)
+      setHoveredCategory(null)
+    }, 200)
+  }
+
+  const handleMenuMouseEnter = () => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+  }
+
+  const handleMenuMouseLeave = () => {
+    handleCategoryMouseLeave()
+  }
+
+  const handleMenuClose = () => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+    setIsHoverMenuOpen(false)
+    setHoveredCategory(null)
+  }
 
   // Fetch categories dynamically for navbar
   const { data: categoriesData } = useQuery({
@@ -33,40 +67,42 @@ export function StoreLayout() {
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
       <CartDrawer isOpen={cartDrawerOpen} onClose={() => setCartDrawerOpen(false)} />
 
-      {/* Announcement bar */}
-      {/* <div className="bg-black text-white text-center text-[11px] py-1.5 px-4 font-medium tracking-wide">
-        🚚 Free shipping on orders above ₹499 &nbsp;|&nbsp; 📱 Custom cases for 1000+ devices &nbsp;|&nbsp; ⚡ Same-day dispatch
-      </div> */}
-
       {/* ─── Main Navbar ───────────────────────────── */}
-      <header className="sticky top-0 z-50 w-full bg-white border-b-2 border-black shadow-sm">
+      <header 
+        className="sticky top-0 z-50 w-full bg-white border-b-2 border-black shadow-sm"
+        onMouseLeave={handleCategoryMouseLeave}
+      >
         <div className="max-w-[1700px] mx-auto px-3 md:px-6">
           <div className="flex h-14 items-center justify-between gap-4">
 
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 shrink-0 group">
-              <div className="w-8 h-8 bg-black flex items-center justify-center">
-                <span className="text-white font-black text-sm tracking-tighter">PS</span>
-              </div>
-              <div className="hidden sm:flex flex-col leading-none">
-                <span className="font-black text-[15px] tracking-tight text-gray-900">PRINTED SOUL</span>
-                <span className="text-[8px] font-bold text-violet-600 tracking-widest uppercase">PREMIUM CASES & DESIGN</span>
-              </div>
+            {/* Official Printed Soul Unified Horizontal Logo */}
+            <Link to="/" className="flex items-center shrink-0 group py-1" onClick={handleMenuClose}>
+              <img
+                src="/logo-horizontal.png"
+                alt="Printed Soul"
+                className="h-7 sm:h-8 md:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-102"
+              />
             </Link>
 
-            {/* ─── Category Nav (desktop) ───────────── */}
+            {/* ─── Category Nav (desktop) with Photo Hover ───────────── */}
             <nav className="hidden lg:flex items-center gap-0 flex-1 overflow-x-auto hide-scrollbar">
               <Link
                 to="/"
-                className="px-3 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
+                onClick={handleMenuClose}
+                onMouseEnter={handleMenuClose}
+                className="px-3.5 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
               >
                 Home
               </Link>
+
               <Link
                 to="/products?sort=new"
-                className="px-3 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
+                onClick={handleMenuClose}
+                onMouseEnter={() => handleCategoryMouseEnter({ type: "new", name: "New Arrivals", slug: "new-arrivals" })}
+                className="px-3.5 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap flex items-center gap-1.5"
               >
-                New Arrivals
+                <span>New Arrivals</span>
+                <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
               </Link>
 
               {/* Dynamic categories from DB */}
@@ -74,7 +110,9 @@ export function StoreLayout() {
                 <Link
                   key={cat._id}
                   to={`/products?category=${cat.slug || cat._id}`}
-                  className="px-3 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
+                  onClick={handleMenuClose}
+                  onMouseEnter={() => handleCategoryMouseEnter({ type: "category", _id: cat._id, name: cat.name, slug: cat.slug })}
+                  className="px-3.5 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
                 >
                   {cat.name}
                 </Link>
@@ -82,32 +120,34 @@ export function StoreLayout() {
 
               <Link
                 to="/products"
-                className="px-3 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
+                onClick={handleMenuClose}
+                onMouseEnter={() => handleCategoryMouseEnter({ type: "all", name: "Shop All", slug: "all" })}
+                className="px-3.5 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
               >
                 Shop All
               </Link>
             </nav>
 
             {/* ─── Action Icons ────────────────────── */}
-            <div className="flex items-center gap-1 shrink-0">
+            <div className="flex items-center gap-0.5 sm:gap-1.5 shrink-0">
               {/* Search */}
               <button
                 onClick={() => setSearchOpen(true)}
-                className="flex items-center gap-2 px-3 py-1.5 text-[11px] font-semibold text-gray-500 bg-gray-100 hover:bg-gray-200 border border-gray-200 transition-all cursor-pointer rounded-sm"
+                className="p-2 text-gray-700 hover:bg-gray-100 transition-colors rounded-full lg:rounded-md lg:px-3 lg:py-1.5 lg:text-[11px] lg:font-semibold lg:text-gray-500 lg:bg-gray-100 lg:border lg:border-gray-200 lg:flex lg:items-center lg:gap-2 cursor-pointer"
                 aria-label="Search"
               >
-                <Search className="h-3.5 w-3.5" strokeWidth={2.5} />
+                <Search className="h-4 w-4 lg:h-3.5 lg:w-3.5" strokeWidth={2.2} />
                 <span className="hidden lg:inline">Search…</span>
               </button>
 
               {/* Cart */}
               <button
                 onClick={() => setCartDrawerOpen(true)}
-                className="relative p-2 hover:bg-gray-100 transition-colors group cursor-pointer rounded-sm"
+                className="relative p-2 hover:bg-gray-100 transition-colors group cursor-pointer rounded-full"
               >
                 <ShoppingBag className="h-5 w-5 text-gray-900" strokeWidth={2} />
                 {totalItems > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-red-600 text-white text-[9px] font-black flex items-center justify-center shadow-sm">
+                  <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-red-600 text-white text-[9px] font-black flex items-center justify-center rounded-full shadow-sm">
                     {totalItems > 9 ? "9+" : totalItems}
                   </span>
                 )}
@@ -189,6 +229,15 @@ export function StoreLayout() {
             </nav>
           </div>
         )}
+
+        {/* ── Category Hover Flyout (Latest Photos & Drops) ── */}
+        <CategoryHoverMenu
+          isOpen={isHoverMenuOpen}
+          activeCategory={hoveredCategory}
+          onMouseEnter={handleMenuMouseEnter}
+          onMouseLeave={handleMenuMouseLeave}
+          onClose={handleMenuClose}
+        />
       </header>
 
       {/* Page Content */}
@@ -223,11 +272,8 @@ export function StoreLayout() {
         <div className="max-w-[1700px] mx-auto px-4 py-10 md:py-14">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
             <div className="col-span-2">
-              <Link to="/" className="inline-flex items-center gap-2 mb-4 opacity-90 hover:opacity-100">
-                <div className="w-7 h-7 bg-white flex items-center justify-center">
-                  <span className="text-black font-bold text-xs tracking-tighter">PS</span>
-                </div>
-                <span className="font-bold text-lg text-white tracking-tight">Printed Soul</span>
+              <Link to="/" className="inline-flex items-center mb-4 group">
+                <img src="/logo-horizontal-white.png" alt="Printed Soul" className="h-8 md:h-9 w-auto object-contain opacity-95 group-hover:opacity-100 transition-opacity" />
               </Link>
               <p className="text-xs leading-relaxed text-gray-500 max-w-sm">
                 Premium custom phone cases for every personality and device. Make it yours.

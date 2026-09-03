@@ -19,6 +19,11 @@ interface AuthContextType {
   closeAuthModal: () => void
   sendOtp: (data: { email: string; name?: string; phone?: string }) => Promise<{ isNewUser: boolean }>
   verifyOtp: (email: string, otp: string) => Promise<void>
+  loginWithPassword: (email: string, password: string) => Promise<void>
+  sendLoginOtp: (email: string) => Promise<void>
+  verifyLoginOtp: (email: string, otp: string) => Promise<void>
+  sendSignupOtp: (data: { name: string; email: string; phone: string; password: string }) => Promise<void>
+  verifySignupOtp: (email: string, otp: string) => Promise<void>
   logout: () => Promise<void>
   refreshUser: () => Promise<void>
 }
@@ -63,6 +68,38 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     closeAuthModal()
   }
 
+  const loginWithPassword = async (email: string, password: string) => {
+    const { data } = await authApi.loginWithPassword({ email, password })
+    if (data.meta?.token) localStorage.setItem("pss_token", data.meta.token)
+    localStorage.setItem("pss_user", JSON.stringify(data.data))
+    setUser(data.data)
+    closeAuthModal()
+  }
+
+  const sendLoginOtp = async (email: string) => {
+    await authApi.sendLoginOtp({ email })
+  }
+
+  const verifyLoginOtp = async (email: string, otp: string) => {
+    const { data } = await authApi.verifyLoginOtp({ email, otp })
+    if (data.meta?.token) localStorage.setItem("pss_token", data.meta.token)
+    localStorage.setItem("pss_user", JSON.stringify(data.data))
+    setUser(data.data)
+    closeAuthModal()
+  }
+
+  const sendSignupOtp = async (data: { name: string; email: string; phone: string; password: string }) => {
+    await authApi.sendSignupOtp(data)
+  }
+
+  const verifySignupOtp = async (email: string, otp: string) => {
+    const { data } = await authApi.verifySignupOtp({ email, otp })
+    if (data.meta?.token) localStorage.setItem("pss_token", data.meta.token)
+    localStorage.setItem("pss_user", JSON.stringify(data.data))
+    setUser(data.data)
+    closeAuthModal()
+  }
+
   const logout = async () => {
     await authApi.logout().catch(() => {})
     localStorage.removeItem("pss_token")
@@ -75,7 +112,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     <AuthContext.Provider value={{ 
       user, isAuthenticated: !!user, isLoading, 
       isAuthModalOpen, openAuthModal, closeAuthModal,
-      sendOtp, verifyOtp, logout, refreshUser 
+      sendOtp, verifyOtp, loginWithPassword, sendLoginOtp, 
+      verifyLoginOtp, sendSignupOtp, verifySignupOtp, logout, refreshUser 
     }}>
       {children}
     </AuthContext.Provider>

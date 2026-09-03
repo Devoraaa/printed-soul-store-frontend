@@ -1,15 +1,23 @@
 import React from "react"
 import { useParams, Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { CheckCircle, Package, ArrowRight } from "lucide-react"
+import { CheckCircle, Package, ArrowRight, Download } from "lucide-react"
 import { orderApi } from "../../lib/api"
+import { useCart } from "../../context/CartContext"
 import { formatPrice, formatDate, ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from "../../lib/utils"
 import { motion } from "framer-motion"
 
 export function OrderSuccessPage() {
   const { id } = useParams<{ id: string }>() // This is actually the orderNumber now
+  const { clearCart, refreshCart } = useCart()
   const { data } = useQuery({ queryKey: ["order", id], queryFn: () => orderApi.trackOrder(id!) })
   const order = data?.data?.data
+
+  React.useEffect(() => {
+    // Clear cart immediately upon successful order landing
+    clearCart().catch(() => {})
+    refreshCart().catch(() => {})
+  }, [])
 
   return (
     <div className="container mx-auto px-4 py-16 max-w-2xl text-center">
@@ -48,11 +56,22 @@ export function OrderSuccessPage() {
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <Link to="/account/orders" className="flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold">
+      <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+        {order && (
+          <a
+            href={orderApi.getInvoiceUrl(order.orderNumber)}
+            target="_blank"
+            rel="noopener noreferrer"
+            download={`Invoice-${order.orderNumber}.pdf`}
+            className="flex items-center gap-2 px-6 py-3 rounded-full bg-black text-white font-semibold hover:bg-gray-800 transition-colors shadow-sm"
+          >
+            <Download className="h-4 w-4" /> Download Invoice (PDF)
+          </a>
+        )}
+        <Link to="/account/orders" className="flex items-center gap-2 px-6 py-3 rounded-full border border-gray-300 font-semibold hover:bg-gray-50 transition-colors">
           <Package className="h-4 w-4" /> Track Order
         </Link>
-        <Link to="/products" className="flex items-center gap-2 px-6 py-3 rounded-full border font-semibold">
+        <Link to="/products" className="flex items-center gap-2 px-6 py-3 rounded-full text-gray-600 hover:text-black font-semibold">
           Continue Shopping <ArrowRight className="h-4 w-4" />
         </Link>
       </div>

@@ -116,7 +116,7 @@ export function OrderTrackingPage() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
                 <div>
                   <span className="text-xs uppercase tracking-widest text-gray-400 font-bold">Order Number</span>
-                  <h2 className="text-2xl font-mono font-bold mt-0.5">{order.orderNumber}</h2>
+                  <h2 className="text-2xl font-mono text-white8 font-bold mt-0.5">{order.orderNumber}</h2>
                 </div>
                 <div className="flex flex-wrap gap-2 sm:text-right">
                   <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10">

@@ -49,11 +49,12 @@ export function ProductDetailPage() {
   })
 
   const product = data?.data?.data
+  const productCatId = typeof product?.category === "object" ? product?.category?._id : product?.category
 
   const { data: similarData } = useQuery({
-    queryKey: ["similar-products", product?.category?._id || product?.category],
-    queryFn: () => productApi.getAll({ category: product?.category?._id || product?.category, limit: 5 }),
-    enabled: !!(product?.category?._id || product?.category),
+    queryKey: ["similar-products", productCatId],
+    queryFn: () => productApi.getAll({ category: productCatId, limit: 12 }),
+    enabled: !!productCatId,
   })
 
   const { data: categoriesData } = useQuery({
@@ -73,7 +74,9 @@ export function ProductDetailPage() {
   })
 
   const reviews = reviewsData?.data?.data || []
-  const similarProducts = similarData?.data?.data?.filter((p: any) => p._id !== product?._id).slice(0, 4) || []
+  const similarProducts = (similarData?.data?.data || [])
+    .filter((p: any) => p._id !== product?._id && p.images && p.images.length > 0)
+    .slice(0, 5)
   
   const allCategories = categoriesData?.data?.data || []
   const allProducts = allProductsData?.data?.data || []

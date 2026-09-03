@@ -45,6 +45,13 @@ export const authApi = {
   getMe: () => api.get("/auth/me"),
   updateMe: (data: any) => api.put("/auth/me", data),
   updatePassword: (data: any) => api.put("/auth/update-password", data),
+  sendEmailChangeOtp: (data: { newEmail: string }) => api.post("/auth/change-email/send-otp", data),
+  verifyEmailChangeOtp: (data: { newEmail: string; otp: string }) => api.post("/auth/change-email/verify-otp", data),
+  loginWithPassword: (data: { email: string; password: string }) => api.post("/auth/login/password", data),
+  sendLoginOtp: (data: { email: string }) => api.post("/auth/login/send-otp", data),
+  verifyLoginOtp: (data: { email: string; otp: string }) => api.post("/auth/login/verify-otp", data),
+  sendSignupOtp: (data: { name: string; email: string; phone: string; password: string }) => api.post("/auth/signup/send-otp", data),
+  verifySignupOtp: (data: { email: string; otp: string }) => api.post("/auth/signup/verify-otp", data),
   forgotPassword: (data: any) => api.post("/auth/forgot-password", data),
 }
 
@@ -97,8 +104,9 @@ export const orderApi = {
   verifyPayment: (data: any) => api.post("/orders/razorpay/verify", data),
   getMyOrders: (params?: any) => api.get("/orders/my", { params }),
   getMyOrderById: (id: string) => api.get(`/orders/my/${id}`),
-  cancelOrder: (id: string, reason?: string) => api.put(`/orders/my/${id}/cancel`, { reason }),
+  cancelOrder: (id: string, data?: any) => api.put(`/orders/my/${id}/cancel`, typeof data === "string" ? { reason: data } : data),
   trackOrder: (query: string) => api.get(`/orders/track/${query}`),
+  getInvoiceUrl: (id: string) => `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/orders/${id}/invoice`,
   // Admin
   adminGetAll: (params?: any) => api.get("/orders/admin", { params }),
   adminGetById: (id: string) => api.get(`/orders/admin/${id}`),
