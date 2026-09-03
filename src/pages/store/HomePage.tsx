@@ -48,10 +48,6 @@ export function HomePage() {
   const socialPosts = socialPostsData?.data?.data || []
 
   // Group products into comprehensive collections for homepage
-  const coverProducts = allProducts.filter((p: any) => 
-    (p.caseType && p.caseType !== "other") || 
-    ["covers", "dual-case", "metal-case", "glass-case"].includes(p.category?.slug)
-  )
   const frameProducts = allProducts.filter((p: any) => 
     p.category?.slug === "frames" || p.name?.toLowerCase().includes("frame")
   )
@@ -72,16 +68,6 @@ export function HomePage() {
   )
 
   const showcaseSections = [
-    {
-      id: "covers",
-      tag: "Dual, Glass & Metal",
-      title: "Phone Covers & Cases",
-      subtitle: "Engineered shock protection for Apple, Samsung & more with precision artwork",
-      link: "/products?category=covers",
-      products: coverProducts.slice(0, 12),
-      badge: "Trending",
-      badgeColor: "bg-red-500 text-white"
-    },
     {
       id: "frames",
       tag: "Wall Decor & Art",
