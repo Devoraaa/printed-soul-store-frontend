@@ -38,14 +38,14 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Box */}
-      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-sm bg-[#F5F5F5] border border-neutral-200/60 transition-all duration-200 group-hover:shadow-md">
-        <Link to={`/products/${product.slug}`} className="block w-full h-full">
+      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-sm bg-[#F9F9F9] border border-neutral-200/60 transition-all duration-200 group-hover:shadow-md flex items-center justify-center">
+        <Link to={`/products/${product.slug}`} className="relative block w-full h-full p-2.5 flex items-center justify-center">
           {/* Primary Image */}
           <img
             src={primaryImage}
             alt={product.name}
             loading="lazy"
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-400 ${
+            className={`w-full h-full object-contain transition-all duration-300 ${
               isHovered && product.images?.length > 1 ? "opacity-0 scale-105" : "opacity-100 scale-100"
             }`}
           />
@@ -56,7 +56,7 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
               src={secondaryImage}
               alt={`${product.name} alt`}
               loading="lazy"
-              className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-400 ${
+              className={`absolute inset-0 w-full h-full object-contain p-2.5 transition-all duration-300 ${
                 isHovered ? "opacity-100 scale-105" : "opacity-0 scale-100"
               }`}
             />
