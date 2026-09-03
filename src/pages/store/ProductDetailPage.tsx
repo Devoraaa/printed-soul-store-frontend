@@ -33,11 +33,15 @@ export function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1)
   const [activeImageIdx, setActiveImageIdx] = useState(0)
   const [addedToCart, setAddedToCart] = useState(false)
+  const [selectedDeviceModel, setSelectedDeviceModel] = useState<string>("")
   const [activeAccordion, setActiveAccordion] = useState<string | null>("features")
 
   React.useEffect(() => {
     setActiveImageIdx(0)
-  }, [slug])
+    if (product?.deviceModels?.length > 0) {
+      setSelectedDeviceModel(product.deviceModels[0]._id)
+    }
+  }, [slug, product])
 
   const { data, isLoading } = useQuery({
     queryKey: ["product", slug],
@@ -316,6 +320,21 @@ export function ProductDetailPage() {
               )}
             </div>
 
+            {/* Live Social Proof (like original website) */}
+            <div className="space-y-1.5 py-1">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-700">
+                <span className="text-red-500">🔥</span>
+                <span><strong className="text-black">17 sold</strong> in last 20 hours</span>
+              </div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm bg-gray-100 border border-gray-200 text-xs font-medium text-gray-800">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span><strong>15 peoples</strong> are viewing this right now</span>
+              </div>
+            </div>
+
             {/* Case Type Switcher */}
             {showSwitcher && designVariants.length > 0 && (
               <div className="p-4 rounded-sm bg-white border border-gray-200 space-y-2">
@@ -364,9 +383,35 @@ export function ProductDetailPage() {
               </div>
             )}
 
+            {/* Mobile Model Selection (like original website) */}
+            {product.deviceModels?.length > 0 && (
+              <div className="p-3.5 rounded-sm bg-white border border-gray-200 space-y-1.5">
+                <label className="text-[11px] font-black uppercase tracking-wider text-gray-700 block">
+                  Mobile Model:
+                </label>
+                <div className="relative">
+                  <select 
+                    value={selectedDeviceModel || product.deviceModels[0]?._id}
+                    onChange={(e) => setSelectedDeviceModel(e.target.value)}
+                    className="w-full h-10 px-3 pr-8 rounded-sm bg-gray-50 border border-gray-300 font-semibold text-xs text-gray-900 focus:outline-none focus:ring-1 focus:ring-black appearance-none cursor-pointer"
+                  >
+                    {product.deviceModels.map((m: any) => (
+                      <option key={m._id} value={m._id}>
+                        {(m.displayName || m.name).toUpperCase()}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500 pointer-events-none" />
+                </div>
+              </div>
+            )}
+
             {/* Quantity Selector & Add to Cart / Buy Now */}
             {product.stock > 0 ? (
               <div className="space-y-2 pt-1">
+                <div className="text-xs font-bold text-amber-600 flex items-center gap-1">
+                  <span>🔥</span> Hurry up! Only <span className="text-red-600 font-black">10 item(s)</span> left in stock
+                </div>
                 <div className="flex items-center gap-2">
                   {/* Quantity Stepper */}
                   <div className="flex items-center border border-gray-300 bg-white rounded-sm h-11 shrink-0">
