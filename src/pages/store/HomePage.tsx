@@ -17,7 +17,7 @@ export function HomePage() {
 
   const { data: allProductsData, isLoading: isAllLoading } = useQuery({
     queryKey: ["all-products-home"],
-    queryFn: () => productApi.getAll({ limit: 60 }),
+    queryFn: () => productApi.getAll({ limit: 500 }),
   })
 
   const { data: categoriesData } = useQuery({
@@ -46,6 +46,103 @@ export function HomePage() {
   const brands = brandsData?.data?.data || []
   const allBanners = bannersData?.data?.data || []
   const socialPosts = socialPostsData?.data?.data || []
+
+  // Group products into comprehensive collections for homepage
+  const coverProducts = allProducts.filter((p: any) => 
+    (p.caseType && p.caseType !== "other") || 
+    ["covers", "dual-case", "metal-case", "glass-case"].includes(p.category?.slug)
+  )
+  const frameProducts = allProducts.filter((p: any) => 
+    p.category?.slug === "frames" || p.name?.toLowerCase().includes("frame")
+  )
+  const mugProducts = allProducts.filter((p: any) => 
+    p.category?.slug === "mugs" || p.name?.toLowerCase().includes("mug") || p.name?.toLowerCase().includes("cup")
+  )
+  const tumblerProducts = allProducts.filter((p: any) => 
+    p.category?.slug === "tumblers" || p.name?.toLowerCase().includes("tumbler") || p.name?.toLowerCase().includes("sipper")
+  )
+  const mousepadProducts = allProducts.filter((p: any) => 
+    p.category?.slug === "mousepads" || p.name?.toLowerCase().includes("pad") || p.name?.toLowerCase().includes("mouse")
+  )
+  const toteBagProducts = allProducts.filter((p: any) => 
+    p.category?.slug === "tote-bags" || p.name?.toLowerCase().includes("tote") || p.name?.toLowerCase().includes("bag")
+  )
+  const coasterProducts = allProducts.filter((p: any) => 
+    p.category?.slug === "coasters" || p.name?.toLowerCase().includes("coaster")
+  )
+
+  const showcaseSections = [
+    {
+      id: "covers",
+      tag: "Dual, Glass & Metal",
+      title: "Phone Covers & Cases",
+      subtitle: "Engineered shock protection for Apple, Samsung & more with precision artwork",
+      link: "/products?category=covers",
+      products: coverProducts.slice(0, 12),
+      badge: "Trending",
+      badgeColor: "bg-red-500 text-white"
+    },
+    {
+      id: "frames",
+      tag: "Wall Decor & Art",
+      title: "Frames & Acrylic Wall Art",
+      subtitle: "High-definition acrylic & metal artwork for your bedroom, setup, or living room",
+      link: "/products?category=frames",
+      products: frameProducts.slice(0, 6),
+      badge: "Best Value",
+      badgeColor: "bg-amber-500 text-white"
+    },
+    {
+      id: "mugs",
+      tag: "Ceramic & Magic",
+      title: "Coffee Mugs & Cups",
+      subtitle: "11oz premium ceramic coffee mugs with vibrant anime, gaming & personalized prints",
+      link: "/products?category=mugs",
+      products: mugProducts.slice(0, 6),
+      badge: "Popular Gift",
+      badgeColor: "bg-emerald-600 text-white"
+    },
+    {
+      id: "tumblers",
+      tag: "Insulated Drinkware",
+      title: "Tumblers & Sippers",
+      subtitle: "Stainless steel skinny tumblers & leak-proof bottles for hot and cold sips",
+      link: "/products?category=tumblers",
+      products: tumblerProducts.slice(0, 6),
+      badge: "Hot Sellers",
+      badgeColor: "bg-blue-600 text-white"
+    },
+    {
+      id: "mousepads",
+      tag: "4MM Pro Desk Mats",
+      title: "Gaming Mousepads & Desk Mats",
+      subtitle: "Ultra-smooth micro-weave cloth with anti-slip rubber base for speed & precision",
+      link: "/products?category=mousepads",
+      products: mousepadProducts.slice(0, 6),
+      badge: "Gamers Choice",
+      badgeColor: "bg-purple-600 text-white"
+    },
+    {
+      id: "tote-bags",
+      tag: "100% Organic Canvas",
+      title: "Aesthetic Canvas Tote Bags",
+      subtitle: "Eco-friendly heavy-duty tote bags for everyday shopping, college, and casual outings",
+      link: "/products?category=tote-bags",
+      products: toteBagProducts.slice(0, 6),
+      badge: "Eco Friendly",
+      badgeColor: "bg-teal-600 text-white"
+    },
+    {
+      id: "coasters",
+      tag: "Tabletop Essentials",
+      title: "Designer Coaster Sets",
+      subtitle: "Glossy waterproof coasters in sets of 4 with anti-scratch bottom padding",
+      link: "/products?category=coasters",
+      products: coasterProducts.slice(0, 5),
+      badge: "Set of 4",
+      badgeColor: "bg-pink-600 text-white"
+    },
+  ]
 
   const heroBanners = allBanners
     .filter((b: any) => b.type === "hero" && b.isActive !== false)
@@ -287,50 +384,57 @@ export function HomePage() {
       )}
 
       {/* ═══════════════════════════════════════════
-          7. DYNAMIC CATEGORY SECTIONS
+          7. DYNAMIC CATEGORY SHOWCASE SECTIONS (7 CATEGORIES)
       ═══════════════════════════════════════════ */}
-      {allProducts.length > 0 && (
-        <div>
-          {categories.map((cat: any) => {
-            const catProducts = allProducts.filter((p: any) => {
-              const pCatId = typeof p.category === "object" ? p.category?._id : p.category
-              return pCatId === cat._id
-            })
-            if (catProducts.length === 0) return null
+      {showcaseSections.map((sec) => {
+        if (sec.products.length === 0) return null
 
-            return (
-              <section key={cat._id} className="py-5 border-t border-neutral-100 max-w-[1700px] mx-auto px-3 md:px-6">
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-violet-600">Collection</p>
-                    <h2 className="text-lg font-black tracking-tight text-neutral-900">{cat.name}</h2>
-                  </div>
-                  <Link
-                    to={`/products?category=${cat.slug || cat._id}`}
-                    className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 hover:text-black transition-colors flex items-center gap-1"
-                  >
-                    View All <ChevronRight className="h-3.5 w-3.5" />
-                  </Link>
+        return (
+          <section key={sec.id} className="py-7 border-t border-neutral-100 max-w-[1700px] mx-auto px-3 md:px-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 gap-2">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">
+                    {sec.tag}
+                  </span>
+                  {sec.badge && (
+                    <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-sm uppercase tracking-wider ${sec.badgeColor}`}>
+                      {sec.badge}
+                    </span>
+                  )}
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-3">
-                  {catProducts.slice(0, 10).map((product: any) => (
-                    <ProductCard key={product._id} product={product} />
-                  ))}
-                </div>
-              </section>
-            )
-          })}
+                <h2 className="text-xl md:text-2xl font-black tracking-tight text-neutral-900 uppercase">
+                  {sec.title}
+                </h2>
+                <p className="text-xs text-neutral-500 mt-0.5 max-w-xl">
+                  {sec.subtitle}
+                </p>
+              </div>
+              <Link
+                to={sec.link}
+                className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-neutral-900 hover:text-amber-600 transition-colors shrink-0 bg-neutral-100 hover:bg-neutral-200 px-3 py-1.5 rounded-sm"
+              >
+                View All {sec.title.split("&")[0].trim()} <ChevronRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
 
-          <div className="py-6 text-center border-t border-neutral-100">
-            <Link
-              to="/products"
-              className="inline-flex items-center gap-2 bg-neutral-900 text-white px-8 py-3 rounded-sm font-bold text-xs uppercase tracking-widest hover:bg-black transition-all"
-            >
-              Explore Full Catalog <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      )}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-3">
+              {sec.products.map((product: any) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </div>
+          </section>
+        )
+      })}
+
+      <div className="py-8 text-center border-t border-neutral-100 bg-neutral-50">
+        <Link
+          to="/products"
+          className="inline-flex items-center gap-2 bg-neutral-900 text-white px-8 py-3.5 rounded-sm font-bold text-xs uppercase tracking-widest hover:bg-black transition-all shadow-sm"
+        >
+          Explore Full Store Catalog <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
 
       {/* ═══════════════════════════════════════════
           8. SOCIAL FEED
