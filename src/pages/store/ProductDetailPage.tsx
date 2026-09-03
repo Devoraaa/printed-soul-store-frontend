@@ -33,8 +33,11 @@ export function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1)
   const [activeImageIdx, setActiveImageIdx] = useState(0)
   const [addedToCart, setAddedToCart] = useState(false)
-  const [selectedDeviceModel, setSelectedDeviceModel] = useState<string>("")
   const [activeAccordion, setActiveAccordion] = useState<string | null>("features")
+
+  React.useEffect(() => {
+    setActiveImageIdx(0)
+  }, [slug])
 
   const { data, isLoading } = useQuery({
     queryKey: ["product", slug],
@@ -63,8 +66,8 @@ export function ProductDetailPage() {
   })
 
   const { data: designVariantsData } = useQuery({
-    queryKey: ["design-variants", product?.designSlug, selectedDeviceModel],
-    queryFn: () => productApi.getDesignVariants(product?.designSlug, selectedDeviceModel),
+    queryKey: ["design-variants", product?.designSlug],
+    queryFn: () => productApi.getDesignVariants(product?.designSlug),
     enabled: !!product?.designSlug,
   })
 
@@ -94,12 +97,6 @@ export function ProductDetailPage() {
       return pCatId === cat._id
     })
   }).slice(0, 3)
-
-  React.useEffect(() => {
-    if (product?.deviceModels?.length > 0 && !selectedDeviceModel) {
-      setSelectedDeviceModel(product.deviceModels[0]._id)
-    }
-  }, [product, selectedDeviceModel])
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
@@ -195,7 +192,7 @@ export function ProductDetailPage() {
               <img
                 src={product.images?.[activeImageIdx] ? getImageUrl(product.images[activeImageIdx]) : "/placeholder.png"}
                 alt={product.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-full object-contain p-3 md:p-6 transition-transform duration-700 group-hover:scale-105"
               />
 
               {/* Floating Badges */}
@@ -325,7 +322,7 @@ export function ProductDetailPage() {
                 <label className="text-[11px] font-black uppercase tracking-wider text-gray-700 block">
                   Select Case Type:
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                <div className="grid grid-cols-3 gap-2">
                   {designVariants.map((v: any) => {
                     const CASE_LABELS: any = {
                       "dual-case": "Dual Case",
@@ -341,49 +338,28 @@ export function ProductDetailPage() {
                     return (
                       <button
                         key={v._id}
+                        type="button"
                         onClick={() => {
-                          if (v.available && !isSelected) {
+                          if (!isSelected) {
+                            setActiveImageIdx(0)
                             navigate(`/products/${v.slug}`)
                           }
                         }}
-                        disabled={!v.available}
-                        className={`py-2 px-2 text-[11px] font-bold transition-all border text-center rounded-sm ${
+                        className={`py-2.5 px-2 text-center rounded-sm transition-all cursor-pointer border ${
                           isSelected
                             ? "bg-black text-white border-black shadow-sm"
-                            : v.available
-                              ? "bg-white text-gray-700 border-gray-300 hover:border-gray-500 hover:shadow-sm cursor-pointer"
-                              : "bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed opacity-60"
+                            : "bg-white text-gray-800 border-gray-300 hover:border-black hover:bg-gray-50"
                         }`}
-                        title={!v.available ? `Not available for ${product.deviceModels?.find((d:any) => d._id === selectedDeviceModel)?.name || "selected device"}` : ""}
                       >
-                        {label}
+                        <div className="text-xs font-bold leading-tight">{label}</div>
+                        {v.price && (
+                          <div className={`text-[11px] mt-0.5 font-semibold ${isSelected ? "text-gray-300" : "text-gray-500"}`}>
+                            ₹{v.price}
+                          </div>
+                        )}
                       </button>
                     )
                   })}
-                </div>
-              </div>
-            )}
-
-            {/* Compatible Device Selector */}
-            {product.deviceModels?.length > 0 && (
-              <div className="p-4 rounded-sm bg-white border border-gray-200 space-y-2">
-                <label className="text-[11px] font-black uppercase tracking-wider text-gray-700 block">
-                  Select Device Model:
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
-                  {product.deviceModels.map((d: any) => (
-                    <button
-                      key={d._id}
-                      onClick={() => setSelectedDeviceModel(d._id)}
-                      className={`py-2 px-2 text-[11px] font-bold transition-all border text-center truncate cursor-pointer rounded-sm ${
-                        selectedDeviceModel === d._id
-                          ? "bg-black text-white border-black"
-                          : "bg-white text-gray-700 border-gray-300 hover:border-gray-500"
-                      }`}
-                    >
-                      {d.displayName || d.name}
-                    </button>
-                  ))}
                 </div>
               </div>
             )}
@@ -471,7 +447,14 @@ export function ProductDetailPage() {
                 </button>
                 {activeAccordion === "features" && (
                   <div className="mt-3 text-xs text-gray-600 leading-relaxed space-y-2 pt-3 border-t border-gray-100">
-                    <p>{product.description}</p>
+                    {product.description?.includes("<") ? (
+                      <div 
+                        className="prose prose-xs max-w-none text-xs text-gray-600 leading-relaxed space-y-1 overflow-hidden" 
+                        dangerouslySetInnerHTML={{ __html: product.description }} 
+                      />
+                    ) : (
+                      <p>{product.description}</p>
+                    )}
                     <ul className="list-disc pl-4 space-y-1 font-medium text-gray-700">
                       <li>Premium quality material with excellent durability.</li>
                       <li>Precise cutouts for all ports and buttons.</li>
