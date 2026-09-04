@@ -234,7 +234,6 @@ export function HomePage() {
             {categories.map((cat: any) => {
               const slug = cat.slug?.toLowerCase() || ""
               const imgSrc = cat.image ? getImageUrl(cat.image) : getCatFallback(slug)
-              const isSelected = filterCategory === (cat.slug || cat._id)
               return (
                 <Link
                   key={cat._id}
