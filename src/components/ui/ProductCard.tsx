@@ -131,10 +131,16 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
             )}
           </div>
 
-          <div className="flex items-center gap-0.5 text-[10px] font-semibold text-neutral-500">
-            <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
-            <span>{(product.ratings?.average || 4.9).toFixed(1)}</span>
-          </div>
+          {product.ratings?.count && product.ratings.count > 0 ? (
+            <div className="flex items-center gap-0.5 text-[10px] font-semibold text-neutral-500">
+              <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
+              <span>{product.ratings.average.toFixed(1)}</span>
+            </div>
+          ) : (
+            <div className="flex items-center text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-sm">
+              NEW
+            </div>
+          )}
         </div>
       </div>
     </div>

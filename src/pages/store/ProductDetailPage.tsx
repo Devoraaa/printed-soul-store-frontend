@@ -275,22 +275,29 @@ export function ProductDetailPage() {
               </h1>
 
               {/* Rating stars & verified badge */}
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-0.5 text-amber-400">
-                  {[...Array(5)].map((_, i) => (
-                    <Star 
-                      key={i} 
-                      className={`h-3.5 w-3.5 ${i < Math.round(product.ratings?.average || 5) ? "fill-amber-400 text-amber-400" : "fill-gray-200 text-gray-200"}`} 
-                    />
-                  ))}
+              {product.ratings?.count && product.ratings.count > 0 ? (
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="flex items-center gap-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star 
+                        key={i} 
+                        className={`h-3.5 w-3.5 ${i < Math.round(product.ratings.average) ? "fill-amber-400 text-amber-400" : "fill-gray-200 text-gray-200"}`} 
+                      />
+                    ))}
+                  </div>
+                  <span className="text-xs font-bold text-gray-900">
+                    {product.ratings.average.toFixed(1)}
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    ({product.ratings.count} Reviews)
+                  </span>
                 </div>
-                <span className="text-xs font-bold text-gray-900">
-                  {product.ratings?.average?.toFixed(1) || "4.9"}
-                </span>
-                <span className="text-xs text-gray-500">
-                  ({product.ratings?.count || 18} Reviews)
-                </span>
-              </div>
+              ) : (
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="inline-flex items-center text-xs font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-sm">NEW</span>
+                  <span className="text-xs text-gray-400">No reviews yet</span>
+                </div>
+              )}
             </div>
 
             {/* Pricing Box */}
