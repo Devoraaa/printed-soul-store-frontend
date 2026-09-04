@@ -563,12 +563,13 @@ export function ProductDetailPage() {
           </div>
 
           {/* Hidden by default Write Review Form */}
-          <div id="review-form" className="hidden mb-8 p-4 border border-gray-200 rounded-sm bg-gray-50">
-            <h3 className="font-black text-xs uppercase tracking-widest mb-3">Submit your review</h3>
+          <div id="review-form" className="hidden mb-10 bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm">
+            <h3 className="font-display font-bold text-xl text-gray-900 mb-6">Write a Review</h3>
             <form onSubmit={async (e) => {
               e.preventDefault()
               const form = e.target as HTMLFormElement
-              const rating = parseInt(form.rating.value)
+              const ratingInput = form.querySelector('input[name="rating"]') as HTMLInputElement
+              const rating = parseInt(ratingInput?.value || "5")
               const title = form.reviewTitle.value
               const comment = form.comment.value
               
@@ -581,28 +582,61 @@ export function ProductDetailPage() {
                 alert(error.response?.data?.message || "Failed to submit review")
               }
             }}>
-              <div className="space-y-3">
+              <div className="space-y-5">
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">Rating (1-5)</label>
-                  <select name="rating" required className="w-full sm:w-48 p-2 text-sm border border-gray-300 rounded-sm focus:outline-none focus:border-black">
-                    <option value="5">5 - Excellent</option>
-                    <option value="4">4 - Good</option>
-                    <option value="3">3 - Average</option>
-                    <option value="2">2 - Poor</option>
-                    <option value="1">1 - Terrible</option>
-                  </select>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">Overall Rating</label>
+                  <div className="flex items-center gap-1.5" id="star-rating-container">
+                    <input type="hidden" name="rating" value="5" id="rating-input" />
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => {
+                          const container = document.getElementById('star-rating-container');
+                          const input = document.getElementById('rating-input') as HTMLInputElement;
+                          if (input) input.value = star.toString();
+                          if (container) {
+                            const buttons = container.querySelectorAll('button');
+                            buttons.forEach((btn, idx) => {
+                              const svg = btn.querySelector('svg');
+                              if (svg) {
+                                if (idx < star) {
+                                  svg.classList.add('fill-amber-400', 'text-amber-400');
+                                  svg.classList.remove('fill-gray-100', 'text-gray-200');
+                                } else {
+                                  svg.classList.remove('fill-amber-400', 'text-amber-400');
+                                  svg.classList.add('fill-gray-100', 'text-gray-200');
+                                }
+                              }
+                            });
+                          }
+                        }}
+                        className="p-1 hover:scale-110 transition-transform focus:outline-none"
+                      >
+                        <Star className="w-8 h-8 fill-amber-400 text-amber-400 transition-colors" />
+                      </button>
+                    ))}
+                  </div>
                 </div>
+                
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">Title</label>
-                  <input type="text" name="reviewTitle" placeholder="Summary of your experience" className="w-full p-2 text-sm border border-gray-300 rounded-sm focus:outline-none focus:border-black" />
+                  <label className="block text-sm font-bold text-gray-900 mb-2">Review Title (Optional)</label>
+                  <input type="text" name="reviewTitle" placeholder="Sum up your experience in a few words" className="w-full px-4 py-3 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-black/5 focus:border-black transition-all" />
                 </div>
+                
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">Review</label>
-                  <textarea name="comment" required placeholder="Tell others what you think..." rows={3} className="w-full p-2 text-sm border border-gray-300 rounded-sm focus:outline-none focus:border-black"></textarea>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">Your Review</label>
+                  <textarea name="comment" required placeholder="What did you like or dislike? How's the quality?" rows={4} className="w-full px-4 py-3 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-black/5 focus:border-black transition-all resize-none"></textarea>
                 </div>
-                <button type="submit" className="px-6 py-2.5 bg-black text-white text-xs font-black uppercase tracking-widest rounded-sm hover:bg-gray-800 transition-colors">
-                  Submit Review
-                </button>
+                
+                <div className="pt-2 flex justify-end gap-3">
+                  <button type="button" onClick={() => document.getElementById("review-form")?.classList.add("hidden")} className="px-6 py-3 text-sm font-bold text-gray-500 hover:text-black transition-colors">
+                    Cancel
+                  </button>
+                  <button type="submit" className="px-8 py-3 bg-black text-white text-sm font-bold rounded-full hover:bg-gray-800 transition-colors shadow-lg shadow-black/10 hover:shadow-black/20 hover:-translate-y-0.5 active:translate-y-0">
+                    Post Review
+                  </button>
+                </div>
               </div>
             </form>
           </div>
