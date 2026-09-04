@@ -130,12 +130,25 @@ export function CategoryHoverMenu({
 
   return (
     <AnimatePresence>
+      {/* ── 1. DARK BACKDROP OVERLAY (Stops menu from camouflaging with white page) ── */}
       <motion.div
-        initial={{ opacity: 0, y: -6 }}
+        key="hover-backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.18 }}
+        className="fixed inset-0 top-[65px] bg-black/60 backdrop-blur-xs z-30 pointer-events-auto"
+        onClick={onClose}
+      />
+
+      {/* ── 2. FLYOUT MENU PANEL (Sharp contrast & deep shadow) ── */}
+      <motion.div
+        key="hover-panel"
+        initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -6 }}
+        exit={{ opacity: 0, y: -8 }}
         transition={{ duration: 0.18, ease: "easeOut" }}
-        className="absolute top-full left-0 right-0 w-full bg-white border-b-2 border-black shadow-2xl z-40 overflow-hidden"
+        className="absolute top-full left-0 right-0 w-full bg-white border-b border-neutral-300 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.35)] z-40 overflow-hidden"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
@@ -210,16 +223,16 @@ export function CategoryHoverMenu({
                   return (
                     <Link
                       key={product._id || product.id}
-                      to={`/product/${product.slug || product._id}`}
+                      to={`/products/${product.slug || product._id}`}
                       onClick={onClose}
-                      className="group flex flex-col bg-white rounded-2xl border border-gray-100 hover:border-black p-3 hover:shadow-xl transition-all duration-300 relative"
+                      className="group flex flex-col bg-white rounded-2xl border border-neutral-200 hover:border-black p-3 hover:shadow-xl transition-all duration-300 relative"
                     >
-                      {/* Product Photo Container */}
-                      <div className="relative aspect-[4/5] sm:aspect-square w-full rounded-xl overflow-hidden bg-neutral-100 mb-3 border border-gray-100">
+                      {/* Product Photo Container — object-contain so covers are never zoomed/cropped */}
+                      <div className="relative aspect-[4/5] sm:aspect-square w-full rounded-xl overflow-hidden bg-[#F6F6F7] mb-3 border border-neutral-100 p-2.5 flex items-center justify-center">
                         <img
                           src={imageUrl}
                           alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-500 ease-out"
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 ease-out"
                           onError={(e) => {
                             ;(e.target as HTMLImageElement).src = "/small.png"
                           }}
