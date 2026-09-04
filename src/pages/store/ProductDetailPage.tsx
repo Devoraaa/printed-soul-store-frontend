@@ -342,20 +342,7 @@ export function ProductDetailPage() {
               )}
             </div>
 
-            {/* Live Social Proof (like original website) */}
-            <div className="space-y-1.5 py-1">
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-700">
-                <span className="text-red-500">🔥</span>
-                <span><strong className="text-black">17 sold</strong> in last 20 hours</span>
-              </div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm bg-gray-100 border border-gray-200 text-xs font-medium text-gray-800">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <span><strong>15 peoples</strong> are viewing this right now</span>
-              </div>
-            </div>
+
 
             {/* Case Type Switcher */}
             {showSwitcher && designVariants.length > 0 && (
