@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Suspense, lazy } from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { AuthProvider, useAuth } from "./context/AuthContext"
@@ -9,16 +9,18 @@ import { ScrollToTop } from "./components/ScrollToTop"
 import { StoreLayout } from "./components/layouts/StoreLayout"
 import { AuthLayout } from "./components/layouts/AuthLayout"
 
-// Store Pages
-import { HomePage } from "./pages/store/HomePage"
-import { ProductsPage } from "./pages/store/ProductsPage"
-import { ProductDetailPage } from "./pages/store/ProductDetailPage"
-import { CategoryPage } from "./pages/store/CategoryPage"
-import { PhoneCoversHubPage } from "./pages/store/PhoneCoversHubPage"
-import { CartPage } from "./pages/store/CartPage"
-import { CheckoutPage } from "./pages/store/CheckoutPage"
-import { OrderSuccessPage } from "./pages/store/OrderSuccessPage"
-import { OrderTrackingPage } from "./pages/store/OrderTrackingPage"
+// Lazy-loaded Store Pages
+const HomePage = lazy(() => import('./pages/store/HomePage').then(m => ({ default: m.HomePage })))
+const ProductsPage = lazy(() => import('./pages/store/ProductsPage').then(m => ({ default: m.ProductsPage })))
+const ProductDetailPage = lazy(() => import('./pages/store/ProductDetailPage').then(m => ({ default: m.ProductDetailPage })))
+const CategoryPage = lazy(() => import('./pages/store/CategoryPage').then(m => ({ default: m.CategoryPage })))
+const PhoneCoversHubPage = lazy(() => import('./pages/store/PhoneCoversHubPage').then(m => ({ default: m.PhoneCoversHubPage })))
+const CartPage = lazy(() => import('./pages/store/CartPage').then(m => ({ default: m.CartPage })))
+const CheckoutPage = lazy(() => import('./pages/store/CheckoutPage').then(m => ({ default: m.CheckoutPage })))
+const OrderSuccessPage = lazy(() => import('./pages/store/OrderSuccessPage').then(m => ({ default: m.OrderSuccessPage })))
+const OrderTrackingPage = lazy(() => import('./pages/store/OrderTrackingPage').then(m => ({ default: m.OrderTrackingPage })))
+const AboutPage = lazy(() => import('./pages/store/AboutPage').then(m => ({ default: m.AboutPage })))
+const ContactPage = lazy(() => import('./pages/store/ContactPage').then(m => ({ default: m.ContactPage })))
 
 // Auth Pages
 import { LoginPage } from "./pages/auth/LoginPage"
@@ -45,6 +47,12 @@ const ProtectedRoute = ({ children, roles }: { children: React.ReactNode; roles?
   return <>{children}</>
 }
 
+const PageLoader = () => (
+  <div className="h-screen flex items-center justify-center">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+  </div>
+)
+
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -52,38 +60,42 @@ export default function App() {
         <CartProvider>
           <BrowserRouter>
             <ScrollToTop />
-            <Routes>
-              {/* Store */}
-              <Route path="/" element={<StoreLayout />}>
-                <Route index element={<HomePage />} />
-                <Route path="products" element={<ProductsPage />} />
-                <Route path="products/:slug" element={<ProductDetailPage />} />
-                <Route path="phone-covers" element={<PhoneCoversHubPage />} />
-                <Route path="categories/:slug" element={<CategoryPage />} />
-                <Route path="cart" element={<CartPage />} />
-                <Route path="track" element={<OrderTrackingPage />} />
-                <Route path="checkout" element={<CheckoutPage />} />
-                <Route path="order-success/:id" element={<OrderSuccessPage />} />
-              </Route>
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                {/* Store */}
+                <Route path="/" element={<StoreLayout />}>
+                  <Route index element={<HomePage />} />
+                  <Route path="products" element={<ProductsPage />} />
+                  <Route path="products/:slug" element={<ProductDetailPage />} />
+                  <Route path="phone-covers" element={<PhoneCoversHubPage />} />
+                  <Route path="categories/:slug" element={<CategoryPage />} />
+                  <Route path="cart" element={<CartPage />} />
+                  <Route path="track" element={<OrderTrackingPage />} />
+                  <Route path="checkout" element={<CheckoutPage />} />
+                  <Route path="order-success/:id" element={<OrderSuccessPage />} />
+                  <Route path="about" element={<AboutPage />} />
+                  <Route path="contact" element={<ContactPage />} />
+                </Route>
 
-              {/* Auth */}
-              <Route element={<AuthLayout />}>
-                <Route path="login" element={<LoginPage />} />
-                <Route path="register" element={<RegisterPage />} />
-                <Route path="forgot-password" element={<ForgotPasswordPage />} />
-              </Route>
+                {/* Auth */}
+                <Route element={<AuthLayout />}>
+                  <Route path="login" element={<LoginPage />} />
+                  <Route path="register" element={<RegisterPage />} />
+                  <Route path="forgot-password" element={<ForgotPasswordPage />} />
+                </Route>
 
-              {/* Account */}
-              <Route path="account" element={<ProtectedRoute><StoreLayout /></ProtectedRoute>}>
-                <Route index element={<AccountDashboardPage />} />
-                <Route path="orders" element={<OrdersPage />} />
-                <Route path="orders/:id" element={<OrderDetailPage />} />
-                <Route path="addresses" element={<AddressesPage />} />
-                <Route path="profile" element={<ProfilePage />} />
-              </Route>
+                {/* Account */}
+                <Route path="account" element={<ProtectedRoute><StoreLayout /></ProtectedRoute>}>
+                  <Route index element={<AccountDashboardPage />} />
+                  <Route path="orders" element={<OrdersPage />} />
+                  <Route path="orders/:id" element={<OrderDetailPage />} />
+                  <Route path="addresses" element={<AddressesPage />} />
+                  <Route path="profile" element={<ProfilePage />} />
+                </Route>
 
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Suspense>
           </BrowserRouter>
         </CartProvider>
       </AuthProvider>

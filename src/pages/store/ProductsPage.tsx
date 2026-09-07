@@ -5,6 +5,7 @@ import { Filter, X, Search, SlidersHorizontal, ChevronDown, ChevronRight } from 
 import { productApi, catalogApi } from "../../lib/api"
 import { ProductCard } from "../../components/ui/ProductCard"
 import { formatPrice } from "../../lib/utils"
+import { SEO } from "../../components/ui/SEO"
 
 export function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -394,8 +395,96 @@ export function ProductsPage() {
     </div>
   )
 
+  // Dynamic SEO metadata computation
+  const getProductsPageSEO = () => {
+    let title = "Custom Phone Cases & Designer Merchandise"
+    let description =
+      "Explore Printed Soul's curated collection of custom mobile back covers, 9H toughened glass cases, dual protection armor cases, and personalized accessories."
+    let keywords = ["phone covers online india", "custom phone cases", "Printed Soul", "buy mobile cover"]
+    let canonical = "https://printedsoul.in/products"
+
+    if (subCategoryParam === "dual-case") {
+      title = "Dual Protection Phone Cases | 10FT Drop Armor Covers"
+      description =
+        "Shop heavy-duty dual protection shockproof phone covers at Printed Soul. Built with impact-absorbing TPU and tough polycarbonate back. Free shipping above ₹499."
+      keywords = [
+        "dual protection case",
+        "shockproof phone cover",
+        "heavy duty back cover",
+        "drop protection case india",
+        "Printed Soul",
+      ]
+      canonical = "https://printedsoul.in/products?category=covers&subCategory=dual-case"
+    } else if (subCategoryParam === "glass-case") {
+      title = "Toughened Glass Phone Cases | 9H Scratch Proof Back Covers"
+      description =
+        "Shop vibrant 9H tempered glass back phone covers with optical clarity, scratch resistance, and raised camera bezels. Express your style at Printed Soul India."
+      keywords = [
+        "toughened glass phone case",
+        "9H glass mobile cover",
+        "glass back cover",
+        "vibrant glass case",
+        "Printed Soul",
+      ]
+      canonical = "https://printedsoul.in/products?category=covers&subCategory=glass-case"
+    } else if (subCategoryParam === "metal-case") {
+      title = "Metal Armor Phone Cases | Matte Brushed Metallic Covers"
+      description =
+        "Discover luxury metal armor mobile cases at Printed Soul. Engineered with brushed metallic finish and rugged shock resistance for maximum durability."
+      keywords = [
+        "metal armor case",
+        "metal back phone cover",
+        "aluminum bumper case india",
+        "Printed Soul",
+      ]
+      canonical = "https://printedsoul.in/products?category=covers&subCategory=metal-case"
+    } else if (brandParam) {
+      const bName = brandParam.toUpperCase()
+      title = `${bName} Phone Cases & Back Covers`
+      description = `Shop the best designer, glass & shockproof cases for ${bName} mobile phones at Printed Soul. Precision fit & fast delivery across India.`
+      keywords = [`${brandParam} phone cover`, `${brandParam} cases`, `custom ${brandParam} covers`, "Printed Soul"]
+      canonical = `https://printedsoul.in/products?category=covers&brand=${brandParam}`
+    } else if (selectedCatObj) {
+      title = `${selectedCatObj.name} Collection`
+      description =
+        selectedCatObj.description ||
+        `Explore custom printed ${selectedCatObj.name.toLowerCase()} at Printed Soul. Premium quality, vibrant colors & fast shipping.`
+      keywords = [selectedCatObj.name, `${selectedCatObj.name} online`, "Printed Soul"]
+      canonical = `https://printedsoul.in/products?category=${selectedCatObj.slug || categoryParam}`
+    }
+
+    const structuredData = [
+      {
+        "@type": "CollectionPage",
+        "name": title,
+        "description": description,
+        "url": canonical,
+        "mainEntity": {
+          "@type": "ItemList",
+          "itemListElement": products.slice(0, 12).map((p: any, idx: number) => ({
+            "@type": "ListItem",
+            "position": idx + 1,
+            "url": `https://printedsoul.in/products/${p.slug || p._id}`,
+            "name": p.name,
+          })),
+        },
+      },
+    ]
+
+    return { title, description, keywords, canonical, structuredData }
+  }
+
+  const seoData = getProductsPageSEO()
+
   return (
     <div className="bg-[#FAFAFA] min-h-screen text-gray-900 antialiased selection:bg-black selection:text-white">
+      <SEO
+        title={seoData.title}
+        description={seoData.description}
+        keywords={seoData.keywords}
+        canonicalUrl={seoData.canonical}
+        structuredData={seoData.structuredData}
+      />
 
       {/* Page Header */}
       <div className="bg-white border-b border-gray-200">

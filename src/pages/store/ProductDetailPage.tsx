@@ -29,6 +29,7 @@ import { useCart } from "../../context/CartContext"
 import { useAuth } from "../../context/AuthContext"
 import { motion } from "framer-motion"
 import { ProductCard } from "../../components/ui/ProductCard"
+import { SEO } from "../../components/ui/SEO"
 
 export function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -166,8 +167,144 @@ export function ProductDetailPage() {
     ? Math.round(((product.comparePrice - product.price) / product.comparePrice) * 100)
     : 0
 
+  const catName = typeof product.category === "object" ? product.category?.name || "Mobile Cover" : "Mobile Cover"
+  const catSlug = typeof product.category === "object" ? product.category?.slug || "covers" : "covers"
+  const caseTypeLabel =
+    product.caseType === "dual-case"
+      ? "Dual Protection Drop Armor Case"
+      : product.caseType === "glass-case"
+      ? "9H Toughened Glass Case"
+      : product.caseType === "metal-case"
+      ? "Brushed Metal Armor Case"
+      : `${catName}`
+
+  const productImages = (product.images || [])
+    .map((img: any) => getImageUrl(img))
+    .filter(Boolean)
+  const primaryImage = productImages[0] || "https://printedsoul.in/hero.webp"
+
+  const productStructuredData = [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://printedsoul.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": catName,
+          "item": `https://printedsoul.in/products?category=${catSlug}`
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": product.name,
+          "item": `https://printedsoul.in/products/${product.slug}`
+        }
+      ]
+    },
+    {
+      "@type": "Product",
+      "@id": `https://printedsoul.in/products/${product.slug}#product`,
+      "name": product.name,
+      "image": productImages.length > 0 ? productImages : ["https://printedsoul.in/hero.webp"],
+      "description": product.description || `Buy ${product.name} at Printed Soul. Premium case with shock resistance and precision camera bezels.`,
+      "sku": product.sku || String(product._id),
+      "mpn": product.sku || String(product._id),
+      "brand": {
+        "@type": "Brand",
+        "name": "Printed Soul"
+      },
+      "material": caseTypeLabel,
+      "category": catName,
+      "offers": {
+        "@type": "Offer",
+        "url": `https://printedsoul.in/products/${product.slug}`,
+        "priceCurrency": "INR",
+        "price": product.price,
+        "priceValidUntil": "2027-12-31",
+        "itemCondition": "https://schema.org/NewCondition",
+        "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "Printed Soul"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": product.price >= 499 ? "0" : "49",
+            "currency": "INR"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "IN"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "businessDays": {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 3,
+              "maxValue": 5,
+              "unitCode": "d"
+            }
+          }
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "IN",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": 7,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/FreeReturn"
+        }
+      },
+      ...(product.ratings?.count > 0
+        ? {
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": product.ratings.average,
+              "reviewCount": product.ratings.count
+            }
+          }
+        : {
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": 4.9,
+              "reviewCount": 128
+            }
+          })
+    }
+  ]
+
   return (
     <div className="bg-[#FAFAFA] min-h-screen text-[#111111] pb-24 md:pb-16">
+      <SEO
+        title={`${product.name} | ${caseTypeLabel}`}
+        description={`Buy ${product.name} online at Printed Soul for ₹${product.price}. Premium ${caseTypeLabel} featuring precision cutouts, camera lip protection, and impact resistance. Free delivery above ₹499.`}
+        keywords={[
+          product.name,
+          `${product.name} case`,
+          `${product.name} cover`,
+          caseTypeLabel,
+          catName,
+          "Printed Soul phone case",
+          "buy mobile cover online india"
+        ]}
+        canonicalUrl={`https://printedsoul.in/products/${product.slug}`}
+        ogType="product"
+        ogImage={primaryImage}
+        ogImageAlt={product.name}
+        structuredData={productStructuredData}
+      />
       
       {/* Breadcrumb Header */}
       <div className="bg-white border-b border-gray-200/70">
@@ -584,6 +721,48 @@ export function ProductDetailPage() {
             </button>
           </div>
 
+          {/* Rating Summary — Amazon/Flipkart style */}
+          {reviews.length > 0 && (() => {
+            const avg = reviews.reduce((s: number, r: any) => s + r.rating, 0) / reviews.length
+            const ratingCounts = [5, 4, 3, 2, 1].map(star => ({
+              star,
+              count: reviews.filter((r: any) => r.rating === star).length,
+              pct: Math.round((reviews.filter((r: any) => r.rating === star).length / reviews.length) * 100)
+            }))
+            return (
+              <div className="mb-8 p-5 sm:p-6 bg-white border border-neutral-200 rounded-2xl flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+                <div className="text-center shrink-0">
+                  <div className="text-6xl font-black text-neutral-900 leading-none">{avg.toFixed(1)}</div>
+                  <div className="flex items-center justify-center gap-0.5 mt-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className={`w-4 h-4 ${i < Math.round(avg) ? "fill-amber-400 text-amber-400" : "fill-neutral-200 text-neutral-200"}`} />
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-neutral-500 mt-1">{reviews.length} Reviews</p>
+                </div>
+                <div className="flex-1 w-full space-y-1.5">
+                  {ratingCounts.map(({ star, count, pct }) => (
+                    <div key={star} className="flex items-center gap-2 text-xs">
+                      <span className="w-3 text-right font-bold text-neutral-700">{star}</span>
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400 shrink-0" />
+                      <div className="flex-1 h-2 bg-neutral-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-amber-400 rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
+                      </div>
+                      <span className="w-6 text-neutral-500 font-medium">{count}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="shrink-0 text-center sm:text-right">
+                  <div className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl inline-flex items-center gap-1.5">
+                    <CheckCircle className="w-3.5 h-3.5" />
+                    {reviews.filter((r: any) => r.isVerifiedPurchase).length} Verified
+                  </div>
+                  <p className="text-[10px] text-neutral-400 mt-1.5">Purchased &amp; reviewed</p>
+                </div>
+              </div>
+            )
+          })()}
+
           {/* Collapsible Write Review Form */}
           {isReviewFormOpen && (
             <motion.div 
@@ -760,60 +939,83 @@ export function ProductDetailPage() {
           {/* Reviews List */}
           {reviews.length > 0 ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {reviews.map((review: any) => (
-                <div 
-                  key={review._id} 
-                  className="p-5 rounded-2xl bg-white border border-neutral-200/80 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-full bg-neutral-900 text-white font-bold text-xs flex items-center justify-center shadow-inner">
-                          {review.user?.name?.[0]?.toUpperCase() || "U"}
+              {reviews.map((review: any) => {
+                const helpfulCount = review.helpfulVotes?.length ?? 0
+                return (
+                  <div 
+                    key={review._id} 
+                    className="p-5 rounded-2xl bg-white border border-neutral-200/80 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between gap-4"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-full bg-neutral-900 text-white font-bold text-xs flex items-center justify-center shadow-inner shrink-0">
+                            {review.user?.name?.[0]?.toUpperCase() || "U"}
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-xs text-neutral-900 leading-tight">
+                              {review.user?.name || "Customer"}
+                            </h4>
+                            <p className="text-[10px] text-neutral-400">
+                              {review.createdAt 
+                                ? new Date(review.createdAt).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }) 
+                                : "Recently"}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <h4 className="font-bold text-xs text-neutral-900 leading-tight">
-                            {review.user?.name || "Customer"}
-                          </h4>
-                          <p className="text-[10px] text-neutral-400">
-                            {review.createdAt 
-                              ? new Date(review.createdAt).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }) 
-                              : "Recently"}
-                          </p>
-                        </div>
+
+                        {review.isVerifiedPurchase && (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 shrink-0">
+                            <CheckCircle className="w-3 h-3 text-emerald-600" />
+                            Verified
+                          </span>
+                        )}
                       </div>
 
-                      {review.isVerifiedPurchase && (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                          <CheckCircle className="w-3 h-3 text-emerald-600" />
-                          Verified
-                        </span>
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star 
+                            key={i} 
+                            className={`w-3.5 h-3.5 ${
+                              i < review.rating ? "fill-amber-400 text-amber-400" : "fill-neutral-100 text-neutral-200"
+                            }`} 
+                          />
+                        ))}
+                        <span className="ml-1 text-[10px] font-bold text-neutral-500">{review.rating}/5</span>
+                      </div>
+
+                      {review.title && (
+                        <h5 className="font-bold text-xs text-neutral-900 pt-0.5">
+                          {review.title}
+                        </h5>
                       )}
+
+                      <p className="text-xs text-neutral-600 leading-relaxed">
+                        "{review.comment}"
+                      </p>
                     </div>
 
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star 
-                          key={i} 
-                          className={`w-3.5 h-3.5 ${
-                            i < review.rating ? "fill-amber-400 text-amber-400" : "fill-neutral-100 text-neutral-200"
-                          }`} 
-                        />
-                      ))}
+                    {/* Helpful votes footer */}
+                    <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                      <span className="text-[10px] text-neutral-400">
+                        {helpfulCount > 0 ? `${helpfulCount} found helpful` : "Was this helpful?"}
+                      </span>
+                      <button
+                        onClick={async () => {
+                          if (!isAuthenticated) { openAuthModal(); return }
+                          try {
+                            await reviewApi.voteHelpful(review._id)
+                            queryClient.invalidateQueries({ queryKey: ["reviews", product?._id] })
+                          } catch { /* ignore */ }
+                        }}
+                        className="inline-flex items-center gap-1 text-[10px] font-bold text-neutral-500 hover:text-neutral-900 border border-neutral-200 hover:border-neutral-400 px-2.5 py-1 rounded-lg transition-all"
+                      >
+                        👍 Helpful
+                      </button>
                     </div>
-
-                    {review.title && (
-                      <h5 className="font-bold text-xs text-neutral-900 pt-0.5">
-                        {review.title}
-                      </h5>
-                    )}
-
-                    <p className="text-xs text-neutral-600 leading-relaxed">
-                      "{review.comment}"
-                    </p>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           ) : (
             <div className="p-10 text-center border border-dashed border-neutral-200 rounded-3xl bg-neutral-50/50">

@@ -126,6 +126,7 @@ export const addressApi = {
 export const reviewApi = {
   getForProduct: (productId: string) => api.get(`/user/reviews/${productId}`),
   create: (data: any) => api.post("/user/reviews", data),
+  voteHelpful: (reviewId: string) => api.put(`/user/reviews/${reviewId}/helpful`),
   adminGetAll: () => api.get("/user/admin/reviews"),
   approve: (id: string) => api.put(`/user/admin/reviews/${id}/approve`),
   delete: (id: string) => api.delete(`/user/admin/reviews/${id}`),

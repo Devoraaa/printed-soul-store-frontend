@@ -8,6 +8,7 @@ import {
 import { productApi, catalogApi, bannerApi, socialPostApi } from "../../lib/api"
 import { getImageUrl } from "../../lib/utils"
 import { ProductCard } from "../../components/ui/ProductCard"
+import { SEO } from "../../components/ui/SEO"
 
 export function HomePage() {
   const navigate = useNavigate()
@@ -156,16 +157,64 @@ export function HomePage() {
 
   // Category fallback images
   const getCatFallback = (slug: string) => {
-    if (slug.includes("coaster")) return "/costers.png"
-    if (slug.includes("glass") || slug.includes("iphone") || slug.includes("case")) return "/glass.png"
-    if (slug.includes("dual")) return "/small.png"
-    if (slug.includes("metal")) return "/metal.png"
-    if (slug.includes("mug")) return "/mug.png"
-    return "/hero.png"
+    if (slug.includes("coaster")) return "/costers.webp"
+    if (slug.includes("glass") || slug.includes("iphone") || slug.includes("case")) return "/glass.webp"
+    if (slug.includes("dual")) return "/small.webp"
+    if (slug.includes("metal")) return "/metal.webp"
+    if (slug.includes("mug")) return "/mug.webp"
+    return "/hero.webp"
   }
+
+  const homeStructuredData = [
+    {
+      "@type": "WebSite",
+      "@id": "https://printedsoul.in/#website",
+      "name": "Printed Soul",
+      "url": "https://printedsoul.in",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://printedsoul.in/products?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "ItemList",
+      "name": "Featured Mobile Covers & Accessories",
+      "itemListElement": featured.slice(0, 10).map((prod: any, idx: number) => ({
+        "@type": "ListItem",
+        "position": idx + 1,
+        "url": `https://printedsoul.in/products/${prod.slug || prod._id}`,
+        "name": prod.name,
+        "image": getImageUrl(prod.images?.[0]) || "https://printedsoul.in/hero.webp"
+      }))
+    }
+  ]
 
   return (
     <div className="bg-white text-neutral-900 antialiased">
+      <SEO
+        title="Buy Custom Phone Cases, Glass & Metal Covers Online India"
+        description="Shop India's most protective custom phone cases, 9H toughened glass covers, dual protection shockproof cases, and metal armor cases for Apple, Samsung, Vivo, Oppo & more at Printed Soul. Free shipping above ₹499."
+        keywords={[
+          "Printed Soul",
+          "buy phone covers online india",
+          "custom phone cases india",
+          "toughened glass phone case",
+          "dual protection shockproof cover",
+          "metal armor mobile cover",
+          "aesthetic phone covers",
+          "anime phone case india",
+          "designer mobile covers",
+          "custom printed mugs",
+          "wall frames india"
+        ]}
+        canonicalUrl="https://printedsoul.in/"
+        structuredData={homeStructuredData}
+      />
+
+      <h1 className="sr-only">
+        Printed Soul — Buy Custom Phone Cases, Toughened Glass &amp; Metal Armor Covers Online India
+      </h1>
 
       {/* ═══════════════════════════════════════════
           1. HERO SLIDER

@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react"
-import { Outlet, Link, useNavigate } from "react-router-dom"
+import React, { useState, useRef, useEffect } from "react"
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom"
 import { ShoppingBag, Search, Menu, X, User, Package, LogOut, ChevronDown } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { useAuth } from "../../context/AuthContext"
@@ -18,38 +18,46 @@ export function StoreLayout() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
 
-  // Category Hover Menu State
+  // Hover menu state
   const [hoveredCategory, setHoveredCategory] = useState<HoverCategoryItem | null>(null)
   const [isHoverMenuOpen, setIsHoverMenuOpen] = useState(false)
-  const closeTimerRef = useRef<any>(null)
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  const handleCategoryMouseEnter = (catItem: HoverCategoryItem) => {
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
-    setHoveredCategory(catItem)
+  // Auto-close menu on route change
+  useEffect(() => {
+    setIsHoverMenuOpen(false)
+  }, [location.pathname, location.search])
+
+  const handleCategoryMouseEnter = (cat: HoverCategoryItem) => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current)
+    setHoveredCategory(cat)
     setIsHoverMenuOpen(true)
   }
 
   const handleCategoryMouseLeave = () => {
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
-    closeTimerRef.current = setTimeout(() => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current)
+    hoverTimeoutRef.current = setTimeout(() => {
       setIsHoverMenuOpen(false)
-      setHoveredCategory(null)
     }, 200)
   }
 
   const handleMenuMouseEnter = () => {
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current)
+    setIsHoverMenuOpen(true)
   }
 
   const handleMenuMouseLeave = () => {
-    handleCategoryMouseLeave()
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current)
+    hoverTimeoutRef.current = setTimeout(() => {
+      setIsHoverMenuOpen(false)
+    }, 200)
   }
 
   const handleMenuClose = () => {
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current)
     setIsHoverMenuOpen(false)
-    setHoveredCategory(null)
   }
 
   // Fetch categories dynamically for navbar
@@ -59,7 +67,9 @@ export function StoreLayout() {
     staleTime: 60 * 60 * 1000,
   })
 
-  const categories = (categoriesData?.data?.data || []).filter((c: any) => !c.parentCategory)
+  const categories = (categoriesData?.data?.data || [])
+    .filter((c: any) => !c.parentCategory)
+    .sort((a: any, b: any) => (a.sortOrder ?? 99) - (b.sortOrder ?? 99))
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -68,15 +78,12 @@ export function StoreLayout() {
       <CartDrawer isOpen={cartDrawerOpen} onClose={() => setCartDrawerOpen(false)} />
 
       {/* ─── Main Navbar ───────────────────────────── */}
-      <header 
-        className="sticky top-0 z-50 w-full bg-white border-b-2 border-black shadow-sm"
-        onMouseLeave={handleCategoryMouseLeave}
-      >
+      <header className="sticky top-0 z-50 w-full bg-white border-b-2 border-black shadow-sm relative">
         <div className="max-w-[1700px] mx-auto px-3 md:px-6">
           <div className="flex h-14 items-center justify-between gap-4">
 
             {/* Official Printed Soul Unified Horizontal Logo */}
-            <Link to="/" className="flex items-center shrink-0 group py-1" onClick={handleMenuClose}>
+            <Link to="/" onMouseEnter={handleMenuClose} className="flex items-center shrink-0 group py-1">
               <img
                 src="/logo-horizontal.png"
                 alt="Printed Soul"
@@ -84,11 +91,10 @@ export function StoreLayout() {
               />
             </Link>
 
-            {/* ─── Category Nav (desktop) with Photo Hover ───────────── */}
+            {/* ─── Category Nav (desktop) ───────────── */}
             <nav className="hidden lg:flex items-center gap-0 flex-1 overflow-x-auto hide-scrollbar">
               <Link
                 to="/"
-                onClick={handleMenuClose}
                 onMouseEnter={handleMenuClose}
                 className="px-3.5 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
               >
@@ -97,8 +103,14 @@ export function StoreLayout() {
 
               <Link
                 to="/products?sort=new"
-                onClick={handleMenuClose}
-                onMouseEnter={() => handleCategoryMouseEnter({ type: "new", name: "New Arrivals", slug: "new-arrivals" })}
+                onMouseEnter={() =>
+                  handleCategoryMouseEnter({
+                    type: "new",
+                    name: "New Arrivals",
+                    slug: "new",
+                  })
+                }
+                onMouseLeave={handleCategoryMouseLeave}
                 className="px-3.5 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap flex items-center gap-1.5"
               >
                 <span>New Arrivals</span>
@@ -110,8 +122,17 @@ export function StoreLayout() {
                 <Link
                   key={cat._id}
                   to={`/products?category=${cat.slug || cat._id}`}
-                  onClick={handleMenuClose}
-                  onMouseEnter={() => handleCategoryMouseEnter({ type: "category", _id: cat._id, name: cat.name, slug: cat.slug })}
+                  onMouseEnter={() =>
+                    handleCategoryMouseEnter({
+                      type: "category",
+                      _id: cat._id,
+                      name: cat.name,
+                      slug: cat.slug,
+                      description: cat.description,
+                      subcategories: cat.subcategories,
+                    })
+                  }
+                  onMouseLeave={handleCategoryMouseLeave}
                   className="px-3.5 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
                 >
                   {cat.name}
@@ -120,8 +141,14 @@ export function StoreLayout() {
 
               <Link
                 to="/products"
-                onClick={handleMenuClose}
-                onMouseEnter={() => handleCategoryMouseEnter({ type: "all", name: "Shop All", slug: "all" })}
+                onMouseEnter={() =>
+                  handleCategoryMouseEnter({
+                    type: "all",
+                    name: "All Collections",
+                    slug: "all",
+                  })
+                }
+                onMouseLeave={handleCategoryMouseLeave}
                 className="px-3.5 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
               >
                 Shop All
@@ -129,7 +156,7 @@ export function StoreLayout() {
             </nav>
 
             {/* ─── Action Icons ────────────────────── */}
-            <div className="flex items-center gap-0.5 sm:gap-1.5 shrink-0">
+            <div onMouseEnter={handleMenuClose} className="flex items-center gap-0.5 sm:gap-1.5 shrink-0">
               {/* Search */}
               <button
                 onClick={() => setSearchOpen(true)}
@@ -230,7 +257,7 @@ export function StoreLayout() {
           </div>
         )}
 
-        {/* ── Category Hover Flyout (Latest Photos & Drops) ── */}
+        {/* Compact Category Hover Dropdown */}
         <CategoryHoverMenu
           isOpen={isHoverMenuOpen}
           activeCategory={hoveredCategory}
@@ -292,11 +319,18 @@ export function StoreLayout() {
               </ul>
             </div>
             <div>
+              <h4 className="font-semibold mb-3 text-xs text-white uppercase tracking-widest">Company</h4>
+              <ul className="space-y-2 text-xs">
+                <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
+                <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
+              </ul>
+            </div>
+            <div>
               <h4 className="font-semibold mb-3 text-xs text-white uppercase tracking-widest">Support</h4>
               <ul className="space-y-2 text-xs">
-                <li><a href="mailto:support@printedsoul.com" className="hover:text-white transition-colors">Contact Us</a></li>
-                <li><Link to="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
-                <li><Link to="/returns" className="hover:text-white transition-colors">Returns</Link></li>
+                <li><Link to="/track" className="hover:text-white transition-colors">Track Order</Link></li>
+                <li><a href="https://wa.me/919999999999?text=Hi%20Printed%20Soul%2C%20I%20need%20help" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">WhatsApp Support</a></li>
+                <li><a href="mailto:support@printedsoul.in" className="hover:text-white transition-colors">Email Support</a></li>
               </ul>
             </div>
             <div>

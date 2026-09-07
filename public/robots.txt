@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+Disallow: /account/
+Disallow: /cart
+Disallow: /checkout
+Disallow: /order-success/
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+
+# Googlebot specific directives
+User-agent: Googlebot
+Allow: /
+Disallow: /account/
+Disallow: /cart
+Disallow: /checkout
+Disallow: /order-success/
+
+# Google Image Bot
+User-agent: Googlebot-Image
+Allow: /
+Allow: /uploads/
+
+Sitemap: https://printedsoul.in/sitemap.xml

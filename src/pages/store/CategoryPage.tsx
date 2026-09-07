@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 import { ChevronDown, Sparkles } from "lucide-react"
 import { productApi, catalogApi } from "../../lib/api"
 import { ProductCard } from "../../components/ui/ProductCard"
+import { SEO } from "../../components/ui/SEO"
 
 export function CategoryPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -59,9 +60,58 @@ export function CategoryPage() {
   const products = productsData?.data?.data || []
 
   const isPhoneCategory = category?.slug?.match(/case|cover|glass|armor|silicone|phone/i) || category?.name?.match(/case|cover|glass|armor|silicone|phone/i);
+  const catTitle = category?.name || slug || "Collection"
+
+  const categoryStructuredData = [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://printedsoul.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Collections",
+          "item": "https://printedsoul.in/products"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": catTitle,
+          "item": `https://printedsoul.in/categories/${slug}`
+        }
+      ]
+    },
+    {
+      "@type": "CollectionPage",
+      "name": `${catTitle} Collection`,
+      "description": category?.description || `Explore our premium ${catTitle} at Printed Soul.`,
+      "url": `https://printedsoul.in/categories/${slug}`,
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": products.slice(0, 12).map((p: any, idx: number) => ({
+          "@type": "ListItem",
+          "position": idx + 1,
+          "url": `https://printedsoul.in/products/${p.slug || p._id}`,
+          "name": p.name
+        }))
+      }
+    }
+  ]
 
   return (
     <div className="bg-[#FAFAFA] min-h-screen text-gray-900 antialiased selection:bg-black selection:text-white">
+      <SEO
+        title={`${catTitle} Collection`}
+        description={category?.description || `Explore our premium ${catTitle} collection at Printed Soul. Expertly crafted with precision and style. Free shipping above ₹499.`}
+        keywords={[catTitle, `${catTitle} online`, "custom phone cases", "Printed Soul", "buy online india"]}
+        canonicalUrl={`https://printedsoul.in/categories/${slug}`}
+        structuredData={categoryStructuredData}
+      />
       
       {/* Clean SEO-friendly Category Header */}
       <div className="bg-white border-b border-gray-200/80">
