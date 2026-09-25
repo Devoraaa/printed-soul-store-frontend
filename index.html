@@ -48,10 +48,17 @@
     <meta name="twitter:image" content="https://printedsoul.in/hero.webp" />
     <meta name="twitter:site" content="@PrintedSoul" />
 
-    <!-- Fonts preconnect -->
+    <!-- Fonts preconnect and non-blocking load -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    </noscript>
+
+    <!-- Preload Critical LCP Asset -->
+    <link rel="preload" as="image" href="/hero.webp" fetchpriority="high" type="image/webp" />
 
     <!-- Master Schema: Organization + WebSite with Sitelinks Searchbox -->
     <script type="application/ld+json">

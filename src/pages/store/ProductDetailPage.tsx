@@ -303,6 +303,16 @@ export function ProductDetailPage() {
         ogType="product"
         ogImage={primaryImage}
         ogImageAlt={product.name}
+        price={product.salePrice || product.price}
+        currency="INR"
+        availability={product.stock > 0 ? "in stock" : "out of stock"}
+        brand="Printed Soul"
+        breadcrumbs={[
+          { name: "Home", url: "/" },
+          { name: "Products", url: "/products" },
+          ...(product.category ? [{ name: product.category.name, url: `/categories/${product.category.slug}` }] : []),
+          { name: product.name, url: `/products/${product.slug}` }
+        ]}
         structuredData={productStructuredData}
       />
       
@@ -348,6 +358,9 @@ export function ProductDetailPage() {
               <img
                 src={product.images?.[activeImageIdx] ? getImageUrl(product.images[activeImageIdx]) : "/placeholder.png"}
                 alt={product.name}
+                loading="eager"
+                decoding="sync"
+                fetchPriority="high"
                 className="w-full h-full object-contain p-3 md:p-6 transition-transform duration-700 group-hover:scale-105"
               />
 
@@ -397,7 +410,13 @@ export function ProductDetailPage() {
                         : "border-gray-200 opacity-60 hover:opacity-100 hover:border-gray-300"
                     }`}
                   >
-                    <img src={getImageUrl(imgId)} alt="" className="w-full h-full object-contain p-1" />
+                    <img
+                      src={getImageUrl(imgId)}
+                      alt={`${product.name} thumbnail ${i + 1}`}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-contain p-1"
+                    />
                   </button>
                 ))}
               </div>

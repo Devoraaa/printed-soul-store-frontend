@@ -5,6 +5,7 @@ import { Package, MapPin, User, ShoppingBag } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { orderApi } from "../../lib/api"
 import { formatDate, formatPrice, ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from "../../lib/utils"
+import { SEO } from "../../components/ui/SEO"
 
 const accountLinks = [
   { href: "/account/orders", icon: Package, title: "My Orders", desc: "Track and manage your orders" },
@@ -19,6 +20,7 @@ export function AccountDashboardPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <SEO title="My Account" noindex={true} />
       <div className="mb-8">
         <h1 className="text-2xl font-bold mb-1">My Account</h1>
         <p className="text-muted-foreground">Welcome back, <span className="font-semibold text-foreground">{user?.name}</span>!</p>

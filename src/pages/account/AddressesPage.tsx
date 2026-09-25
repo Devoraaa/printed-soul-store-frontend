@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { Plus, Trash2, MapPin, Check } from "lucide-react"
 import { addressApi } from "../../lib/api"
 import { INDIAN_STATES } from "../../lib/utils"
+import { SEO } from "../../components/ui/SEO"
 
 const emptyForm = { label: "Home", fullName: "", phone: "", street: "", city: "", state: "Maharashtra", pincode: "", country: "India", isDefault: false }
 
@@ -26,6 +27,7 @@ export function AddressesPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
+      <SEO title="Saved Addresses" noindex={true} />
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">My Addresses</h1>
         <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-medium cursor-pointer">

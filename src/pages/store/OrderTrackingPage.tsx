@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 import { orderApi } from "../../lib/api"
 import { formatPrice, formatDate, getImageUrl } from "../../lib/utils"
 import { Search, Package, Truck, CheckCircle2, Clock, MapPin, ExternalLink, AlertCircle, ArrowLeft } from "lucide-react"
+import { SEO } from "../../components/ui/SEO"
 
 const TRACKING_STEPS = [
   { id: "pending", label: "Order Placed", desc: "We have received your order" },
@@ -55,6 +56,16 @@ export function OrderTrackingPage() {
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] py-12 px-4 sm:px-6 lg:px-8">
+      <SEO
+        title="Track Your Order | Live Courier Tracking"
+        description="Track your Printed Soul order in real time. Enter your Order ID or phone number to check live courier delivery status."
+        canonicalUrl="https://printedsoul.in/track"
+        keywords={["track order", "printed soul tracking", "delhivery live tracking", "order status"]}
+        breadcrumbs={[
+          { name: "Home", url: "/" },
+          { name: "Track Order", url: "/track" }
+        ]}
+      />
       <div className="max-w-4xl mx-auto space-y-8">
         
         {/* Header & Back link */}

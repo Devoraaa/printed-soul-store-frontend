@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 import { Package, Download } from "lucide-react"
 import { orderApi } from "../../lib/api"
 import { formatDate, formatPrice, ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from "../../lib/utils"
+import { SEO } from "../../components/ui/SEO"
 
 export function OrdersPage() {
   const { data, isLoading } = useQuery({ queryKey: ["my-orders-all"], queryFn: () => orderApi.getMyOrders() })
@@ -11,6 +12,7 @@ export function OrdersPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
+      <SEO title="My Orders" noindex={true} />
       <h1 className="text-2xl font-bold mb-6">My Orders</h1>
       {isLoading ? (
         <div className="space-y-3">{[...Array(3)].map((_, i) => <div key={i} className="skeleton h-24 rounded-2xl" />)}</div>

@@ -6,6 +6,7 @@ import { orderApi } from "../../lib/api"
 import { useCart } from "../../context/CartContext"
 import { formatPrice, formatDate, ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from "../../lib/utils"
 import { motion } from "framer-motion"
+import { SEO } from "../../components/ui/SEO"
 
 export function OrderSuccessPage() {
   const { id } = useParams<{ id: string }>() // This is actually the orderNumber now
@@ -21,6 +22,7 @@ export function OrderSuccessPage() {
 
   return (
     <div className="container mx-auto px-4 py-16 max-w-2xl text-center">
+      <SEO title="Order Confirmed" noindex={true} />
       <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", duration: 0.5 }}>
         <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
           <CheckCircle className="h-10 w-10 text-green-600" />

@@ -14,7 +14,14 @@ export default defineConfig(({ mode }) => {
         '/uploads': { target: backendUrl, changeOrigin: true }
       }
     },
+    esbuild: {
+      drop: mode === 'production' ? ['console', 'debugger'] : [],
+    },
     build: {
+      target: 'es2020',
+      cssCodeSplit: true,
+      assetsInlineLimit: 4096,
+      chunkSizeWarningLimit: 600,
       rollupOptions: {
         output: {
           manualChunks: {

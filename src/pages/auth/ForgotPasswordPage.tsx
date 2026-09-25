@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { Mail, Loader2, CheckCircle } from "lucide-react"
 import { authApi } from "../../lib/api"
+import { SEO } from "../../components/ui/SEO"
 
 export function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false)
@@ -23,6 +24,7 @@ export function ForgotPasswordPage() {
   if (sent) {
     return (
       <div className="text-center">
+        <SEO title="Reset Password" noindex={true} />
         <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
           <CheckCircle className="h-8 w-8 text-green-600" />
         </div>
@@ -35,6 +37,7 @@ export function ForgotPasswordPage() {
 
   return (
     <div>
+      <SEO title="Forgot Password" noindex={true} />
       <h2 className="text-2xl font-black mb-1">Forgot password?</h2>
       <p className="text-muted-foreground text-sm mb-8">Enter your email and we'll send a reset link.</p>
 

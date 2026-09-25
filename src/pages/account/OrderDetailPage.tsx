@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { ChevronLeft, MapPin, Package, CreditCard, X, Download } from "lucide-react"
 import { orderApi } from "../../lib/api"
 import { formatDate, formatPrice, ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from "../../lib/utils"
+import { SEO } from "../../components/ui/SEO"
 
 export function OrderDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -55,6 +56,7 @@ export function OrderDetailPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
+      <SEO title={`Order #${order.orderNumber}`} noindex={true} />
       <Link to="/account/orders" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
         <ChevronLeft className="h-4 w-4" /> Back to orders
       </Link>

@@ -9,6 +9,7 @@ import { orderApi, addressApi } from "../../lib/api"
 import { useCart } from "../../context/CartContext"
 import { useAuth } from "../../context/AuthContext"
 import { formatPrice, getImageUrl, INDIAN_STATES } from "../../lib/utils"
+import { SEO } from "../../components/ui/SEO"
 
 const PRESET_LABELS = [
   { id: "Home", label: "Home", icon: Home },
@@ -332,6 +333,7 @@ export function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-20">
+      <SEO title="Secure Checkout" noindex={true} />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="flex flex-col lg:flex-row gap-8">

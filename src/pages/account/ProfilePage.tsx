@@ -6,6 +6,7 @@ import {
   Loader2, CheckCircle2, ShieldCheck, Mail, Eye, EyeOff, 
   Lock, KeyRound, AlertCircle, ArrowRight, RotateCw, X 
 } from "lucide-react"
+import { SEO } from "../../components/ui/SEO"
 
 export function ProfilePage() {
   const { user, refreshUser } = useAuth()
@@ -203,6 +204,7 @@ export function ProfilePage() {
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-2xl">
+      <SEO title="My Profile" noindex={true} />
       <div className="mb-8">
         <h1 className="text-3xl font-black text-gray-900 tracking-tight">My Profile</h1>
         <p className="text-sm text-gray-500 mt-1">Manage your personal account settings and security</p>

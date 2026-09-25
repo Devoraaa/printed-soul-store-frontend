@@ -471,7 +471,13 @@ export function ProductsPage() {
       },
     ]
 
-    return { title, description, keywords, canonical, structuredData }
+    const breadcrumbs = [
+      { name: "Home", url: "/" },
+      { name: "Products", url: "/products" },
+      ...(brandParam ? [{ name: `${brandParam.toUpperCase()} Covers`, url: `/products?category=covers&brand=${brandParam}` }] : selectedCatObj ? [{ name: selectedCatObj.name, url: `/products?category=${selectedCatObj.slug}` }] : [])
+    ]
+
+    return { title, description, keywords, canonical, structuredData, breadcrumbs }
   }
 
   const seoData = getProductsPageSEO()
@@ -483,6 +489,7 @@ export function ProductsPage() {
         description={seoData.description}
         keywords={seoData.keywords}
         canonicalUrl={seoData.canonical}
+        breadcrumbs={seoData.breadcrumbs}
         structuredData={seoData.structuredData}
       />
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Loader2, Mail, Lock, Eye, EyeOff, ShieldCheck, ArrowRight, RotateCw, AlertCircle } from "lucide-react"
 import { useAuth } from "../../context/AuthContext"
+import { SEO } from "../../components/ui/SEO"
 
 export function LoginPage() {
   const { loginWithPassword, sendLoginOtp, verifyLoginOtp } = useAuth()
@@ -71,6 +72,7 @@ export function LoginPage() {
 
   return (
     <div>
+      <SEO title="Log In" noindex={true} />
       <h2 className="text-2xl font-black mb-1">Welcome Back</h2>
       <p className="text-muted-foreground text-sm mb-6">Log in to your Printed Soul account</p>
 

@@ -232,10 +232,24 @@ export function HomePage() {
             >
               {banner.link ? (
                 <Link to={banner.link} className="block w-full h-full">
-                  <img src={getImageUrl(banner.imageUrl)} alt={banner.title || "Banner"} className="w-full h-full object-cover" />
+                  <img
+                    src={getImageUrl(banner.imageUrl)}
+                    alt={banner.title || "Printed Soul Banner"}
+                    loading={idx === 0 ? "eager" : "lazy"}
+                    decoding={idx === 0 ? "sync" : "async"}
+                    fetchPriority={idx === 0 ? "high" : "low"}
+                    className="w-full h-full object-cover"
+                  />
                 </Link>
               ) : (
-                <img src={getImageUrl(banner.imageUrl)} alt={banner.title || "Banner"} className="w-full h-full object-cover" />
+                <img
+                  src={getImageUrl(banner.imageUrl)}
+                  alt={banner.title || "Printed Soul Banner"}
+                  loading={idx === 0 ? "eager" : "lazy"}
+                  decoding={idx === 0 ? "sync" : "async"}
+                  fetchPriority={idx === 0 ? "high" : "low"}
+                  className="w-full h-full object-cover"
+                />
               )}
             </motion.div>
           ))

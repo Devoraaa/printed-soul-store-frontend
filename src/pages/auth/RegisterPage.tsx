@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Loader2, Mail, User, Phone, Lock, Eye, EyeOff, ShieldCheck, ArrowRight, RotateCw, AlertCircle } from "lucide-react"
 import { useAuth } from "../../context/AuthContext"
+import { SEO } from "../../components/ui/SEO"
 
 export function RegisterPage() {
   const { sendSignupOtp, verifySignupOtp } = useAuth()
@@ -77,6 +78,7 @@ export function RegisterPage() {
 
   return (
     <div>
+      <SEO title="Create an Account" noindex={true} />
       <h2 className="text-2xl font-black mb-1">Create an Account</h2>
       <p className="text-muted-foreground text-sm mb-6">Join Printed Soul for custom cases & orders</p>
 

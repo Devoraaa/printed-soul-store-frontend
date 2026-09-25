@@ -45,6 +45,7 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
             src={primaryImage}
             alt={product.name}
             loading="lazy"
+            decoding="async"
             className={`w-full h-full object-contain transition-all duration-300 ${
               isHovered && product.images?.length > 1 ? "opacity-0 scale-105" : "opacity-100 scale-100"
             }`}
@@ -54,8 +55,9 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
           {product.images?.length > 1 && (
             <img
               src={secondaryImage}
-              alt={`${product.name} alt`}
+              alt={`${product.name} alternate view`}
               loading="lazy"
+              decoding="async"
               className={`absolute inset-0 w-full h-full object-contain p-2.5 transition-all duration-300 ${
                 isHovered ? "opacity-100 scale-105" : "opacity-0 scale-100"
               }`}

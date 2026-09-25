@@ -1,5 +1,10 @@
 import React, { useEffect } from "react"
 
+export interface BreadcrumbItem {
+  name: string
+  url: string
+}
+
 export interface SEOProps {
   title?: string
   description?: string
@@ -9,6 +14,11 @@ export interface SEOProps {
   ogImage?: string
   ogImageAlt?: string
   noindex?: boolean
+  price?: number | string
+  currency?: string
+  availability?: "in stock" | "out of stock" | "preorder"
+  brand?: string
+  breadcrumbs?: BreadcrumbItem[]
   structuredData?: Record<string, any> | Record<string, any>[]
 }
 
@@ -32,10 +42,16 @@ const DEFAULT_KEYWORDS = [
 ]
 const SITE_NAME = "Printed Soul"
 const DEFAULT_OG_IMAGE = "https://printedsoul.in/hero.webp"
-const BASE_URL = "https://printedsoul.in"
+
+function getBaseUrl(): string {
+  if (typeof window !== "undefined" && window.location.origin) {
+    return window.location.origin
+  }
+  return "https://printedsoul.in"
+}
 
 function setMetaTag(attrName: "name" | "property", attrValue: string, content?: string) {
-  if (!content) {
+  if (content === undefined || content === null || content === "") {
     const existing = document.head.querySelector(`meta[${attrName}="${attrValue}"]`)
     if (existing) existing.remove()
     return
@@ -65,7 +81,6 @@ function setCanonical(href?: string) {
 }
 
 function setStructuredData(data?: Record<string, any> | Record<string, any>[]) {
-  // Remove existing dynamic json-ld script
   const existingScript = document.head.querySelector("script#seo-dynamic-jsonld")
   if (existingScript) existingScript.remove()
 
@@ -75,7 +90,6 @@ function setStructuredData(data?: Record<string, any> | Record<string, any>[]) {
   script.id = "seo-dynamic-jsonld"
   script.type = "application/ld+json"
 
-  // Wrap array in schema @graph or stringify
   const payload = Array.isArray(data)
     ? {
         "@context": "https://schema.org",
@@ -96,9 +110,16 @@ export function SEO({
   ogImage = DEFAULT_OG_IMAGE,
   ogImageAlt = "Printed Soul Store",
   noindex = false,
+  price,
+  currency = "INR",
+  availability = "in stock",
+  brand = "Printed Soul",
+  breadcrumbs,
   structuredData,
 }: SEOProps) {
   useEffect(() => {
+    const baseUrl = getBaseUrl()
+
     // 1. Page Title
     const formattedTitle = title
       ? `${title} | ${SITE_NAME}`
@@ -120,13 +141,13 @@ export function SEO({
     // 3. Canonical URL
     const canonical =
       canonicalUrl ||
-      `${BASE_URL}${window.location.pathname}${window.location.search ? window.location.search : ""}`
+      `${baseUrl}${window.location.pathname}${window.location.search ? window.location.search : ""}`
     setCanonical(canonical)
 
     // Ensure full image URL for OG
     const fullOgImage = ogImage.startsWith("http")
       ? ogImage
-      : `${BASE_URL}${ogImage.startsWith("/") ? "" : "/"}${ogImage}`
+      : `${baseUrl}${ogImage.startsWith("/") ? "" : "/"}${ogImage}`
 
     // 4. OpenGraph
     setMetaTag("property", "og:title", formattedTitle)
@@ -138,6 +159,27 @@ export function SEO({
     setMetaTag("property", "og:site_name", SITE_NAME)
     setMetaTag("property", "og:locale", "en_IN")
 
+    // E-commerce Product Specific OpenGraph Tags
+    if (ogType === "product") {
+      if (price !== undefined) {
+        setMetaTag("property", "product:price:amount", String(price))
+        setMetaTag("property", "product:price:currency", currency)
+        setMetaTag("property", "og:price:amount", String(price))
+        setMetaTag("property", "og:price:currency", currency)
+      }
+      setMetaTag("property", "product:availability", availability)
+      setMetaTag("property", "product:brand", brand)
+      setMetaTag("property", "product:condition", "new")
+    } else {
+      setMetaTag("property", "product:price:amount")
+      setMetaTag("property", "product:price:currency")
+      setMetaTag("property", "og:price:amount")
+      setMetaTag("property", "og:price:currency")
+      setMetaTag("property", "product:availability")
+      setMetaTag("property", "product:brand")
+      setMetaTag("property", "product:condition")
+    }
+
     // 5. Twitter Card
     setMetaTag("name", "twitter:card", "summary_large_image")
     setMetaTag("name", "twitter:title", formattedTitle)
@@ -147,10 +189,38 @@ export function SEO({
     setMetaTag("name", "twitter:creator", "@PrintedSoul")
 
     // 6. JSON-LD Structured Data
-    setStructuredData(structuredData)
+    let finalStructuredData: any = structuredData
+
+    if (breadcrumbs && breadcrumbs.length > 0) {
+      const alreadyHasBreadcrumb = Array.isArray(structuredData)
+        ? structuredData.some((item: any) => item["@type"] === "BreadcrumbList")
+        : Boolean(structuredData && (structuredData as any)["@type"] === "BreadcrumbList")
+
+      if (!alreadyHasBreadcrumb) {
+        const breadcrumbSchema = {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": breadcrumbs.map((crumb, idx) => ({
+            "@type": "ListItem",
+            "position": idx + 1,
+            "name": crumb.name,
+            "item": crumb.url.startsWith("http") ? crumb.url : `${baseUrl}${crumb.url.startsWith("/") ? "" : "/"}${crumb.url}`
+          }))
+        }
+
+        if (Array.isArray(structuredData)) {
+          finalStructuredData = [breadcrumbSchema, ...structuredData]
+        } else if (structuredData && typeof structuredData === "object") {
+          finalStructuredData = [breadcrumbSchema, structuredData]
+        } else {
+          finalStructuredData = breadcrumbSchema
+        }
+      }
+    }
+
+    setStructuredData(finalStructuredData)
 
     return () => {
-      // Clean up dynamic structured data script on unmount
       const script = document.head.querySelector("script#seo-dynamic-jsonld")
       if (script) script.remove()
     }
@@ -163,6 +233,11 @@ export function SEO({
     ogImage,
     ogImageAlt,
     noindex,
+    price,
+    currency,
+    availability,
+    brand,
+    breadcrumbs,
     structuredData,
   ])
 

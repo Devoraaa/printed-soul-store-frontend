@@ -4,6 +4,7 @@ import { Trash2, Minus, Plus, ShoppingBag, ArrowRight } from "lucide-react"
 import { useCart } from "../../context/CartContext"
 import { useAuth } from "../../context/AuthContext"
 import { getImageUrl, formatPrice } from "../../lib/utils"
+import { SEO } from "../../components/ui/SEO"
 
 export function CartPage() {
   const { items, totalAmount, updateQuantity, removeFromCart, isLoading } = useCart()
@@ -16,6 +17,7 @@ export function CartPage() {
   if (items.length === 0) {
     return (
       <div className="container mx-auto px-4 py-24 text-center">
+        <SEO title="Shopping Cart" noindex={true} />
         <ShoppingBag className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
         <h2 className="text-2xl font-bold mb-2">Your cart is empty</h2>
         <p className="text-muted-foreground mb-6">Add some amazing phone cases to your cart</p>
@@ -28,6 +30,7 @@ export function CartPage() {
 
   return (
     <div className="max-w-[1200px] mx-auto px-4 py-8">
+      <SEO title="Shopping Cart" noindex={true} />
       <h1 className="text-2xl font-black uppercase tracking-widest mb-6">Shopping Cart ({items.reduce((s, i) => s + i.quantity, 0)} items)</h1>
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Items */}
