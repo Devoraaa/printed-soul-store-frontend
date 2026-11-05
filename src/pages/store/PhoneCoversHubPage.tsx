@@ -70,7 +70,7 @@ export function PhoneCoversHubPage() {
   ]
 
   return (
-    <div className="bg-[#FAFAFA] min-h-screen text-gray-900 antialiased selection:bg-black selection:text-white pb-24">
+    <div className="bg-[#FAF8F5] min-h-screen text-neutral-900 antialiased selection:bg-black selection:text-white pb-24">
       <SEO
         title="Phone Case Materials Guide | Dual vs Glass vs Metal Armor"
         description="Compare phone case materials at Printed Soul India. Choose from 10FT drop Dual Protection, 9H scratch-proof Toughened Glass, and lightweight brushed Metal Armor covers."
@@ -87,69 +87,69 @@ export function PhoneCoversHubPage() {
       />
       
       {/* Header Section */}
-      <div className="bg-white border-b border-gray-200/80 pt-16 pb-24 px-4 relative overflow-hidden">
+      <div className="bg-white/80 border-b border-black/[0.05] backdrop-blur-md pt-12 pb-20 px-4 relative overflow-hidden">
         <div className="max-w-4xl mx-auto relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase mb-4 text-gray-500">
+          <div className="inline-flex items-center gap-2 text-xs font-medium tracking-wide uppercase mb-3 text-neutral-500">
             <Link to="/" className="hover:text-black transition-colors">Home</Link>
             <span>/</span>
             <span>Category</span>
             <span>/</span>
-            <span className="text-black font-bold">Phone Covers</span>
+            <span className="text-neutral-900 font-bold">Phone Covers</span>
           </div>
-          <span className="block text-[10px] font-black tracking-widest text-violet-600 uppercase bg-violet-50 px-4 py-1.5 rounded-full border border-violet-100 max-w-fit mx-auto mb-4">
-            MATERIALS & PROTECTION
+          <span className="block text-[10px] font-bold tracking-[0.2em] text-neutral-600 uppercase bg-neutral-100 px-4 py-1.5 rounded-full border border-black/[0.05] max-w-fit mx-auto mb-3">
+            Materials & Protection
           </span>
-          <h1 className="text-5xl md:text-7xl font-display font-black tracking-tight mb-4 text-gray-900">
+          <h1 className="text-4xl md:text-6xl font-display font-black tracking-tight mb-3 text-neutral-900">
             Phone Cover Series
           </h1>
-          <p className="text-lg text-gray-500 font-medium max-w-xl mx-auto">
+          <p className="text-sm md:text-base text-neutral-500 font-medium max-w-xl mx-auto">
             Choose your level of protection and style. Precision engineered for over 1000+ device models.
           </p>
         </div>
       </div>
 
       {/* Cards Section */}
-      <div className="max-w-[1650px] mx-auto px-4 md:px-8 -mt-12 relative z-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="max-w-[1650px] mx-auto px-4 md:px-8 -mt-10 relative z-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {coverTypes.map((cover) => (
             <Link 
               key={cover.id}
               to={cover.link || `/products?category=covers&subCategory=${cover.id}`}
-              className="bg-white rounded-[2.5rem] p-6 md:p-8 shadow-xl shadow-black/5 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-gray-200/80 flex flex-col group"
+              className="bg-white rounded-3xl p-6 md:p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-black/[0.05] flex flex-col group"
             >
-              <div className="aspect-[4/5] rounded-[2rem] bg-gray-50 overflow-hidden mb-8 relative">
+              <div className="aspect-[4/5] rounded-2xl bg-neutral-50 overflow-hidden mb-6 relative">
                 <img 
                   src={cover.image} 
                   alt={cover.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute top-4 left-4 h-12 w-12 bg-white/90 backdrop-blur-xl border border-gray-200 rounded-2xl flex items-center justify-center shadow-md">
+                <div className="absolute top-3.5 left-3.5 h-10 w-10 bg-white/95 backdrop-blur-md border border-black/[0.06] rounded-xl flex items-center justify-center shadow-xs">
                   {cover.icon}
                 </div>
-                <div className="absolute top-4 right-4">
-                  <span className="text-[10px] font-black tracking-widest text-black bg-white/90 backdrop-blur-xl border border-gray-200 px-3 py-1 rounded-full uppercase shadow-md">
+                <div className="absolute top-3.5 right-3.5">
+                  <span className="text-[9px] font-bold tracking-wider text-neutral-900 bg-white/95 backdrop-blur-md border border-black/[0.06] px-2.5 py-1 rounded-full uppercase shadow-xs">
                     {cover.badge}
                   </span>
                 </div>
               </div>
               
-              <h2 className="text-2xl font-display font-black text-gray-900 mb-2">{cover.name}</h2>
-              <p className="text-gray-500 text-xs font-medium leading-relaxed mb-6 flex-1">{cover.description}</p>
+              <h2 className="text-xl font-display font-bold text-neutral-900 mb-1.5">{cover.name}</h2>
+              <p className="text-neutral-500 text-xs font-medium leading-relaxed mb-5 flex-1">{cover.description}</p>
               
-              <div className="space-y-2 mb-8">
+              <div className="space-y-2 mb-6">
                 {cover.features.map(feature => (
-                  <div key={feature} className="flex items-center gap-2 text-xs font-bold text-gray-700">
-                    <div className="h-1.5 w-1.5 rounded-full bg-black" />
+                  <div key={feature} className="flex items-center gap-2 text-xs font-semibold text-neutral-700">
+                    <div className="h-1.5 w-1.5 rounded-full bg-neutral-900" />
                     {feature}
                   </div>
                 ))}
               </div>
 
-              <div className="flex items-center justify-between mt-auto pt-6 border-t border-gray-100">
-                <span className="font-extrabold text-xs uppercase tracking-wider text-gray-900 group-hover:text-violet-600 transition-colors">
+              <div className="flex items-center justify-between mt-auto pt-5 border-t border-black/[0.05]">
+                <span className="font-bold text-xs uppercase tracking-wider text-neutral-900 group-hover:text-black transition-colors">
                   Explore Series
                 </span>
-                <div className="h-10 w-10 rounded-full bg-black text-white group-hover:bg-violet-600 transition-colors flex items-center justify-center">
+                <div className="h-9 w-9 rounded-full bg-neutral-900 text-white group-hover:bg-black transition-colors flex items-center justify-center shadow-sm">
                   <ArrowRight className="h-4 w-4" />
                 </div>
               </div>

@@ -332,7 +332,7 @@ export function CheckoutPage() {
   const selectedAddress = savedAddresses.find((a: any) => a._id === selectedAddressId)
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 pb-20">
+    <div className="min-h-screen bg-[#FAF8F5] pt-12 pb-20">
       <SEO title="Secure Checkout" noindex={true} />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         

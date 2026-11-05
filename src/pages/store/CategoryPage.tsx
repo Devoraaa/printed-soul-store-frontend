@@ -104,7 +104,7 @@ export function CategoryPage() {
   ]
 
   return (
-    <div className="bg-[#FAFAFA] min-h-screen text-gray-900 antialiased selection:bg-black selection:text-white">
+    <div className="bg-[#FAF8F5] min-h-screen text-neutral-900 antialiased selection:bg-black selection:text-white pb-16">
       <SEO
         title={`${catTitle} Collection`}
         description={category?.description || `Explore our premium ${catTitle} collection at Printed Soul. Expertly crafted with precision and style. Free shipping above ₹499.`}
@@ -114,31 +114,31 @@ export function CategoryPage() {
       />
       
       {/* Clean SEO-friendly Category Header */}
-      <div className="bg-white border-b border-gray-200/80">
-        <div className="max-w-[1650px] mx-auto px-4 md:px-8 py-10 md:py-16">
+      <div className="bg-white/80 border-b border-black/[0.05] backdrop-blur-md">
+        <div className="max-w-[1650px] mx-auto px-4 md:px-8 py-8 md:py-12">
           
           {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-xs font-semibold text-gray-500 mb-6">
+          <nav className="flex items-center gap-2 text-xs font-medium text-neutral-500 mb-5">
             <Link to="/" className="hover:text-black transition-colors">Home</Link>
             <span>/</span>
             <Link to="/products" className="hover:text-black transition-colors">Collections</Link>
             <span>/</span>
-            <span className="text-black font-bold capitalize">{category?.name || slug}</span>
+            <span className="text-neutral-900 font-bold capitalize">{category?.name || slug}</span>
           </nav>
           
           <div className="max-w-4xl">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-[10px] font-black tracking-widest text-violet-600 uppercase bg-violet-50 px-3 py-1 rounded-full border border-violet-100">
-                CURATED COLLECTION
+            <div className="flex items-center gap-2.5 mb-2.5">
+              <span className="text-[10px] font-bold tracking-[0.2em] text-neutral-600 uppercase bg-neutral-100 px-3 py-1 rounded-full border border-black/[0.05]">
+                Curated Collection
               </span>
-              <span className="text-xs font-bold text-gray-500">
+              <span className="text-xs font-semibold text-neutral-500">
                 • {products.length} Designs Available
               </span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-display font-black tracking-tight text-gray-900 capitalize mb-4">
+            <h1 className="text-3xl md:text-5xl font-display font-black tracking-tight text-neutral-900 capitalize mb-3">
               {category?.name || slug} {!isPhoneCategory && !category?.name?.toLowerCase().includes("collection") ? "Collection" : ""}
             </h1>
-            <p className="text-sm md:text-base text-gray-500 max-w-2xl leading-relaxed">
+            <p className="text-xs md:text-sm text-neutral-500 max-w-2xl leading-relaxed">
               {category?.description || `Explore our premium ${category?.name || slug}. Expertly crafted with precision and style.`}
             </p>
           </div>
@@ -147,77 +147,77 @@ export function CategoryPage() {
       </div>
 
       {/* Sticky Quick Filters Bar */}
-      <div className="bg-white/90 backdrop-blur-2xl border-b border-gray-200/80 sticky top-16 z-30 shadow-sm">
-        <div className="max-w-[1650px] mx-auto px-4 md:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="bg-white/80 backdrop-blur-md border-b border-black/[0.05] sticky top-16 z-30 shadow-xs">
+        <div className="max-w-[1650px] mx-auto px-4 md:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
           
           {isPhoneCategory ? (
-            <div className="flex items-center gap-3 w-full sm:w-auto">
-              <span className="text-xs font-extrabold text-gray-500 uppercase tracking-widest whitespace-nowrap">
-                Filter By:
+            <div className="flex items-center gap-2.5 w-full sm:w-auto">
+              <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider whitespace-nowrap">
+                Filter:
               </span>
               
               {/* Brand Select */}
-              <div className="relative w-full sm:w-52">
+              <div className="relative w-full sm:w-48">
                 <select 
                   value={selectedBrand} 
                   onChange={(e) => handleFilterChange("brand", e.target.value)}
-                  className="w-full appearance-none bg-gray-50 border border-gray-200 text-xs font-bold rounded-2xl px-4 py-2.5 pr-10 text-gray-900 focus:outline-none focus:border-black transition-colors cursor-pointer"
+                  className="w-full appearance-none bg-neutral-100/70 border border-black/[0.06] text-xs font-semibold rounded-full px-4 py-2 pr-9 text-neutral-900 focus:outline-none focus:border-black transition-colors cursor-pointer"
                 >
                   <option value="">All Brands</option>
                   {brands.map((b: any) => (
                     <option key={b._id} value={b._id}>{b.name}</option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+                <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-neutral-400 pointer-events-none" />
               </div>
 
               {/* Model Select */}
-              <div className="relative w-full sm:w-52">
+              <div className="relative w-full sm:w-48">
                 <select 
                   value={selectedModel} 
                   onChange={(e) => handleFilterChange("model", e.target.value)}
                   disabled={!selectedBrand}
-                  className="w-full appearance-none bg-gray-50 border border-gray-200 text-xs font-bold rounded-2xl px-4 py-2.5 pr-10 text-gray-900 focus:outline-none focus:border-black transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full appearance-none bg-neutral-100/70 border border-black/[0.06] text-xs font-semibold rounded-full px-4 py-2 pr-9 text-neutral-900 focus:outline-none focus:border-black transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <option value="">All Models</option>
                   {devices.map((d: any) => (
                     <option key={d._id} value={d._id}>{d.displayName || d.name}</option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+                <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-neutral-400 pointer-events-none" />
               </div>
             </div>
           ) : (
             <div className="flex items-center gap-3 w-full sm:w-auto">
-              <span className="text-xs font-extrabold text-gray-500 uppercase tracking-widest">
+              <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
                 Viewing Entire Collection
               </span>
             </div>
           )}
           
-          <div className="text-xs text-gray-500 font-bold">
-            Showing <span className="text-black font-black">{products.length}</span> Results
+          <div className="text-xs text-neutral-500 font-medium">
+            Showing <span className="text-neutral-900 font-bold">{products.length}</span> Results
           </div>
         </div>
       </div>
 
       {/* Products Grid */}
-      <div className="max-w-[1650px] mx-auto px-4 md:px-8 py-12 md:py-16">
+      <div className="max-w-[1650px] mx-auto px-4 md:px-8 py-8 md:py-12">
         {isLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {[...Array(8)].map((_, i) => <div key={i} className="aspect-[4/5] bg-gray-100 animate-pulse rounded-3xl border border-gray-200" />)}
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3">
+            {[...Array(8)].map((_, i) => <div key={i} className="aspect-[3/4] bg-neutral-200/50 animate-pulse rounded-2xl" />)}
           </div>
         ) : products.length === 0 ? (
-          <div className="text-center py-32 bg-white rounded-[3rem] border border-gray-200 shadow-sm">
-            <div className="text-5xl mb-6">✨</div>
-            <h3 className="text-3xl font-display font-bold mb-3 text-gray-900">No Products Yet</h3>
-            <p className="text-gray-500 text-sm">We are actively adding new designs to this collection.</p>
-            <Link to="/products" className="inline-block mt-6 px-8 py-3 rounded-full bg-black text-white font-black text-xs uppercase tracking-widest hover:bg-gray-800 transition-colors">
+          <div className="text-center py-28 bg-white rounded-3xl border border-black/[0.05] shadow-sm max-w-2xl mx-auto p-8">
+            <div className="text-4xl mb-4">✨</div>
+            <h3 className="text-2xl font-display font-bold mb-2 text-neutral-900">No Products Yet</h3>
+            <p className="text-neutral-500 text-xs mb-6">We are actively adding new designs to this collection.</p>
+            <Link to="/products" className="inline-block px-7 py-3 rounded-full bg-neutral-900 text-white font-bold text-xs uppercase tracking-wider hover:bg-black transition-colors shadow-sm">
               Explore All Designs
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3">
             {products.map((product: any) => (
               <ProductCard key={product._id} product={product} />
             ))}

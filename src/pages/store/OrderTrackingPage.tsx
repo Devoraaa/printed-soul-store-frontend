@@ -55,7 +55,7 @@ export function OrderTrackingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#FAF8F5] py-12 px-4 sm:px-6 lg:px-8">
       <SEO
         title="Track Your Order | Live Courier Tracking"
         description="Track your Printed Soul order in real time. Enter your Order ID or phone number to check live courier delivery status."
@@ -70,29 +70,29 @@ export function OrderTrackingPage() {
         
         {/* Header & Back link */}
         <div>
-          <Link to="/" className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 mb-4 transition-colors">
+          <Link to="/" className="inline-flex items-center text-xs font-semibold uppercase tracking-wider text-neutral-500 hover:text-black mb-4 transition-colors">
             <ArrowLeft className="h-4 w-4 mr-1" /> Back to Shop
           </Link>
-          <h1 className="text-3xl font-display font-bold text-gray-900">Track Your Order</h1>
-          <p className="text-gray-500 text-sm mt-1">Enter your Order ID (e.g. PSS-000001) or AWB Tracking Number to check real-time status.</p>
+          <h1 className="text-3xl font-display font-black text-neutral-900 tracking-tight">Track Your Order</h1>
+          <p className="text-neutral-500 text-sm mt-1">Enter your Order ID (e.g. PSS-000001) or AWB Tracking Number to check real-time status.</p>
         </div>
 
         {/* Search Bar */}
-        <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-black/[0.05]">
           <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400" />
               <input
                 type="text"
                 value={queryInput}
                 onChange={(e) => setQueryInput(e.target.value)}
                 placeholder="Enter Order ID or AWB Tracking #"
-                className="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-gray-200 bg-gray-50/50 focus:bg-white text-sm focus:outline-none focus:ring-2 focus:ring-black transition-all"
+                className="w-full pl-12 pr-4 py-3.5 rounded-full border border-black/[0.08] bg-neutral-50/70 focus:bg-white text-sm focus:outline-none focus:border-black transition-all"
               />
             </div>
             <button
               type="submit"
-              className="px-8 py-3.5 bg-black text-white font-medium text-sm rounded-2xl hover:bg-gray-800 transition-colors shadow-sm"
+              className="px-8 py-3.5 bg-neutral-900 text-white font-bold text-xs uppercase tracking-wider rounded-full hover:bg-black transition-colors shadow-sm"
             >
               Track Order
             </button>

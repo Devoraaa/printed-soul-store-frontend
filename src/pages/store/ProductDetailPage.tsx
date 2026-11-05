@@ -286,7 +286,7 @@ export function ProductDetailPage() {
   ]
 
   return (
-    <div className="bg-[#FAFAFA] min-h-screen text-[#111111] pb-24 md:pb-16">
+    <div className="bg-[#FAF8F5] min-h-screen text-[#111111] pb-24 md:pb-16">
       <SEO
         title={`${product.name} | ${caseTypeLabel}`}
         description={`Buy ${product.name} online at Printed Soul for ₹${product.price}. Premium ${caseTypeLabel} featuring precision cutouts, camera lip protection, and impact resistance. Free delivery above ₹499.`}
@@ -317,7 +317,7 @@ export function ProductDetailPage() {
       />
       
       {/* Breadcrumb Header */}
-      <div className="bg-white border-b border-gray-200/70">
+      <div className="bg-white/80 border-b border-black/[0.05] backdrop-blur-md">
         <div className="max-w-[1500px] mx-auto px-4 md:px-8 py-3.5 flex items-center justify-between text-xs text-gray-500 font-medium">
           <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-none">
             <Link to="/" className="hover:text-black">Home</Link>
@@ -352,7 +352,7 @@ export function ProductDetailPage() {
           {/* Left Column: Gallery */}
           <div className="space-y-3 md:sticky md:top-20">
             <motion.div 
-              className="relative aspect-square overflow-hidden rounded-sm bg-white border border-gray-200 group"
+              className="relative aspect-square overflow-hidden rounded-3xl bg-white border border-black/[0.05] shadow-sm group"
               layoutId={`product-${product._id}`}
             >
               <img
@@ -404,10 +404,10 @@ export function ProductDetailPage() {
                   <button 
                     key={imgId} 
                     onClick={() => setActiveImageIdx(i)}
-                    className={`shrink-0 w-16 md:w-20 aspect-square rounded-sm overflow-hidden border transition-all duration-300 cursor-pointer bg-white ${
+                    className={`shrink-0 w-16 md:w-20 aspect-square rounded-2xl overflow-hidden border transition-all duration-300 cursor-pointer bg-white ${
                       i === activeImageIdx 
-                        ? "border-black shadow-sm" 
-                        : "border-gray-200 opacity-60 hover:opacity-100 hover:border-gray-300"
+                        ? "border-neutral-900 shadow-sm ring-1 ring-neutral-900" 
+                        : "border-black/[0.06] opacity-60 hover:opacity-100 hover:border-black/20"
                     }`}
                   >
                     <img
@@ -472,38 +472,36 @@ export function ProductDetailPage() {
             </div>
 
             {/* Pricing Box */}
-            <div className="p-4 rounded-sm bg-gray-50 border border-gray-200 flex items-center justify-between">
+            <div className="p-5 rounded-2xl bg-white border border-black/[0.05] shadow-sm flex items-center justify-between">
               <div>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+                  <span className="text-2xl sm:text-3xl font-black text-neutral-900 tracking-tight font-display">
                     {formatPrice(product.price)}
                   </span>
                   {product.comparePrice > product.price && (
-                    <span className="text-sm text-gray-400 line-through font-semibold">
+                    <span className="text-sm text-neutral-400 line-through font-medium">
                       {formatPrice(product.comparePrice)}
                     </span>
                   )}
                 </div>
-                <p className="text-[10px] font-bold text-emerald-700 mt-0.5 flex items-center gap-1">
+                <p className="text-[10px] font-bold text-emerald-700 mt-1 flex items-center gap-1">
                   <CheckCircle className="h-3 w-3" /> GST Included & Free Delivery
                 </p>
               </div>
 
               {discountPercent > 0 && (
-                <div className="text-right bg-red-50 border border-red-100 px-2 py-1 rounded-sm">
-                  <span className="text-[11px] font-black text-red-700 uppercase tracking-wider block">
+                <div className="text-right bg-rose-50 border border-rose-100/80 px-3 py-1 rounded-full shadow-xs">
+                  <span className="text-[10px] font-black text-rose-700 uppercase tracking-wider block">
                     Save {discountPercent}%
                   </span>
                 </div>
               )}
             </div>
 
-
-
             {/* Case Type Switcher */}
             {showSwitcher && designVariants.length > 0 && (
-              <div className="p-4 rounded-sm bg-white border border-gray-200 space-y-2">
-                <label className="text-[11px] font-black uppercase tracking-wider text-gray-700 block">
+              <div className="p-5 rounded-2xl bg-white border border-black/[0.05] shadow-sm space-y-2.5">
+                <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 block">
                   Select Case Type:
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -529,15 +527,15 @@ export function ProductDetailPage() {
                             navigate(`/products/${v.slug}`)
                           }
                         }}
-                        className={`py-2.5 px-2 text-center rounded-sm transition-all cursor-pointer border ${
+                        className={`py-3 px-2 text-center rounded-xl transition-all cursor-pointer border ${
                           isSelected
-                            ? "bg-black text-white border-black shadow-sm"
-                            : "bg-white text-gray-800 border-gray-300 hover:border-black hover:bg-gray-50"
+                            ? "bg-neutral-900 text-white border-neutral-900 shadow-sm"
+                            : "bg-white text-neutral-800 border-neutral-200/80 hover:border-black hover:bg-neutral-50"
                         }`}
                       >
                         <div className="text-xs font-bold leading-tight">{label}</div>
                         {v.price && (
-                          <div className={`text-[11px] mt-0.5 font-semibold ${isSelected ? "text-gray-300" : "text-gray-500"}`}>
+                          <div className={`text-[11px] mt-0.5 font-semibold ${isSelected ? "text-neutral-300" : "text-neutral-500"}`}>
                             ₹{v.price}
                           </div>
                         )}
@@ -550,15 +548,15 @@ export function ProductDetailPage() {
 
             {/* Mobile Model Selection (like original website) */}
             {product.deviceModels?.length > 0 && (
-              <div className="p-3.5 rounded-sm bg-white border border-gray-200 space-y-1.5">
-                <label className="text-[11px] font-black uppercase tracking-wider text-gray-700 block">
+              <div className="p-4 rounded-2xl bg-white border border-black/[0.05] shadow-sm space-y-2">
+                <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 block">
                   Mobile Model:
                 </label>
                 <div className="relative">
                   <select 
                     value={selectedDeviceModel || product.deviceModels[0]?._id}
                     onChange={(e) => setSelectedDeviceModel(e.target.value)}
-                    className="w-full h-10 px-3 pr-8 rounded-sm bg-gray-50 border border-gray-300 font-semibold text-xs text-gray-900 focus:outline-none focus:ring-1 focus:ring-black appearance-none cursor-pointer"
+                    className="w-full h-11 px-4 pr-10 rounded-xl bg-neutral-50 border border-neutral-200 font-semibold text-xs text-neutral-900 focus:outline-none focus:ring-1 focus:ring-black appearance-none cursor-pointer"
                   >
                     {product.deviceModels.map((m: any) => (
                       <option key={m._id} value={m._id}>
@@ -566,7 +564,7 @@ export function ProductDetailPage() {
                       </option>
                     ))}
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500 pointer-events-none" />
+                  <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-500 pointer-events-none" />
                 </div>
               </div>
             )}
@@ -579,17 +577,17 @@ export function ProductDetailPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   {/* Quantity Stepper */}
-                  <div className="flex items-center border border-gray-300 bg-white rounded-sm h-11 shrink-0">
+                  <div className="flex items-center border border-neutral-300 bg-white rounded-full h-12 shrink-0 overflow-hidden px-1">
                     <button 
                       onClick={() => setQuantity(Math.max(1, quantity - 1))} 
-                      className="w-10 h-full flex items-center justify-center hover:bg-gray-100 text-gray-700 transition-colors cursor-pointer border-r border-gray-300"
+                      className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-neutral-100 text-neutral-700 transition-colors cursor-pointer"
                     >
                       <Minus className="h-3.5 w-3.5" />
                     </button>
-                    <span className="w-10 text-center font-bold text-sm text-gray-900">{quantity}</span>
+                    <span className="w-8 text-center font-bold text-sm text-neutral-900">{quantity}</span>
                     <button 
                       onClick={() => setQuantity(Math.min(product.stock, quantity + 1))} 
-                      className="w-10 h-full flex items-center justify-center hover:bg-gray-100 text-gray-700 transition-colors cursor-pointer border-l border-gray-300"
+                      className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-neutral-100 text-neutral-700 transition-colors cursor-pointer"
                     >
                       <Plus className="h-3.5 w-3.5" />
                     </button>
@@ -599,10 +597,10 @@ export function ProductDetailPage() {
                   <button
                     onClick={handleAddToCart}
                     disabled={cartLoading}
-                    className={`flex-1 h-11 px-4 rounded-sm font-black text-xs transition-all flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider ${
+                    className={`flex-1 h-12 px-6 rounded-full font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider shadow-sm ${
                       addedToCart 
                         ? "bg-emerald-600 text-white border border-emerald-600" 
-                        : "bg-white text-black border-2 border-black hover:bg-gray-50 active:scale-95"
+                        : "bg-white text-neutral-900 border border-neutral-300 hover:border-black active:scale-95"
                     }`}
                   >
                     {addedToCart ? (
@@ -616,7 +614,7 @@ export function ProductDetailPage() {
                 {/* 1-Click Express Buy Now Button */}
                 <button
                   onClick={handleBuyNow}
-                  className="w-full h-11 px-4 rounded-sm bg-black hover:bg-gray-900 text-white font-black text-xs transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider"
+                  className="w-full h-12 px-6 rounded-full bg-neutral-900 hover:bg-black text-white font-bold text-xs transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider shadow-lg"
                 >
                   <Zap className="h-4 w-4 fill-white" />
                   Buy Now
@@ -645,7 +643,7 @@ export function ProductDetailPage() {
             )}
 
             {/* Accordion / Feature Specs */}
-            <div className="border border-gray-200 rounded-sm bg-white overflow-hidden divide-y divide-gray-200">
+            <div className="border border-black/[0.05] rounded-2xl bg-white shadow-sm overflow-hidden divide-y divide-neutral-100">
               {/* Description & Features */}
               <div className="p-3.5">
                 <button 
@@ -700,9 +698,12 @@ export function ProductDetailPage() {
 
         {/* Similar Recommended Products Section */}
         {similarProducts.length > 0 && (
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            <h2 className="text-lg font-black text-gray-900 uppercase tracking-widest mb-4">Recommended For You</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-3">
+          <div className="mt-12 pt-8 border-t border-black/[0.05]">
+            <div className="mb-4">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">Curated Collection</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">Recommended For You</h2>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3">
               {similarProducts.map((p: any) => (
                 <ProductCard key={p._id} product={p} />
               ))}
@@ -1070,14 +1071,14 @@ export function ProductDetailPage() {
               if (catProducts.length === 0) return null
 
               return (
-                <div key={cat._id} className="pt-8 border-t border-gray-200">
+                <div key={cat._id} className="pt-8 border-t border-black/[0.05]">
                   <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg font-black text-gray-900 uppercase tracking-widest">More {cat.name}</h2>
-                    <Link to={`/products?category=${cat.slug || cat._id}`} className="text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-black transition-colors border-b border-gray-300 hover:border-black">
+                    <h2 className="text-xl font-bold text-neutral-900 tracking-tight">More {cat.name}</h2>
+                    <Link to={`/products?category=${cat.slug || cat._id}`} className="text-xs font-semibold uppercase tracking-wider text-neutral-700 hover:text-black transition-colors bg-white border border-black/[0.08] px-3.5 py-1.5 rounded-full shadow-xs">
                       View All
                     </Link>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3">
                     {catProducts.map((p: any) => (
                       <ProductCard key={p._id} product={p} />
                     ))}
@@ -1092,15 +1093,15 @@ export function ProductDetailPage() {
 
       {/* Mobile Sticky Bottom Action Bar */}
       {product.stock > 0 && (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 p-2 flex items-center gap-2 shadow-[0_-10px_25px_rgba(0,0,0,0.05)]">
-          <div className="flex-1 bg-gray-50 rounded-sm p-1.5 px-3 border border-gray-200">
-            <span className="text-[9px] text-gray-500 font-black block uppercase tracking-widest">Price</span>
-            <span className="text-sm font-black text-gray-900">{formatPrice(product.price)}</span>
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-black/[0.06] p-2.5 flex items-center gap-2 shadow-[0_-8px_25px_rgba(0,0,0,0.05)]">
+          <div className="flex-1 bg-neutral-100/70 rounded-full py-1.5 px-3.5 border border-black/[0.05]">
+            <span className="text-[9px] text-neutral-500 font-bold block uppercase tracking-wider">Price</span>
+            <span className="text-sm font-bold text-neutral-900">{formatPrice(product.price)}</span>
           </div>
 
           <button
             onClick={handleBuyNow}
-            className="flex-[2] py-2.5 rounded-sm bg-black hover:bg-gray-900 text-white font-black text-[11px] uppercase tracking-widest active:scale-95 shadow-sm flex items-center justify-center gap-1.5"
+            className="flex-[2] py-3 rounded-full bg-neutral-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider active:scale-95 shadow-md flex items-center justify-center gap-1.5"
           >
             <Zap className="h-3.5 w-3.5 fill-white" />
             Buy Now

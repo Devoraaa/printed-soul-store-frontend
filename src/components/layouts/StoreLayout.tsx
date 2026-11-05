@@ -72,13 +72,13 @@ export function StoreLayout() {
     .sort((a: any, b: any) => (a.sortOrder ?? 99) - (b.sortOrder ?? 99))
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-[#FAF8F5] text-neutral-900">
       <AuthModal />
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
       <CartDrawer isOpen={cartDrawerOpen} onClose={() => setCartDrawerOpen(false)} />
 
       {/* ─── Main Navbar ───────────────────────────── */}
-      <header className="sticky top-0 z-50 w-full bg-white border-b-2 border-black shadow-sm relative">
+      <header className="sticky top-0 z-50 w-full bg-[#FAF8F5]/95 backdrop-blur-md border-b border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.02)] relative">
         <div className="max-w-[1700px] mx-auto px-3 md:px-6">
           <div className="flex h-14 items-center justify-between gap-4">
 
@@ -96,7 +96,7 @@ export function StoreLayout() {
               <Link
                 to="/"
                 onMouseEnter={handleMenuClose}
-                className="px-3.5 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
+                className="px-3.5 py-4 text-[13px] font-medium text-neutral-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
               >
                 Home
               </Link>
@@ -111,7 +111,7 @@ export function StoreLayout() {
                   })
                 }
                 onMouseLeave={handleCategoryMouseLeave}
-                className="px-3.5 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap flex items-center gap-1.5"
+                className="px-3.5 py-4 text-[13px] font-medium text-neutral-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap flex items-center gap-1.5"
               >
                 <span>New Arrivals</span>
                 <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
@@ -133,7 +133,7 @@ export function StoreLayout() {
                     })
                   }
                   onMouseLeave={handleCategoryMouseLeave}
-                  className="px-3.5 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
+                  className="px-3.5 py-4 text-[13px] font-medium text-neutral-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
                 >
                   {cat.name}
                 </Link>
@@ -149,18 +149,18 @@ export function StoreLayout() {
                   })
                 }
                 onMouseLeave={handleCategoryMouseLeave}
-                className="px-3.5 py-4 text-[12px] font-semibold text-gray-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
+                className="px-3.5 py-4 text-[13px] font-medium text-neutral-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
               >
                 Shop All
               </Link>
             </nav>
 
             {/* ─── Action Icons ────────────────────── */}
-            <div onMouseEnter={handleMenuClose} className="flex items-center gap-0.5 sm:gap-1.5 shrink-0">
+            <div onMouseEnter={handleMenuClose} className="flex items-center gap-1 sm:gap-2 shrink-0">
               {/* Search */}
               <button
                 onClick={() => setSearchOpen(true)}
-                className="p-2 text-gray-700 hover:bg-gray-100 transition-colors rounded-full lg:rounded-md lg:px-3 lg:py-1.5 lg:text-[11px] lg:font-semibold lg:text-gray-500 lg:bg-gray-100 lg:border lg:border-gray-200 lg:flex lg:items-center lg:gap-2 cursor-pointer"
+                className="p-2 text-neutral-700 hover:bg-black/[0.04] transition-colors rounded-full lg:px-3.5 lg:py-1.5 lg:text-xs lg:font-medium lg:text-neutral-500 lg:bg-white lg:border lg:border-black/[0.08] lg:flex lg:items-center lg:gap-2 shadow-sm cursor-pointer hover:border-black/30"
                 aria-label="Search"
               >
                 <Search className="h-4 w-4 lg:h-3.5 lg:w-3.5" strokeWidth={2.2} />
@@ -170,11 +170,11 @@ export function StoreLayout() {
               {/* Cart */}
               <button
                 onClick={() => setCartDrawerOpen(true)}
-                className="relative p-2 hover:bg-gray-100 transition-colors group cursor-pointer rounded-full"
+                className="relative p-2 hover:bg-black/[0.04] transition-colors group cursor-pointer rounded-full"
               >
-                <ShoppingBag className="h-5 w-5 text-gray-900" strokeWidth={2} />
+                <ShoppingBag className="h-5 w-5 text-neutral-900" strokeWidth={2} />
                 {totalItems > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-red-600 text-white text-[9px] font-black flex items-center justify-center rounded-full shadow-sm">
+                  <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-black text-white text-[9px] font-black flex items-center justify-center rounded-full shadow-sm">
                     {totalItems > 9 ? "9+" : totalItems}
                   </span>
                 )}
@@ -185,16 +185,16 @@ export function StoreLayout() {
                 <div className="relative">
                   <button
                     onClick={() => setAccountOpen(!accountOpen)}
-                    className="flex items-center gap-1 p-1 hover:bg-gray-100 transition-colors cursor-pointer rounded-sm"
+                    className="flex items-center gap-1.5 p-1 hover:bg-black/[0.04] transition-colors cursor-pointer rounded-full"
                   >
-                    <div className="w-7 h-7 bg-black flex items-center justify-center text-white text-[11px] font-bold">
+                    <div className="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center text-white text-xs font-bold shadow-sm">
                       {user?.name[0].toUpperCase()}
                     </div>
-                    <ChevronDown className="h-3 w-3 text-gray-500 hidden md:block" />
+                    <ChevronDown className="h-3 w-3 text-neutral-500 hidden md:block" />
                   </button>
                   {accountOpen && (
                     <div
-                      className="absolute right-0 mt-1 w-52 border border-gray-200 bg-white shadow-xl py-1 z-50"
+                      className="absolute right-0 mt-2 w-52 rounded-2xl border border-black/[0.08] bg-white shadow-xl py-2 z-50 overflow-hidden"
                       onMouseLeave={() => setAccountOpen(false)}
                     >
                       <div className="px-3 py-2 border-b">
@@ -273,9 +273,9 @@ export function StoreLayout() {
       </main>
 
       {/* Trust Strip */}
-      <section className="bg-neutral-50 border-t border-gray-200 py-6">
-        <div className="max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <section className="max-w-[1700px] mx-auto px-3 md:px-6 my-6 w-full">
+        <div className="bg-white rounded-3xl border border-black/[0.05] py-6 px-6 sm:px-8 shadow-sm">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               { icon: "🚚", title: "Free Shipping", sub: "On orders above ₹499" },
               { icon: "🛡️", title: "Premium Quality", sub: "Armor grade protection" },
@@ -283,10 +283,10 @@ export function StoreLayout() {
               { icon: "⭐", title: "Top Rated", sub: "Loved by 10,000+ buyers" },
             ].map((item) => (
               <div key={item.title} className="flex items-center gap-3">
-                <span className="text-2xl">{item.icon}</span>
+                <span className="text-2xl shrink-0">{item.icon}</span>
                 <div>
-                  <p className="text-xs font-bold text-gray-900 uppercase tracking-wide">{item.title}</p>
-                  <p className="text-[11px] text-gray-500">{item.sub}</p>
+                  <p className="text-xs font-bold text-neutral-900 uppercase tracking-wider">{item.title}</p>
+                  <p className="text-[11px] text-neutral-500 mt-0.5">{item.sub}</p>
                 </div>
               </div>
             ))}
@@ -295,14 +295,14 @@ export function StoreLayout() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#0f0f0f] text-gray-400 border-t border-neutral-900">
-        <div className="max-w-[1700px] mx-auto px-4 py-10 md:py-14">
+      <footer className="bg-[#121211] text-neutral-400 border-t border-neutral-800">
+        <div className="max-w-[1700px] mx-auto px-4 py-12 md:py-16">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
             <div className="col-span-2">
               <Link to="/" className="inline-flex items-center mb-4 group">
                 <img src="/logo-horizontal-white.png" alt="Printed Soul" className="h-8 md:h-9 w-auto object-contain opacity-95 group-hover:opacity-100 transition-opacity" />
               </Link>
-              <p className="text-xs leading-relaxed text-gray-500 max-w-sm">
+              <p className="text-xs leading-relaxed text-neutral-400 max-w-sm">
                 Premium custom phone cases for every personality and device. Make it yours.
               </p>
             </div>
@@ -335,18 +335,18 @@ export function StoreLayout() {
             </div>
             <div>
               <h4 className="font-semibold mb-3 text-xs text-white uppercase tracking-widest">Newsletter</h4>
-              <p className="text-[11px] text-gray-500 mb-3">Get exclusive drops & discounts.</p>
-              <form className="flex" onSubmit={(e) => e.preventDefault()}>
-                <input type="email" placeholder="Email address" className="bg-neutral-900 border border-neutral-800 text-white text-xs px-2.5 py-2 w-full focus:outline-none focus:border-gray-600" required />
-                <button type="submit" className="bg-white text-black font-bold px-3 py-2 text-xs hover:bg-gray-200 transition-colors cursor-pointer">OK</button>
+              <p className="text-[11px] text-neutral-400 mb-3">Get exclusive drops & discounts.</p>
+              <form className="flex rounded-full overflow-hidden border border-neutral-800 bg-neutral-900 p-1" onSubmit={(e) => e.preventDefault()}>
+                <input type="email" placeholder="Email address" className="bg-transparent text-white text-xs px-3 py-1.5 w-full focus:outline-none" required />
+                <button type="submit" className="bg-white text-black font-bold px-4 py-1.5 text-xs rounded-full hover:bg-neutral-200 transition-colors cursor-pointer shrink-0">Join</button>
               </form>
             </div>
           </div>
-          <div className="mt-10 pt-6 border-t border-neutral-900 flex flex-col md:flex-row items-center justify-between text-[11px] gap-4">
+          <div className="mt-12 pt-8 border-t border-neutral-800/80 flex flex-col md:flex-row items-center justify-between text-[11px] gap-4">
             <p>© {new Date().getFullYear()} Printed Soul Store. All rights reserved.</p>
-            <div className="flex items-center gap-2 grayscale opacity-60 hover:opacity-100 transition-opacity">
+            <div className="flex items-center gap-2 grayscale opacity-70 hover:opacity-100 transition-opacity">
               {["VISA", "MC", "UPI", "RUPAY"].map(m => (
-                <div key={m} className="h-5 w-9 bg-white flex items-center justify-center text-[9px] font-black text-black">{m}</div>
+                <div key={m} className="h-5 w-10 bg-white rounded flex items-center justify-center text-[9px] font-black text-black">{m}</div>
               ))}
             </div>
             <div className="flex gap-4">

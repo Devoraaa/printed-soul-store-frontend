@@ -113,7 +113,7 @@ export function CategoryHoverMenu({
         <div className="fixed inset-0 top-[60px] -z-10" onClick={onClose} />
 
         {/* ── Compact Floating Card (Max width ~880px, NOT 100vw full screen) ── */}
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl border-2 border-black shadow-[0_20px_50px_rgba(0,0,0,0.18)] p-5 overflow-hidden">
+        <div className="max-w-4xl mx-auto bg-white rounded-3xl border border-black/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.12)] p-5 overflow-hidden">
           {isCovers ? (
             /* ══════════════════════════════════════════════════════════════════
                COMPACT COVERS DROPDOWN (Materials + Brands + Mini Preview)
@@ -227,7 +227,7 @@ export function CategoryHoverMenu({
                     <Link
                       to={`/products/${previewProducts[0].slug || previewProducts[0]._id}`}
                       onClick={onClose}
-                      className="block group rounded-xl border border-gray-200 p-2 hover:border-black transition-all bg-[#FAFAFA]"
+                      className="block group rounded-2xl border border-black/[0.06] p-2 hover:border-black transition-all bg-[#FAF8F5]"
                     >
                       <div className="aspect-square rounded-lg bg-white overflow-hidden p-1 mb-2 flex items-center justify-center border border-gray-100">
                         <img
@@ -296,7 +296,7 @@ export function CategoryHoverMenu({
                       key={p._id || p.id}
                       to={`/products/${p.slug || p._id}`}
                       onClick={onClose}
-                      className="group flex items-center gap-2.5 p-2 rounded-xl border border-gray-100 hover:border-black transition-all bg-[#FAFAFA]"
+                      className="group flex items-center gap-2.5 p-2 rounded-2xl border border-black/[0.06] hover:border-black transition-all bg-[#FAF8F5]"
                     >
                       <div className="h-12 w-12 rounded-lg bg-white p-1 border border-gray-100 shrink-0 flex items-center justify-center">
                         <img

@@ -483,7 +483,7 @@ export function ProductsPage() {
   const seoData = getProductsPageSEO()
 
   return (
-    <div className="bg-[#FAFAFA] min-h-screen text-gray-900 antialiased selection:bg-black selection:text-white">
+    <div className="bg-[#FAF8F5] min-h-screen text-gray-900 antialiased selection:bg-black selection:text-white">
       <SEO
         title={seoData.title}
         description={seoData.description}
@@ -494,11 +494,11 @@ export function ProductsPage() {
       />
 
       {/* Page Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-[1700px] mx-auto px-3 md:px-6 py-4 md:py-6">
+      <div className="bg-white/80 border-b border-black/[0.05] backdrop-blur-md">
+        <div className="max-w-[1700px] mx-auto px-3 md:px-6 py-5 md:py-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div>
-              <nav className="flex items-center gap-1.5 text-[11px] text-gray-400 font-semibold mb-1">
+              <nav className="flex items-center gap-1.5 text-[11px] text-neutral-400 font-semibold mb-1">
                 <Link to="/" className="hover:text-black">Home</Link>
                 <ChevronRight className="h-3 w-3" />
                 <Link to="/products" className="hover:text-black">All Products</Link>
@@ -509,22 +509,22 @@ export function ProductsPage() {
                   </>
                 )}
               </nav>
-              <h1 className="text-2xl md:text-3xl font-black tracking-tight text-gray-900 capitalize">
+              <h1 className="text-2xl md:text-3xl font-black tracking-tight text-neutral-900 capitalize font-display">
                 {pageTitle}
               </h1>
               {selectedCatObj?.description && (
-                <p className="text-gray-500 text-xs mt-1 max-w-lg">{selectedCatObj.description}</p>
+                <p className="text-neutral-500 text-xs mt-1 max-w-lg">{selectedCatObj.description}</p>
               )}
             </div>
             <div className="flex items-center gap-2">
               {meta.total && (
-                <span className="text-xs font-semibold text-gray-500 bg-gray-100 border border-gray-200 px-3 py-1.5">
-                  <strong className="text-black">{meta.total}</strong> designs
+                <span className="text-xs font-semibold text-neutral-600 bg-white border border-black/[0.08] px-3.5 py-1.5 rounded-full shadow-xs">
+                  <strong className="text-black font-bold">{meta.total}</strong> designs
                 </span>
               )}
               <button
                 onClick={() => setShowMobileFilters(true)}
-                className="md:hidden flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 bg-white text-xs font-bold cursor-pointer"
+                className="md:hidden flex items-center gap-1.5 px-4 py-2 border border-black/[0.08] bg-white rounded-full text-xs font-bold shadow-xs cursor-pointer"
               >
                 <SlidersHorizontal className="h-3.5 w-3.5" /> Filters
               </button>
@@ -553,8 +553,8 @@ export function ProductsPage() {
         <div className="flex gap-4">
 
           {/* Desktop Sidebar — Sticky */}
-          <aside className="hidden md:block w-52 shrink-0">
-            <div className="sticky top-16 bg-white p-4 border border-gray-200 max-h-[calc(100vh-5rem)] overflow-y-auto">
+          <aside className="hidden md:block w-56 shrink-0">
+            <div className="sticky top-20 bg-white p-5 rounded-3xl border border-black/[0.05] shadow-sm max-h-[calc(100vh-6rem)] overflow-y-auto">
               <SidebarContent />
             </div>
           </aside>
@@ -566,31 +566,31 @@ export function ProductsPage() {
             {hasFilters && (
               <div className="flex flex-wrap gap-1.5 mb-3">
                 {categoryParam && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-black text-white text-[11px] font-bold">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-neutral-900 text-white text-[11px] font-bold rounded-full shadow-xs">
                     {selectedCatObj?.name || categoryParam}
                     <button onClick={() => setFilter("category", "")} className="hover:text-gray-300 cursor-pointer"><X className="h-3 w-3" /></button>
                   </span>
                 )}
                 {subCategoryParam && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-violet-600 text-white text-[11px] font-bold">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-violet-600 text-white text-[11px] font-bold rounded-full shadow-xs">
                     {allCategories.find((c: any) => c.slug === subCategoryParam || c._id === subCategoryParam)?.name || subCategoryParam}
                     <button onClick={() => setFilter("subCategory", "")} className="hover:text-violet-200 cursor-pointer"><X className="h-3 w-3" /></button>
                   </span>
                 )}
                 {brandParam && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-black text-white text-[11px] font-bold">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-neutral-900 text-white text-[11px] font-bold rounded-full shadow-xs">
                     {brands.find((b: any) => b.slug === brandParam || b._id === brandParam)?.name || brandParam}
                     <button onClick={() => setFilter("brand", "")} className="hover:text-gray-300 cursor-pointer"><X className="h-3 w-3" /></button>
                   </span>
                 )}
                 {deviceModelParam && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-black text-white text-[11px] font-bold">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-neutral-900 text-white text-[11px] font-bold rounded-full shadow-xs">
                     {deviceModels.find((d: any) => d._id === deviceModelParam)?.displayName || "Model"}
                     <button onClick={() => setFilter("deviceModel", "")} className="hover:text-gray-300 cursor-pointer"><X className="h-3 w-3" /></button>
                   </span>
                 )}
                 {(minPriceParam || maxPriceParam) && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-600 text-white text-[11px] font-bold">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-600 text-white text-[11px] font-bold rounded-full shadow-xs">
                     {minPriceParam ? `₹${minPriceParam}` : "Any"} — {maxPriceParam ? `₹${maxPriceParam}` : "Any"}
                     <button onClick={() => { setLocalMinPrice(""); setLocalMaxPrice(""); const p = new URLSearchParams(searchParams); p.delete("minPrice"); p.delete("maxPrice"); setSearchParams(p) }} className="hover:text-emerald-200 cursor-pointer"><X className="h-3 w-3" /></button>
                   </span>
@@ -599,9 +599,9 @@ export function ProductsPage() {
             )}
 
             {isLoading ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-2.5 md:gap-2.5">
                 {[...Array(10)].map((_, i) => (
-                  <div key={i} className="aspect-[3/4] bg-gray-100 animate-pulse" />
+                  <div key={i} className="aspect-[3/4] bg-neutral-200/50 animate-pulse rounded-2xl" />
                 ))}
               </div>
             ) : products.length === 0 ? (
@@ -615,7 +615,7 @@ export function ProductsPage() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-2.5 md:gap-2.5">
                   {products.map((product: any) => (
                     <ProductCard key={product._id} product={product} />
                   ))}

@@ -38,15 +38,15 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Box */}
-      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-sm bg-[#F9F9F9] border border-neutral-200/60 transition-all duration-200 group-hover:shadow-md flex items-center justify-center">
-        <Link to={`/products/${product.slug}`} className="relative block w-full h-full p-2.5 flex items-center justify-center">
+      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl bg-white border border-black/[0.05] transition-all duration-300 group-hover:shadow-[0_10px_25px_rgba(0,0,0,0.06)] group-hover:border-black/[0.1] flex items-center justify-center">
+        <Link to={`/products/${product.slug}`} className="relative block w-full h-full p-2 sm:p-2.5 flex items-center justify-center">
           {/* Primary Image */}
           <img
             src={primaryImage}
             alt={product.name}
             loading="lazy"
             decoding="async"
-            className={`w-full h-full object-contain transition-all duration-300 ${
+            className={`w-full h-full object-contain transition-all duration-500 ease-out ${
               isHovered && product.images?.length > 1 ? "opacity-0 scale-105" : "opacity-100 scale-100"
             }`}
           />
@@ -58,21 +58,21 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
               alt={`${product.name} alternate view`}
               loading="lazy"
               decoding="async"
-              className={`absolute inset-0 w-full h-full object-contain p-2.5 transition-all duration-300 ${
+              className={`absolute inset-0 w-full h-full object-contain p-2 sm:p-2.5 transition-all duration-500 ease-out ${
                 isHovered ? "opacity-100 scale-105" : "opacity-0 scale-100"
               }`}
             />
           )}
 
           {/* Badges */}
-          <div className="absolute top-2 left-2 flex flex-col gap-1 z-10 pointer-events-none">
+          <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none">
             {discountPercent > 0 && (
-              <span className="bg-red-600 text-white text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-sm shadow">
+              <span className="bg-rose-600 text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-sm">
                 -{discountPercent}%
               </span>
             )}
             {product.isFeatured && (
-              <span className="bg-amber-400 text-black text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-sm shadow">
+              <span className="bg-amber-400 text-neutral-900 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-sm">
                 ★ Featured
               </span>
             )}
@@ -80,22 +80,22 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
 
           {/* Out of Stock Overlay */}
           {product.stock === 0 && (
-            <div className="absolute inset-0 bg-white/70 backdrop-blur-[1px] flex items-center justify-center z-20">
-              <span className="bg-gray-900 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-sm">
+            <div className="absolute inset-0 bg-white/80 backdrop-blur-[2px] flex items-center justify-center z-20">
+              <span className="bg-neutral-900 text-white text-[10px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full shadow-sm">
                 Out of Stock
               </span>
             </div>
           )}
 
-          {/* Quick Add Button — appears on hover */}
-          <div className="hidden md:block absolute bottom-0 left-0 right-0 z-20 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200">
+          {/* Quick Add Button — floating pill on hover */}
+          <div className="hidden md:block absolute bottom-2.5 left-2.5 right-2.5 z-20 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200">
             <button
               onClick={handleQuickAdd}
               disabled={product.stock === 0}
-              className={`w-full py-2.5 font-bold text-[10px] uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+              className={`w-full py-2 px-3 font-bold text-[10px] uppercase tracking-wider rounded-full transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-lg active:scale-95 ${
                 added
                   ? "bg-emerald-600 text-white"
-                  : "bg-black text-white hover:bg-neutral-800"
+                  : "bg-black/90 hover:bg-black text-white backdrop-blur-sm"
               }`}
             >
               {added ? (
@@ -109,38 +109,38 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
       </div>
 
       {/* Product Info */}
-      <div className="flex flex-col pt-2 pb-1 gap-0.5">
-        <span className="text-[9px] font-semibold uppercase tracking-wider text-neutral-400 truncate">
-          {product.category?.name || ""}
+      <div className="flex flex-col pt-2 pb-1 px-0.5 gap-0.5">
+        <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-neutral-400 truncate">
+          {product.category?.name || "Printed Soul"}
         </span>
 
         <Link
           to={`/products/${product.slug}`}
-          className="font-semibold text-[12px] leading-tight text-neutral-900 line-clamp-2 hover:text-neutral-600 transition-colors"
+          className="font-medium text-[13px] sm:text-[14px] leading-snug text-neutral-900 line-clamp-1 hover:text-neutral-600 transition-colors"
         >
           {product.name}
         </Link>
 
         <div className="flex items-center justify-between mt-1">
           <div className="flex items-baseline gap-1.5">
-            <span className="font-bold text-sm text-neutral-900">
+            <span className="font-bold text-sm sm:text-[15px] text-neutral-900 tracking-tight">
               {formatPrice(product.price)}
             </span>
             {product.comparePrice && product.comparePrice > product.price && (
-              <span className="text-neutral-400 line-through text-[11px]">
+              <span className="text-neutral-400 line-through text-[11px] sm:text-xs">
                 {formatPrice(product.comparePrice)}
               </span>
             )}
           </div>
 
           {product.ratings?.count && product.ratings.count > 0 ? (
-            <div className="flex items-center gap-0.5 text-[10px] font-semibold text-neutral-500">
-              <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
+            <div className="flex items-center gap-0.5 text-[10px] font-bold text-amber-700 bg-amber-500/10 px-2 py-0.5 rounded-full">
+              <Star className="h-2.5 w-2.5 fill-amber-500 text-amber-500" />
               <span>{product.ratings.average.toFixed(1)}</span>
             </div>
           ) : (
-            <div className="flex items-center text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-sm">
-              NEW
+            <div className="flex items-center text-[9px] font-bold text-neutral-600 bg-neutral-200/50 px-2 py-0.5 rounded-full tracking-wide uppercase">
+              New
             </div>
           )}
         </div>

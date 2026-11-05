@@ -191,7 +191,7 @@ export function HomePage() {
   ]
 
   return (
-    <div className="bg-white text-neutral-900 antialiased">
+    <div className="bg-[#FAF8F5] text-neutral-900 antialiased min-h-screen">
       <SEO
         title="Buy Custom Phone Cases, Glass & Metal Covers Online India"
         description="Shop India's most protective custom phone cases, 9H toughened glass covers, dual protection shockproof cases, and metal armor cases for Apple, Samsung, Vivo, Oppo & more at Printed Soul. Free shipping above ₹499."
@@ -285,15 +285,18 @@ export function HomePage() {
           2. CATEGORY STRIP — Full bleed image tiles
       ═══════════════════════════════════════════ */}
       {categories.length > 0 && (
-        <section className="py-5 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-neutral-700">Shop by Category</h2>
-            <Link to="/products" className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 hover:text-black transition-colors flex items-center gap-1">
+        <section className="py-6 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="flex items-end justify-between mb-4">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-400">Collections</p>
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-neutral-900">Shop by Category</h2>
+            </div>
+            <Link to="/products" className="text-xs font-bold uppercase tracking-wider text-neutral-700 hover:text-black transition-colors flex items-center gap-1 bg-white border border-black/[0.08] px-3.5 py-1.5 rounded-full shadow-sm">
               All <ChevronRight className="h-3.5 w-3.5" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-3">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-2.5 md:gap-3">
             {categories.map((cat: any) => {
               const slug = cat.slug?.toLowerCase() || ""
               const imgSrc = cat.image ? getImageUrl(cat.image) : getCatFallback(slug)
@@ -301,18 +304,18 @@ export function HomePage() {
                 <Link
                   key={cat._id}
                   to={`/products?category=${cat.slug || cat._id}`}
-                  className="group relative aspect-square overflow-hidden rounded-sm bg-neutral-100 border border-neutral-200 hover:border-neutral-900 transition-all duration-200"
+                  className="group relative aspect-square overflow-hidden rounded-2xl bg-white border border-black/[0.05] hover:border-black/20 transition-all duration-300 shadow-sm hover:shadow-md"
                 >
                   <img
                     src={imgSrc}
                     alt={cat.name}
                     loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                     onError={(e) => { (e.target as HTMLImageElement).src = getCatFallback(slug) }}
                   />
                   {/* Dark gradient + name */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-                  <span className="absolute bottom-1.5 left-0 right-0 text-center text-white text-[10px] font-bold uppercase tracking-wide px-1 leading-tight drop-shadow">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <span className="absolute bottom-2 left-0 right-0 text-center text-white text-[11px] font-bold uppercase tracking-wider px-1 leading-tight drop-shadow">
                     {cat.name}
                   </span>
                 </Link>
@@ -326,18 +329,18 @@ export function HomePage() {
           2.5 QUICK FILTERS (Navigates directly to Shop All)
       ═══════════════════════════════════════════ */}
       <section className="py-4 max-w-[1700px] mx-auto px-3 md:px-6">
-        <div className="bg-white border border-neutral-200/90 rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
+        <div className="bg-white border border-black/[0.05] rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
           {/* Top Row: Title, Filters Icon & Search */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-black text-white">
-                <Filter className="w-4 h-4" />
+            <div className="flex items-center gap-2.5">
+              <span className="p-2 rounded-full bg-neutral-900 text-white shadow-sm">
+                <Filter className="w-3.5 h-3.5" />
               </span>
               <div>
-                <h3 className="text-xs font-black uppercase tracking-wider text-neutral-900">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-900">
                   Quick Filters
                 </h3>
-                <p className="text-[11px] text-neutral-400">Search designs, choose a category or phone brand</p>
+                <p className="text-[11px] text-neutral-500">Search designs, choose a category or phone brand</p>
               </div>
             </div>
 
@@ -357,11 +360,11 @@ export function HomePage() {
                 value={homeSearch}
                 onChange={(e) => setHomeSearch(e.target.value)}
                 placeholder="Search design, anime, aesthetic..."
-                className="w-full pl-9 pr-16 py-2.5 text-xs font-medium border border-neutral-200 bg-neutral-50 rounded-xl focus:bg-white focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
+                className="w-full pl-9 pr-20 py-2.5 text-xs font-medium border border-neutral-200/80 bg-neutral-50/70 rounded-full focus:bg-white focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
               />
               <button
                 type="submit"
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-black text-white text-[10px] font-bold uppercase tracking-wider rounded-lg hover:bg-neutral-800 transition-colors cursor-pointer"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 px-3.5 py-1.5 bg-neutral-900 text-white text-[10px] font-bold uppercase tracking-wider rounded-full hover:bg-black transition-colors cursor-pointer"
               >
                 Search
               </button>
@@ -369,11 +372,11 @@ export function HomePage() {
           </div>
 
           {/* Categories Filter Strip */}
-          <div className="pt-2 border-t border-neutral-100 flex items-center gap-2 overflow-x-auto hide-scrollbar py-0.5">
+          <div className="pt-3 border-t border-neutral-100 flex items-center gap-2 overflow-x-auto hide-scrollbar py-0.5">
             <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 shrink-0">Category:</span>
             <Link
               to="/products"
-              className="px-3 py-1.5 text-xs font-bold bg-neutral-900 text-white rounded-lg shrink-0 hover:bg-black transition-all"
+              className="px-3.5 py-1.5 text-xs font-bold bg-neutral-900 text-white rounded-full shrink-0 hover:bg-black transition-all shadow-sm"
             >
               All Categories
             </Link>
@@ -381,7 +384,7 @@ export function HomePage() {
               <Link
                 key={cat._id}
                 to={`/products?category=${cat.slug || cat._id}`}
-                className="px-3 py-1.5 text-xs font-semibold bg-neutral-50 border border-neutral-200 text-neutral-700 hover:bg-black hover:text-white hover:border-black rounded-lg transition-all shrink-0"
+                className="px-3.5 py-1.5 text-xs font-medium bg-neutral-50 border border-neutral-200/80 text-neutral-700 hover:bg-black hover:text-white hover:border-black rounded-full transition-all shrink-0"
               >
                 {cat.name}
               </Link>
@@ -389,13 +392,13 @@ export function HomePage() {
           </div>
 
           {/* Brands & Price Filter Strip */}
-          <div className="pt-2 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-3">
+          <div className="pt-3 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-3">
             {brands.length > 0 && (
               <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar py-0.5">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 shrink-0">Brand:</span>
                 <Link
                   to="/products"
-                  className="px-2.5 py-1 text-[11px] font-bold bg-neutral-100 text-neutral-800 hover:bg-black hover:text-white rounded-md transition-all shrink-0"
+                  className="px-3 py-1 text-[11px] font-bold bg-neutral-200 text-neutral-800 hover:bg-black hover:text-white rounded-full transition-all shrink-0"
                 >
                   All Brands
                 </Link>
@@ -403,7 +406,7 @@ export function HomePage() {
                   <Link
                     key={brand._id}
                     to={`/products?brand=${brand.slug || brand._id}`}
-                    className="px-2.5 py-1 text-[11px] font-semibold bg-white border border-neutral-200 text-neutral-700 hover:border-black hover:text-black rounded-md transition-all shrink-0"
+                    className="px-3 py-1 text-[11px] font-medium bg-white border border-neutral-200/80 text-neutral-700 hover:border-black hover:text-black rounded-full transition-all shrink-0"
                   >
                     {brand.name}
                   </Link>
@@ -422,7 +425,7 @@ export function HomePage() {
                 <Link
                   key={item.label}
                   to={`/products?${item.min ? `minPrice=${item.min}&` : ""}${item.max ? `maxPrice=${item.max}` : ""}`}
-                  className="px-2.5 py-1 text-[10px] font-bold text-neutral-600 border border-neutral-200 hover:border-black hover:text-black rounded-md transition-all"
+                  className="px-3 py-1 text-[10px] font-bold text-neutral-600 border border-neutral-200/80 hover:border-black hover:text-black rounded-full transition-all bg-white shadow-xs"
                 >
                   {item.label}
                 </Link>
@@ -437,23 +440,23 @@ export function HomePage() {
       ═══════════════════════════════════════════ */}
       {promoBanners.length > 0 && (
         <section className="py-4 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className={`grid gap-2 md:gap-3 ${
+          <div className={`grid gap-2 sm:gap-3 ${
             promoBanners.length === 1 ? "grid-cols-1"
             : promoBanners.length === 2 ? "grid-cols-2"
             : "grid-cols-1 md:grid-cols-3"
           }`}>
             {promoBanners.slice(0, 3).map((banner: any, i: number) => {
               const content = (
-                <div className="relative overflow-hidden group aspect-[16/9] md:aspect-[4/3] bg-neutral-100 rounded-sm">
+                <div className="relative overflow-hidden group aspect-[16/9] md:aspect-[4/3] bg-white rounded-3xl border border-black/[0.05] shadow-sm">
                   <img
                     src={getImageUrl(banner.imageUrl)}
                     alt={banner.title || "Promo"}
                     loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent p-4 flex flex-col justify-end">
-                    {banner.title && <h3 className="text-white font-bold text-base leading-tight mb-1">{banner.title}</h3>}
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400 flex items-center gap-1">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent p-5 flex flex-col justify-end">
+                    {banner.title && <h3 className="text-white font-bold text-lg leading-tight mb-1">{banner.title}</h3>}
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-amber-300 flex items-center gap-1">
                       Shop Now <ArrowRight className="h-3 w-3" />
                     </span>
                   </div>
@@ -468,28 +471,28 @@ export function HomePage() {
       )}
 
       {/* ═══════════════════════════════════════════
-          5. NEW ARRIVALS — 5 column dense grid
+          5. NEW ARRIVALS — Larger products, tight gaps
       ═══════════════════════════════════════════ */}
       {allProducts.length > 0 && (
-        <section className="py-5 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="flex items-center justify-between mb-3">
+        <section className="py-7 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="flex items-end justify-between mb-4">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-400">Trending Drops</p>
-              <h2 className="text-lg font-black tracking-tight text-neutral-900">New Arrivals</h2>
+              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-neutral-900">New Arrivals</h2>
             </div>
-            <Link to="/products" className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 hover:text-black transition-colors flex items-center gap-1">
+            <Link to="/products" className="text-xs font-bold uppercase tracking-wider text-neutral-700 hover:text-black transition-colors flex items-center gap-1 bg-white border border-black/[0.08] px-3.5 py-1.5 rounded-full shadow-sm">
               View All <ChevronRight className="h-3.5 w-3.5" />
             </Link>
           </div>
 
           {isAllLoading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-3">
-              {[...Array(10)].map((_, i) => (
-                <div key={i} className="aspect-[3/4] bg-neutral-100 animate-pulse rounded-sm" />
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-2 sm:gap-2.5 md:gap-3">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="aspect-[3/4] bg-neutral-200/50 animate-pulse rounded-2xl" />
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-2 sm:gap-2.5 md:gap-3">
               {allProducts.slice(0, 10).map((product: any) => (
                 <ProductCard key={product._id} product={product} />
               ))}
@@ -502,22 +505,20 @@ export function HomePage() {
           6. FEATURED PRODUCTS
       ═══════════════════════════════════════════ */}
       {featured.length > 0 && (
-        <section className="py-5 bg-neutral-950 text-white">
-          <div className="max-w-[1700px] mx-auto px-3 md:px-6">
-            <div className="flex items-center justify-between mb-3">
+        <section className="py-6 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="bg-neutral-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl">
+            <div className="flex items-end justify-between mb-5">
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-amber-400">Hand-Picked</p>
-                <h2 className="text-lg font-black tracking-tight text-white">Featured Best Sellers</h2>
+                <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">Featured Best Sellers</h2>
               </div>
-              <Link to="/products?featured=true" className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 hover:text-white transition-colors flex items-center gap-1">
+              <Link to="/products?featured=true" className="text-xs font-bold uppercase tracking-wider text-neutral-300 hover:text-white transition-colors flex items-center gap-1 bg-white/10 border border-white/10 px-3.5 py-1.5 rounded-full hover:bg-white/20">
                 View All <ChevronRight className="h-3.5 w-3.5" />
               </Link>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-3">
-              {featured.slice(0, 6).map((product: any) => (
-                <div key={product._id} className="bg-white rounded-sm">
-                  <ProductCard product={product} />
-                </div>
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3">
+              {featured.slice(0, 8).map((product: any) => (
+                <ProductCard key={product._id} product={product} />
               ))}
             </div>
           </div>
@@ -531,36 +532,36 @@ export function HomePage() {
         if (sec.products.length === 0) return null
 
         return (
-          <section key={sec.id} className="py-7 border-t border-neutral-100 max-w-[1700px] mx-auto px-3 md:px-6">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 gap-2">
+          <section key={sec.id} className="py-8 border-t border-black/[0.05] max-w-[1700px] mx-auto px-3 md:px-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-5 gap-3">
               <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">
                     {sec.tag}
                   </span>
                   {sec.badge && (
-                    <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-sm uppercase tracking-wider ${sec.badgeColor}`}>
+                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${sec.badgeColor}`}>
                       {sec.badge}
                     </span>
                   )}
                 </div>
-                <h2 className="text-xl md:text-2xl font-black tracking-tight text-neutral-900 uppercase">
+                <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-neutral-900">
                   {sec.title}
                 </h2>
-                <p className="text-xs text-neutral-500 mt-0.5 max-w-xl">
+                <p className="text-xs sm:text-sm text-neutral-500 mt-1 max-w-xl">
                   {sec.subtitle}
                 </p>
               </div>
               <Link
                 to={sec.link}
-                className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-neutral-900 hover:text-amber-600 transition-colors shrink-0 bg-neutral-100 hover:bg-neutral-200 px-3 py-1.5 rounded-sm"
+                className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-900 hover:text-black transition-all shrink-0 bg-white hover:bg-neutral-100 border border-black/[0.08] px-4 py-2 rounded-full shadow-sm"
               >
                 View All {sec.title.split("&")[0].trim()} <ChevronRight className="h-3.5 w-3.5" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-3">
-              {sec.products.map((product: any) => (
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3">
+              {sec.products.slice(0, 8).map((product: any) => (
                 <ProductCard key={product._id} product={product} />
               ))}
             </div>
@@ -568,10 +569,10 @@ export function HomePage() {
         )
       })}
 
-      <div className="py-8 text-center border-t border-neutral-100 bg-neutral-50">
+      <div className="py-10 text-center border-t border-black/[0.05] bg-transparent">
         <Link
           to="/products"
-          className="inline-flex items-center gap-2 bg-neutral-900 text-white px-8 py-3.5 rounded-sm font-bold text-xs uppercase tracking-widest hover:bg-black transition-all shadow-sm"
+          className="inline-flex items-center gap-2 bg-neutral-900 text-white px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-black transition-all shadow-md active:scale-95"
         >
           Explore Full Store Catalog <ArrowRight className="h-4 w-4" />
         </Link>
@@ -581,11 +582,11 @@ export function HomePage() {
           8. SOCIAL FEED
       ═══════════════════════════════════════════ */}
       {socialPosts.length > 0 && (
-        <section className="py-8 bg-neutral-950 text-white">
-          <div className="max-w-[1400px] mx-auto px-3 md:px-6">
+        <section className="py-10 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="bg-neutral-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl">
             <div className="text-center mb-6">
               <p className="text-[10px] uppercase tracking-[0.3em] text-amber-400 font-bold mb-1">@PrintedSoulStore</p>
-              <h2 className="text-xl font-black tracking-tight text-white">Trending on Social 🔥</h2>
+              <h2 className="text-2xl font-black tracking-tight text-white">Trending on Social 🔥</h2>
               <p className="text-neutral-400 text-xs mt-1">Tag #PrintedSoul to get featured</p>
             </div>
             <div className="flex overflow-x-auto md:grid md:grid-cols-3 gap-4 snap-x snap-mandatory hide-scrollbar pb-2">
@@ -600,7 +601,7 @@ export function HomePage() {
                     : `https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(post.url)}&show_text=true&width=320`
                 }
                 return (
-                  <div key={post._id} className="min-w-[280px] md:min-w-0 w-full max-w-[320px] md:max-w-none h-[420px] relative snap-center mx-auto rounded-sm overflow-hidden bg-neutral-900 border border-neutral-800">
+                  <div key={post._id} className="min-w-[280px] md:min-w-0 w-full max-w-[320px] md:max-w-none h-[420px] relative snap-center mx-auto rounded-2xl overflow-hidden bg-neutral-900 border border-neutral-800">
                     <iframe
                       src={embedUrl}
                       width="100%"
@@ -621,18 +622,20 @@ export function HomePage() {
       {/* ═══════════════════════════════════════════
           9. CTA BANNER
       ═══════════════════════════════════════════ */}
-      <section className="bg-neutral-900 py-12 text-center px-6 border-t border-neutral-800">
-        <div className="max-w-lg mx-auto">
-          <h2 className="text-2xl md:text-4xl font-black text-white mb-3 tracking-tight leading-tight">
-            Wear Your Soul.<br />Shield Your Phone.
-          </h2>
-          <p className="text-neutral-400 text-sm mb-6">Premium drop protection meets bold artistic expression.</p>
-          <Link
-            to="/products"
-            className="inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-sm font-bold text-xs uppercase tracking-widest hover:bg-neutral-200 transition-all"
-          >
-            Explore Catalog <ArrowRight className="h-4 w-4" />
-          </Link>
+      <section className="max-w-[1700px] mx-auto px-3 md:px-6 my-8">
+        <div className="bg-neutral-900 rounded-3xl py-12 text-center px-6 border border-neutral-800 shadow-xl">
+          <div className="max-w-lg mx-auto">
+            <h2 className="text-2xl md:text-4xl font-black text-white mb-3 tracking-tight leading-tight">
+              Wear Your Soul.<br />Shield Your Phone.
+            </h2>
+            <p className="text-neutral-400 text-sm mb-6">Premium drop protection meets bold artistic expression.</p>
+            <Link
+              to="/products"
+              className="inline-flex items-center gap-2 bg-white text-black px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-neutral-200 transition-all shadow-md active:scale-95"
+            >
+              Explore Catalog <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
