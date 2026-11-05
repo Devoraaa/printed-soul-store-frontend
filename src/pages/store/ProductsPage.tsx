@@ -483,7 +483,7 @@ export function ProductsPage() {
   const seoData = getProductsPageSEO()
 
   return (
-    <div className="bg-[#FAF8F5] min-h-screen text-gray-900 antialiased selection:bg-black selection:text-white">
+    <div className="bg-[#F4EFEA] min-h-screen text-gray-900 antialiased selection:bg-black selection:text-white">
       <SEO
         title={seoData.title}
         description={seoData.description}

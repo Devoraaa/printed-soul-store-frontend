@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react"
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom"
-import { ShoppingBag, Search, Menu, X, User, Package, LogOut, ChevronDown } from "lucide-react"
+import { ShoppingBag, Search, Menu, X, User, Package, LogOut, ChevronDown, Truck, ShieldCheck, Lock, Sparkles } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { useAuth } from "../../context/AuthContext"
 import { useCart } from "../../context/CartContext"
@@ -72,15 +72,21 @@ export function StoreLayout() {
     .sort((a: any, b: any) => (a.sortOrder ?? 99) - (b.sortOrder ?? 99))
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8F5] text-neutral-900">
+    <div className="min-h-screen flex flex-col bg-[#F4EFEA] text-neutral-900">
       <AuthModal />
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
       <CartDrawer isOpen={cartDrawerOpen} onClose={() => setCartDrawerOpen(false)} />
 
+      {/* ─── Luxury Announcement Bar ────────────────── */}
+      <div className="bg-[#191816] text-[#F4EFEA] text-[10px] sm:text-[11px] font-semibold tracking-wider py-2 px-4 text-center flex items-center justify-center gap-2 relative z-50">
+        <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="uppercase tracking-[0.15em]">Free Express Delivery Across India on Orders Above ₹499 • 100% Satisfaction Guaranteed</span>
+      </div>
+
       {/* ─── Main Navbar ───────────────────────────── */}
-      <header className="sticky top-0 z-50 w-full bg-[#FAF8F5]/95 backdrop-blur-md border-b border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.02)] relative">
+      <header className="sticky top-0 z-50 w-full bg-[#F4EFEA]/90 backdrop-blur-xl border-b border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.02)] relative">
         <div className="max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="flex h-14 items-center justify-between gap-4">
+          <div className="flex h-15 items-center justify-between gap-4">
 
             {/* Official Printed Soul Unified Horizontal Logo */}
             <Link to="/" onMouseEnter={handleMenuClose} className="flex items-center shrink-0 group py-1">
@@ -92,11 +98,11 @@ export function StoreLayout() {
             </Link>
 
             {/* ─── Category Nav (desktop) ───────────── */}
-            <nav className="hidden lg:flex items-center gap-0 flex-1 overflow-x-auto hide-scrollbar">
+            <nav className="hidden lg:flex items-center gap-1 flex-1 overflow-x-auto hide-scrollbar px-2">
               <Link
                 to="/"
                 onMouseEnter={handleMenuClose}
-                className="px-3.5 py-4 text-[13px] font-medium text-neutral-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
+                className="px-3.5 py-1.5 text-[13px] font-semibold text-neutral-700 hover:text-black rounded-full hover:bg-black/[0.05] transition-all whitespace-nowrap"
               >
                 Home
               </Link>
@@ -111,7 +117,7 @@ export function StoreLayout() {
                   })
                 }
                 onMouseLeave={handleCategoryMouseLeave}
-                className="px-3.5 py-4 text-[13px] font-medium text-neutral-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap flex items-center gap-1.5"
+                className="px-3.5 py-1.5 text-[13px] font-semibold text-neutral-700 hover:text-black rounded-full hover:bg-black/[0.05] transition-all whitespace-nowrap flex items-center gap-1.5"
               >
                 <span>New Arrivals</span>
                 <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
@@ -133,7 +139,7 @@ export function StoreLayout() {
                     })
                   }
                   onMouseLeave={handleCategoryMouseLeave}
-                  className="px-3.5 py-4 text-[13px] font-medium text-neutral-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
+                  className="px-3.5 py-1.5 text-[13px] font-semibold text-neutral-700 hover:text-black rounded-full hover:bg-black/[0.05] transition-all whitespace-nowrap"
                 >
                   {cat.name}
                 </Link>
@@ -149,7 +155,7 @@ export function StoreLayout() {
                   })
                 }
                 onMouseLeave={handleCategoryMouseLeave}
-                className="px-3.5 py-4 text-[13px] font-medium text-neutral-600 hover:text-black border-b-2 border-transparent hover:border-black transition-all whitespace-nowrap"
+                className="px-3.5 py-1.5 text-[13px] font-semibold text-neutral-700 hover:text-black rounded-full hover:bg-black/[0.05] transition-all whitespace-nowrap"
               >
                 Shop All
               </Link>
@@ -273,23 +279,28 @@ export function StoreLayout() {
       </main>
 
       {/* Trust Strip */}
-      <section className="max-w-[1700px] mx-auto px-3 md:px-6 my-6 w-full">
-        <div className="bg-white rounded-3xl border border-black/[0.05] py-6 px-6 sm:px-8 shadow-sm">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <section className="max-w-[1700px] mx-auto px-3 md:px-6 my-8 w-full">
+        <div className="bg-white rounded-3xl border border-black/[0.06] py-7 px-6 sm:px-8 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
             {[
-              { icon: "🚚", title: "Free Shipping", sub: "On orders above ₹499" },
-              { icon: "🛡️", title: "Premium Quality", sub: "Armor grade protection" },
-              { icon: "🔒", title: "Secure Payments", sub: "100% safe checkout" },
-              { icon: "⭐", title: "Top Rated", sub: "Loved by 10,000+ buyers" },
-            ].map((item) => (
-              <div key={item.title} className="flex items-center gap-3">
-                <span className="text-2xl shrink-0">{item.icon}</span>
-                <div>
-                  <p className="text-xs font-bold text-neutral-900 uppercase tracking-wider">{item.title}</p>
-                  <p className="text-[11px] text-neutral-500 mt-0.5">{item.sub}</p>
+              { icon: Truck, title: "Free Express Shipping", sub: "On all orders above ₹499" },
+              { icon: ShieldCheck, title: "Armor Grade Cases", sub: "Drop-tested & scratch proof" },
+              { icon: Lock, title: "100% Secure Checkout", sub: "Encrypted UPI, Cards & NetBanking" },
+              { icon: Sparkles, title: "10,000+ Happy Souls", sub: "Rated 4.9/5 by verified buyers" },
+            ].map((item) => {
+              const Icon = item.icon
+              return (
+                <div key={item.title} className="flex items-center gap-3.5">
+                  <div className="h-11 w-11 rounded-2xl bg-[#F4EFEA] text-neutral-900 border border-black/[0.05] flex items-center justify-center shrink-0 shadow-xs">
+                    <Icon className="h-5 w-5" strokeWidth={1.8} />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-neutral-900 uppercase tracking-wider">{item.title}</p>
+                    <p className="text-[11px] text-neutral-500 mt-0.5 leading-snug">{item.sub}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>

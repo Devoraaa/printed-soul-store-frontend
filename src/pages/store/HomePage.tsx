@@ -191,7 +191,7 @@ export function HomePage() {
   ]
 
   return (
-    <div className="bg-[#FAF8F5] text-neutral-900 antialiased min-h-screen">
+    <div className="bg-[#F4EFEA] text-neutral-900 antialiased min-h-screen">
       <SEO
         title="Buy Custom Phone Cases, Glass & Metal Covers Online India"
         description="Shop India's most protective custom phone cases, 9H toughened glass covers, dual protection shockproof cases, and metal armor cases for Apple, Samsung, Vivo, Oppo & more at Printed Soul. Free shipping above ₹499."
@@ -217,9 +217,10 @@ export function HomePage() {
       </h1>
 
       {/* ═══════════════════════════════════════════
-          1. HERO SLIDER
+          1. HERO SLIDER — Luxury Rounded Banner Frame
       ═══════════════════════════════════════════ */}
-      <section className="relative w-full aspect-[16/9] sm:aspect-[21/9] lg:aspect-[3/1] bg-neutral-950 overflow-hidden group">
+      <section className="max-w-[1700px] mx-auto px-3 md:px-6 pt-3 md:pt-4">
+        <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] lg:aspect-[3/1] bg-neutral-950 overflow-hidden rounded-3xl shadow-xl group border border-black/10">
         {heroBanners.length > 0 ? (
           heroBanners.map((banner: any, idx: number) => (
             <motion.div
@@ -256,9 +257,9 @@ export function HomePage() {
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-neutral-950 via-neutral-900 to-black flex flex-col items-center justify-center text-center px-6">
             <span className="text-amber-400 text-xs font-black uppercase tracking-[0.3em] mb-4">Official Store</span>
-            <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight mb-4 uppercase">PRINTED SOUL</h1>
+            <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight mb-4 uppercase font-display">PRINTED SOUL</h1>
             <p className="text-neutral-400 text-sm md:text-base mb-8 max-w-md">Premium custom phone cases & personalized accessories.</p>
-            <Link to="/products" className="inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-sm font-bold text-xs uppercase tracking-widest hover:bg-neutral-200 transition-all">
+            <Link to="/products" className="inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-neutral-200 transition-all shadow-md">
               Shop Now <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -266,19 +267,20 @@ export function HomePage() {
 
         {heroBanners.length > 1 && (
           <>
-            <button onClick={prevHero} aria-label="Previous" className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 bg-black/50 hover:bg-black/90 text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer">
+            <button onClick={prevHero} aria-label="Previous" className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-black/60 hover:bg-black text-white rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-md">
               <ChevronLeft className="h-5 w-5" />
             </button>
-            <button onClick={nextHero} aria-label="Next" className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 bg-black/50 hover:bg-black/90 text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer">
+            <button onClick={nextHero} aria-label="Next" className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-black/60 hover:bg-black text-white rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-md">
               <ChevronRight className="h-5 w-5" />
             </button>
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full">
               {heroBanners.map((_: any, idx: number) => (
-                <button key={idx} onClick={() => setCurrentHero(idx)} className={`h-1 rounded-none transition-all duration-300 cursor-pointer ${idx === currentHero ? "bg-white w-6" : "bg-white/40 w-2"}`} />
+                <button key={idx} onClick={() => setCurrentHero(idx)} className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${idx === currentHero ? "bg-white w-6" : "bg-white/40 w-1.5"}`} />
               ))}
             </div>
           </>
         )}
+        </div>
       </section>
 
       {/* ═══════════════════════════════════════════
@@ -506,11 +508,11 @@ export function HomePage() {
       ═══════════════════════════════════════════ */}
       {featured.length > 0 && (
         <section className="py-6 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="bg-neutral-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl">
+          <div className="bg-[#161513] text-white rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl border border-white/5">
             <div className="flex items-end justify-between mb-5">
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-amber-400">Hand-Picked</p>
-                <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">Featured Best Sellers</h2>
+                <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white font-display">Featured Best Sellers</h2>
               </div>
               <Link to="/products?featured=true" className="text-xs font-bold uppercase tracking-wider text-neutral-300 hover:text-white transition-colors flex items-center gap-1 bg-white/10 border border-white/10 px-3.5 py-1.5 rounded-full hover:bg-white/20">
                 View All <ChevronRight className="h-3.5 w-3.5" />
@@ -583,10 +585,10 @@ export function HomePage() {
       ═══════════════════════════════════════════ */}
       {socialPosts.length > 0 && (
         <section className="py-10 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="bg-neutral-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl">
+          <div className="bg-[#161513] text-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/5">
             <div className="text-center mb-6">
               <p className="text-[10px] uppercase tracking-[0.3em] text-amber-400 font-bold mb-1">@PrintedSoulStore</p>
-              <h2 className="text-2xl font-black tracking-tight text-white">Trending on Social 🔥</h2>
+              <h2 className="text-2xl font-black tracking-tight text-white font-display">Trending on Social 🔥</h2>
               <p className="text-neutral-400 text-xs mt-1">Tag #PrintedSoul to get featured</p>
             </div>
             <div className="flex overflow-x-auto md:grid md:grid-cols-3 gap-4 snap-x snap-mandatory hide-scrollbar pb-2">
@@ -623,9 +625,9 @@ export function HomePage() {
           9. CTA BANNER
       ═══════════════════════════════════════════ */}
       <section className="max-w-[1700px] mx-auto px-3 md:px-6 my-8">
-        <div className="bg-neutral-900 rounded-3xl py-12 text-center px-6 border border-neutral-800 shadow-xl">
+        <div className="bg-[#161513] rounded-3xl py-14 text-center px-6 border border-white/5 shadow-2xl">
           <div className="max-w-lg mx-auto">
-            <h2 className="text-2xl md:text-4xl font-black text-white mb-3 tracking-tight leading-tight">
+            <h2 className="text-2xl md:text-4xl font-black text-white mb-3 tracking-tight leading-tight font-display">
               Wear Your Soul.<br />Shield Your Phone.
             </h2>
             <p className="text-neutral-400 text-sm mb-6">Premium drop protection meets bold artistic expression.</p>

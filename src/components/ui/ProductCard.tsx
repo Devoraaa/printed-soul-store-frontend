@@ -38,7 +38,7 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Box */}
-      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl bg-white border border-black/[0.05] transition-all duration-300 group-hover:shadow-[0_10px_25px_rgba(0,0,0,0.06)] group-hover:border-black/[0.1] flex items-center justify-center">
+      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl bg-white border border-black/[0.06] transition-all duration-300 group-hover:shadow-[0_14px_32px_rgba(0,0,0,0.07)] group-hover:border-black/15 flex items-center justify-center">
         <Link to={`/products/${product.slug}`} className="relative block w-full h-full p-2 sm:p-2.5 flex items-center justify-center">
           {/* Primary Image */}
           <img
@@ -67,12 +67,12 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
           {/* Badges */}
           <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none">
             {discountPercent > 0 && (
-              <span className="bg-rose-600 text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-sm">
+              <span className="bg-neutral-900 text-[#F4EFEA] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
                 -{discountPercent}%
               </span>
             )}
             {product.isFeatured && (
-              <span className="bg-amber-400 text-neutral-900 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-sm">
+              <span className="bg-amber-400 text-neutral-950 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
                 ★ Featured
               </span>
             )}
@@ -95,7 +95,7 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
               className={`w-full py-2 px-3 font-bold text-[10px] uppercase tracking-wider rounded-full transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-lg active:scale-95 ${
                 added
                   ? "bg-emerald-600 text-white"
-                  : "bg-black/90 hover:bg-black text-white backdrop-blur-sm"
+                  : "bg-neutral-900/90 hover:bg-black text-[#F4EFEA] backdrop-blur-md"
               }`}
             >
               {added ? (

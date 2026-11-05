@@ -70,7 +70,7 @@ export function PhoneCoversHubPage() {
   ]
 
   return (
-    <div className="bg-[#FAF8F5] min-h-screen text-neutral-900 antialiased selection:bg-black selection:text-white pb-24">
+    <div className="bg-[#F4EFEA] min-h-screen text-neutral-900 antialiased selection:bg-black selection:text-white pb-24">
       <SEO
         title="Phone Case Materials Guide | Dual vs Glass vs Metal Armor"
         description="Compare phone case materials at Printed Soul India. Choose from 10FT drop Dual Protection, 9H scratch-proof Toughened Glass, and lightweight brushed Metal Armor covers."

@@ -1,60 +1,60 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 40 28% 97.5%; /* #FAF8F5 Warm Light Beige */
-    --foreground: 0 0% 7%;  /* #111111 */
-    --card: 0 0% 100%;      /* #FFFFFF */
-    --card-foreground: 0 0% 7%;
+    --background: 30 25% 94%; /* #F4EFEA Luxury Warm Linen Beige */
+    --foreground: 20 10% 10%; /* #1A1917 Deep Charcoal Espresso */
+    --card: 0 0% 100%;      /* #FFFFFF Pure White for contrast */
+    --card-foreground: 20 10% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 7%;
-    --primary: 0 0% 0%;     /* Black CTA */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 40 20% 94%;
-    --secondary-foreground: 0 0% 7%;
-    --muted: 40 20% 93%;      /* Warm muted */
-    --muted-foreground: 0 0% 40%;
-    --accent: 40 20% 94%;
-    --accent-foreground: 0 0% 7%;
+    --popover-foreground: 20 10% 10%;
+    --primary: 20 10% 10%;  /* Obsidian Black CTA */
+    --primary-foreground: 30 25% 95%;
+    --secondary: 30 20% 90%;
+    --secondary-foreground: 20 10% 10%;
+    --muted: 30 18% 89%;    /* Warm beige muted */
+    --muted-foreground: 20 5% 45%;
+    --accent: 30 20% 90%;
+    --accent-foreground: 20 10% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 35 15% 90%;     /* #ECE8E1 subtle warm border */
-    --input: 35 15% 90%;
-    --ring: 0 0% 0%;        /* Black focus ring */
-    --radius: 1rem;         /* 16px luxury rounded */
+    --border: 30 15% 88%;   /* #E6DFD5 Subtle warm luxury border */
+    --input: 30 15% 88%;
+    --ring: 20 10% 10%;     /* Focus ring */
+    --radius: 1.25rem;      /* 20px modern rounded */
   }
 
   .dark {
-    --background: 0 0% 5%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 5%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 5%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 151 74% 40%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 151 74% 40%;
-    --accent-foreground: 0 0% 100%;
+    --background: 20 10% 8%;
+    --foreground: 30 25% 95%;
+    --card: 20 10% 10%;
+    --card-foreground: 30 25% 95%;
+    --popover: 20 10% 10%;
+    --popover-foreground: 30 25% 95%;
+    --primary: 30 25% 95%;
+    --primary-foreground: 20 10% 10%;
+    --secondary: 20 10% 15%;
+    --secondary-foreground: 30 25% 95%;
+    --muted: 20 10% 15%;
+    --muted-foreground: 30 10% 65%;
+    --accent: 20 10% 15%;
+    --accent-foreground: 30 25% 95%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 151 74% 40%;
+    --destructive-foreground: 30 25% 95%;
+    --border: 20 10% 18%;
+    --input: 20 10% 18%;
+    --ring: 30 25% 95%;
   }
 }
 
 @layer base {
   * { @apply border-border; }
   body {
-    background-color: #FAF8F5;
-    @apply text-foreground font-sans antialiased selection:bg-black selection:text-white;
+    background-color: #F4EFEA;
+    @apply text-foreground font-sans antialiased selection:bg-[#191816] selection:text-[#F4EFEA];
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: theme('fontFamily.display');
@@ -78,24 +78,24 @@
 
   /* Glass card premium */
   .glass-card {
-    @apply bg-white/80 backdrop-blur-2xl border border-black/[0.05] shadow-[0_8px_32px_rgba(0,0,0,0.03)] rounded-2xl;
+    @apply bg-white/85 backdrop-blur-2xl border border-black/[0.05] shadow-[0_8px_32px_rgba(0,0,0,0.03)] rounded-2xl;
   }
 
   /* Gradient text vibrant */
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-violet-600 via-fuchsia-600 to-indigo-600;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-neutral-950 via-neutral-800 to-neutral-900;
   }
 
   .product-card {
-    @apply group relative overflow-hidden rounded-2xl bg-white transition-all duration-300 hover:shadow-[0_12px_28px_rgba(0,0,0,0.06)] hover:-translate-y-1 border border-black/[0.05];
+    @apply group relative overflow-hidden rounded-2xl bg-white transition-all duration-300 hover:shadow-[0_14px_32px_rgba(0,0,0,0.06)] hover:-translate-y-1 border border-black/[0.06];
   }
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { @apply bg-transparent; }
-::-webkit-scrollbar-thumb { @apply bg-gray-200 rounded-full; }
-::-webkit-scrollbar-thumb:hover { @apply bg-gray-300; }
+::-webkit-scrollbar-track { background: #F4EFEA; }
+::-webkit-scrollbar-thumb { background: #D9D2C7; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #BFB7AA; }
 
 /* Page transitions */
 .page-enter { opacity: 0; transform: translateY(8px); }

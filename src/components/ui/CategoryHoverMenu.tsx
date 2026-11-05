@@ -227,7 +227,7 @@ export function CategoryHoverMenu({
                     <Link
                       to={`/products/${previewProducts[0].slug || previewProducts[0]._id}`}
                       onClick={onClose}
-                      className="block group rounded-2xl border border-black/[0.06] p-2 hover:border-black transition-all bg-[#FAF8F5]"
+                      className="block group rounded-2xl border border-black/[0.06] p-2 hover:border-black transition-all bg-[#F4EFEA]"
                     >
                       <div className="aspect-square rounded-lg bg-white overflow-hidden p-1 mb-2 flex items-center justify-center border border-gray-100">
                         <img
@@ -296,7 +296,7 @@ export function CategoryHoverMenu({
                       key={p._id || p.id}
                       to={`/products/${p.slug || p._id}`}
                       onClick={onClose}
-                      className="group flex items-center gap-2.5 p-2 rounded-2xl border border-black/[0.06] hover:border-black transition-all bg-[#FAF8F5]"
+                      className="group flex items-center gap-2.5 p-2 rounded-2xl border border-black/[0.06] hover:border-black transition-all bg-[#F4EFEA]"
                     >
                       <div className="h-12 w-12 rounded-lg bg-white p-1 border border-gray-100 shrink-0 flex items-center justify-center">
                         <img

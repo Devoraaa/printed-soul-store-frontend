@@ -55,7 +55,7 @@ export function OrderTrackingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#F4EFEA] py-12 px-4 sm:px-6 lg:px-8">
       <SEO
         title="Track Your Order | Live Courier Tracking"
         description="Track your Printed Soul order in real time. Enter your Order ID or phone number to check live courier delivery status."

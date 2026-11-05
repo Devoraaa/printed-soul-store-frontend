@@ -286,7 +286,7 @@ export function ProductDetailPage() {
   ]
 
   return (
-    <div className="bg-[#FAF8F5] min-h-screen text-[#111111] pb-24 md:pb-16">
+    <div className="bg-[#F4EFEA] min-h-screen text-[#111111] pb-24 md:pb-16">
       <SEO
         title={`${product.name} | ${caseTypeLabel}`}
         description={`Buy ${product.name} online at Printed Soul for ₹${product.price}. Premium ${caseTypeLabel} featuring precision cutouts, camera lip protection, and impact resistance. Free delivery above ₹499.`}

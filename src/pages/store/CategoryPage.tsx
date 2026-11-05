@@ -104,7 +104,7 @@ export function CategoryPage() {
   ]
 
   return (
-    <div className="bg-[#FAF8F5] min-h-screen text-neutral-900 antialiased selection:bg-black selection:text-white pb-16">
+    <div className="bg-[#F4EFEA] min-h-screen text-neutral-900 antialiased selection:bg-black selection:text-white pb-16">
       <SEO
         title={`${catTitle} Collection`}
         description={category?.description || `Explore our premium ${catTitle} collection at Printed Soul. Expertly crafted with precision and style. Free shipping above ₹499.`}
