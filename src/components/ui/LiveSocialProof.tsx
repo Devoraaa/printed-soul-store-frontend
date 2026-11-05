@@ -87,7 +87,7 @@ export function LiveSocialProof() {
   const current = PURCHASES[currentIdx]
 
   return (
-    <div className="fixed bottom-20 md:bottom-6 left-4 md:left-6 z-30 pointer-events-none">
+    <div className="hidden md:block fixed bottom-6 left-6 z-30 pointer-events-none">
       <AnimatePresence>
         {isVisible && (
           <motion.div

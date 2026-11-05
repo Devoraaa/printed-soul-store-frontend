@@ -113,21 +113,21 @@ export function StoreLayout() {
       {/* ─── Header Container ───────────────────────── */}
       <header className={`w-full z-50 transition-all duration-300 ${
         isHome ? "fixed top-0 left-0 right-0" : "sticky top-0"
-      } px-2 sm:px-4 md:px-6 pt-2 sm:pt-3 pointer-events-none`}>
+      } px-2 sm:px-4 md:px-6 pt-1.5 sm:pt-3 pointer-events-none`}>
         {/* Main Floating Capsule Navbar */}
         <div className={`max-w-[1580px] mx-auto pointer-events-auto transition-all duration-300 rounded-full ${
           isTransparent
-            ? "bg-black/40 backdrop-blur-xl text-white border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.35)] py-2 sm:py-2.5 px-3.5 sm:px-5"
-            : "bg-white/95 backdrop-blur-2xl text-neutral-900 border border-black/[0.08] shadow-[0_10px_35px_rgba(0,0,0,0.06)] py-2 sm:py-2.5 px-3.5 sm:px-5"
+            ? "bg-black/40 backdrop-blur-xl text-white border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.35)] py-1.5 sm:py-2.5 px-3 sm:px-5"
+            : "bg-white/95 backdrop-blur-2xl text-neutral-900 border border-black/[0.08] shadow-[0_10px_35px_rgba(0,0,0,0.06)] py-1.5 sm:py-2.5 px-3 sm:px-5"
         }`}>
-          <div className="flex h-12 sm:h-14 items-center justify-between gap-2 sm:gap-3">
+          <div className="flex h-11 sm:h-14 items-center justify-between gap-1.5 sm:gap-3">
 
             {/* Official Printed Soul Unified Horizontal Logo */}
-            <Link to="/" onMouseEnter={handleMenuClose} className="flex items-center shrink-0 group py-1">
+            <Link to="/" onMouseEnter={handleMenuClose} className="flex items-center shrink-0 group py-0.5">
               <img
                 src={isTransparent ? "/logo-horizontal-white.png" : "/logo-horizontal.png"}
                 alt="Printed Soul"
-                className="h-7 sm:h-8 md:h-9 w-auto object-contain transition-all duration-300 group-hover:scale-105"
+                className="h-5 sm:h-8 md:h-9 w-auto object-contain transition-all duration-300 group-hover:scale-105"
               />
             </Link>
 
@@ -199,11 +199,11 @@ export function StoreLayout() {
             </nav>
 
             {/* ─── Action Icons ────────────────────── */}
-            <div onMouseEnter={handleMenuClose} className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <div onMouseEnter={handleMenuClose} className="flex items-center gap-1 sm:gap-2 shrink-0">
               {/* Search */}
               <button
                 onClick={() => setSearchOpen(true)}
-                className={`h-9 px-3 rounded-full text-xs font-bold flex items-center gap-2 transition-all cursor-pointer hover:scale-105 active:scale-95 ${
+                className={`h-8 w-8 sm:h-9 sm:w-auto sm:px-3 rounded-full text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer hover:scale-105 active:scale-95 ${
                   isTransparent
                     ? "text-white bg-white/15 border border-white/20 hover:bg-white/25 backdrop-blur-md"
                     : "text-neutral-700 bg-neutral-100/80 border border-black/[0.06] hover:bg-white hover:border-black"
@@ -218,13 +218,13 @@ export function StoreLayout() {
               <Link
                 to="/products?wishlist=true"
                 aria-label="Wishlist"
-                className={`relative h-9 w-9 flex items-center justify-center transition-all group cursor-pointer rounded-full hover:scale-110 active:scale-95 ${
+                className={`relative h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center transition-all group cursor-pointer rounded-full hover:scale-110 active:scale-95 ${
                   isTransparent ? "hover:bg-white/20 text-white" : "hover:bg-neutral-100 text-neutral-800"
                 }`}
               >
-                <Heart className="h-4.5 w-4.5" strokeWidth={2.2} />
+                <Heart className="h-4 w-4 sm:h-4.5 sm:w-4.5" strokeWidth={2.2} />
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 h-4 w-4 text-[9px] font-black flex items-center justify-center rounded-full bg-rose-500 text-white shadow-sm">
+                  <span className="absolute -top-0.5 -right-0.5 h-3.5 w-3.5 sm:h-4 sm:w-4 text-[8px] sm:text-[9px] font-black flex items-center justify-center rounded-full bg-rose-500 text-white shadow-sm">
                     {wishlistCount > 9 ? "9+" : wishlistCount}
                   </span>
                 )}
@@ -233,13 +233,13 @@ export function StoreLayout() {
               {/* Cart */}
               <button
                 onClick={() => setCartDrawerOpen(true)}
-                className={`relative h-9 w-9 flex items-center justify-center transition-all group cursor-pointer rounded-full hover:scale-110 active:scale-95 ${
+                className={`relative h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center transition-all group cursor-pointer rounded-full hover:scale-110 active:scale-95 ${
                   isTransparent ? "hover:bg-white/20 text-white" : "hover:bg-neutral-100 text-neutral-900"
                 }`}
               >
-                <ShoppingBag className="h-4.5 w-4.5" strokeWidth={2.2} />
+                <ShoppingBag className="h-4 w-4 sm:h-4.5 sm:w-4.5" strokeWidth={2.2} />
                 {totalItems > 0 && (
-                  <span className={`absolute -top-0.5 -right-0.5 h-4 w-4 text-[9px] font-black flex items-center justify-center rounded-full shadow-sm ${
+                  <span className={`absolute -top-0.5 -right-0.5 h-3.5 w-3.5 sm:h-4 sm:w-4 text-[8px] sm:text-[9px] font-black flex items-center justify-center rounded-full shadow-sm ${
                     isTransparent ? "bg-white text-black" : "bg-neutral-900 text-white"
                   }`}>
                     {totalItems > 9 ? "9+" : totalItems}
@@ -256,7 +256,7 @@ export function StoreLayout() {
                       isTransparent ? "hover:bg-white/20" : "hover:bg-black/5"
                     }`}
                   >
-                    <div className="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center text-white text-xs font-black shadow-md border-2 border-white/20">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-neutral-900 flex items-center justify-center text-white text-[11px] sm:text-xs font-black shadow-md border-2 border-white/20">
                       {user?.name[0].toUpperCase()}
                     </div>
                     <ChevronDown className={`h-3 w-3 hidden md:block ${isTransparent ? "text-white" : "text-neutral-700"}`} />
@@ -299,11 +299,11 @@ export function StoreLayout() {
               {/* Mobile Menu */}
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className={`lg:hidden p-1.5 rounded-full cursor-pointer transition-colors ${
+                className={`lg:hidden h-8 w-8 flex items-center justify-center rounded-full cursor-pointer transition-colors ${
                   isTransparent ? "text-white hover:bg-white/20 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" : "text-gray-700 hover:bg-gray-100"
                 }`}
               >
-                {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                {mobileOpen ? <X className="h-4.5 w-4.5" /> : <Menu className="h-4.5 w-4.5" />}
               </button>
             </div>
           </div>
@@ -311,7 +311,7 @@ export function StoreLayout() {
 
         {/* Modern Mobile Navigation Sheet */}
         {mobileOpen && (
-          <div className="lg:hidden fixed inset-0 top-[72px] sm:top-[80px] z-50 bg-black/40 backdrop-blur-sm animate-in fade-in">
+          <div className="lg:hidden fixed inset-0 top-[58px] sm:top-[76px] z-50 bg-black/40 backdrop-blur-sm animate-in fade-in">
             <div className="bg-[#F4EFEA] border-b border-black/[0.08] shadow-2xl p-5 max-h-[85vh] overflow-y-auto space-y-4 rounded-b-3xl">
               {/* Quick Search Trigger */}
               <button
@@ -460,7 +460,7 @@ export function StoreLayout() {
       <LiveSocialProof />
 
       {/* Floating WhatsApp CTA */}
-      <aside aria-label="Customer Support" className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-40 flex items-center gap-2 group">
+      <aside aria-label="Customer Support" className="fixed bottom-4 md:bottom-6 right-3.5 md:right-6 z-40 flex items-center gap-2 group">
         <div className="hidden md:flex items-center bg-white/95 text-neutral-900 text-xs font-bold px-3.5 py-2 rounded-full shadow-lg border border-black/[0.08] backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-2 group-hover:translate-x-0 pointer-events-none">
           Need custom help? Chat with us! 👋
         </div>
@@ -469,10 +469,10 @@ export function StoreLayout() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat on WhatsApp"
-          className="relative h-13 w-13 sm:h-14 sm:w-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-[0_8px_24px_rgba(37,211,102,0.45)] hover:bg-[#20ba59] hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer"
+          className="relative h-11 w-11 sm:h-14 sm:w-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-[0_6px_20px_rgba(37,211,102,0.4)] hover:bg-[#20ba59] hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer"
         >
           <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-30" />
-          <svg className="h-7 w-7 fill-current relative z-10" viewBox="0 0 24 24">
+          <svg className="h-5 w-5 sm:h-7 sm:w-7 fill-current relative z-10" viewBox="0 0 24 24">
             <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.772.78 2.791.78h.005c3.18 0 5.767-2.587 5.767-5.766.001-3.187-2.575-5.966-5.766-5.966zm3.385 8.232c-.144.405-.837.774-1.17.824-.312.045-.694.06-2.184-.555-1.907-.788-3.125-2.766-3.22-2.893-.095-.127-.775-1.03-.775-1.964 0-.933.49-1.392.664-1.581.174-.189.38-.236.507-.236.126 0 .253.002.364.007.118.005.276-.045.432.329.16.386.55 1.341.598 1.439.048.098.08.213.016.341-.063.128-.095.207-.19.317-.095.11-.2.247-.286.332-.095.095-.195.198-.084.388.111.19.493.813 1.058 1.317.728.648 1.342.849 1.532.944.19.095.302.08.414-.048.111-.127.476-.554.603-.744.127-.19.254-.158.428-.095.175.064 1.111.524 1.301.62.19.095.317.143.365.222.048.08.048.461-.096.866z"/>
           </svg>
         </a>

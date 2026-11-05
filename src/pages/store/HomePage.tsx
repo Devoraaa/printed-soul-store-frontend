@@ -286,30 +286,30 @@ export function HomePage() {
       </h1>
 
       {/* ═══════════════════════════════════════════
-          1. HERO SLIDER — Full Bleed Edge-to-Edge with Rounded Bottom Corners
+          1. HERO SLIDER — Full Bleed Edge-to-Edge with Mobile Balanced Height
       ═══════════════════════════════════════════ */}
-      <section className="w-full m-0 p-0 overflow-hidden max-h-[100dvh] rounded-b-[2.5rem] sm:rounded-b-[3.5rem] shadow-sm">
-        <div className="relative w-full group overflow-hidden bg-neutral-950 max-h-[100dvh] rounded-b-[2.5rem] sm:rounded-b-[3.5rem]">
+      <section className="w-full m-0 p-0 overflow-hidden max-h-[100dvh] rounded-b-[1.75rem] sm:rounded-b-[3.5rem] shadow-sm">
+        <div className="relative w-full group overflow-hidden bg-neutral-950 aspect-[16/10] sm:aspect-auto min-h-[240px] sm:min-h-[380px] md:min-h-0 max-h-[100dvh] rounded-b-[1.75rem] sm:rounded-b-[3.5rem]">
         {heroBanners.length > 0 ? (
-          <div className="relative w-full max-h-[100dvh] rounded-b-[2.5rem] sm:rounded-b-[3.5rem] overflow-hidden">
+          <div className="relative w-full h-full min-h-[240px] sm:min-h-[380px] md:min-h-0 max-h-[100dvh] rounded-b-[1.75rem] sm:rounded-b-[3.5rem] overflow-hidden">
             {heroBanners.map((banner: any, idx: number) => {
               const isActive = idx === currentHero
               return (
                 <div
                   key={banner._id || idx}
-                  className={`w-full max-h-[100dvh] rounded-b-[2.5rem] sm:rounded-b-[3.5rem] overflow-hidden transition-opacity duration-500 ease-in-out ${
+                  className={`w-full h-full min-h-[240px] sm:min-h-[380px] md:min-h-0 max-h-[100dvh] rounded-b-[1.75rem] sm:rounded-b-[3.5rem] overflow-hidden transition-opacity duration-500 ease-in-out ${
                     isActive ? "opacity-100 relative" : "opacity-0 absolute inset-0 pointer-events-none"
                   }`}
                 >
                   {banner.link ? (
-                    <Link to={banner.link} className="block w-full max-h-[100dvh] rounded-b-[2.5rem] sm:rounded-b-[3.5rem] overflow-hidden">
+                    <Link to={banner.link} className="block w-full h-full min-h-[240px] sm:min-h-[380px] md:min-h-0 max-h-[100dvh] rounded-b-[1.75rem] sm:rounded-b-[3.5rem] overflow-hidden">
                       <img
                         src={getImageUrl(banner.imageUrl)}
                         alt={banner.title || "Printed Soul Banner"}
                         loading={idx === 0 ? "eager" : "lazy"}
                         decoding={idx === 0 ? "sync" : "async"}
                         fetchPriority={idx === 0 ? "high" : "low"}
-                        className="w-full h-auto max-h-[100dvh] block object-cover object-center rounded-b-[2.5rem] sm:rounded-b-[3.5rem]"
+                        className="w-full h-full sm:h-auto min-h-[240px] sm:min-h-0 max-h-[100dvh] block object-cover object-center rounded-b-[1.75rem] sm:rounded-b-[3.5rem]"
                       />
                     </Link>
                   ) : (
@@ -319,7 +319,7 @@ export function HomePage() {
                       loading={idx === 0 ? "eager" : "lazy"}
                       decoding={idx === 0 ? "sync" : "async"}
                       fetchPriority={idx === 0 ? "high" : "low"}
-                      className="w-full h-auto max-h-[100dvh] block object-cover object-center rounded-b-[2.5rem] sm:rounded-b-[3.5rem]"
+                      className="w-full h-full sm:h-auto min-h-[240px] sm:min-h-0 max-h-[100dvh] block object-cover object-center rounded-b-[1.75rem] sm:rounded-b-[3.5rem]"
                     />
                   )}
                 </div>
@@ -339,15 +339,15 @@ export function HomePage() {
 
         {heroBanners.length > 1 && (
           <>
-            <button onClick={prevHero} aria-label="Previous" className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 bg-black/40 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-lg backdrop-blur-sm">
+            <button onClick={prevHero} aria-label="Previous" className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 bg-black/40 hover:bg-black/80 text-white rounded-full items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-lg backdrop-blur-sm">
               <ChevronLeft className="h-6 w-6" />
             </button>
-            <button onClick={nextHero} aria-label="Next" className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 bg-black/40 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-lg backdrop-blur-sm">
+            <button onClick={nextHero} aria-label="Next" className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 bg-black/40 hover:bg-black/80 text-white rounded-full items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-lg backdrop-blur-sm">
               <ChevronRight className="h-6 w-6" />
             </button>
-            <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full">
+            <div className="absolute bottom-2.5 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full">
               {heroBanners.map((_: any, idx: number) => (
-                <button key={idx} onClick={() => setCurrentHero(idx)} className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${idx === currentHero ? "bg-white w-6" : "bg-white/40 w-1.5"}`} />
+                <button key={idx} onClick={() => setCurrentHero(idx)} className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${idx === currentHero ? "bg-white w-5 sm:w-6" : "bg-white/40 w-1.5"}`} />
               ))}
             </div>
           </>
@@ -362,20 +362,20 @@ export function HomePage() {
         const repeatedList = rawList.length < 4 ? [...rawList, ...rawList, ...rawList, ...rawList] : rawList
 
         return (
-          <div className="w-full bg-[#ECE5DC]/90 border-b border-black/[0.06] overflow-hidden py-2 backdrop-blur-md select-none">
-            <div className="flex animate-marquee whitespace-nowrap text-[10.5px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-neutral-800">
-              <div className="flex items-center gap-8 px-4 shrink-0">
+          <div className="w-full bg-[#ECE5DC]/90 border-b border-black/[0.06] overflow-hidden py-1.5 sm:py-2 backdrop-blur-md select-none">
+            <div className="flex animate-marquee whitespace-nowrap text-[9.5px] sm:text-[11px] font-black uppercase tracking-[0.16em] sm:tracking-[0.2em] text-neutral-800">
+              <div className="flex items-center gap-5 sm:gap-8 px-3 sm:px-4 shrink-0">
                 {repeatedList.map((item: string, idx: number) => (
                   <React.Fragment key={`t1-${idx}`}>
-                    <span className="flex items-center gap-2">{item}</span>
+                    <span className="flex items-center gap-1.5">{item}</span>
                     <span className="text-neutral-400">•</span>
                   </React.Fragment>
                 ))}
               </div>
-              <div className="flex items-center gap-8 px-4 shrink-0">
+              <div className="flex items-center gap-5 sm:gap-8 px-3 sm:px-4 shrink-0">
                 {repeatedList.map((item: string, idx: number) => (
                   <React.Fragment key={`t2-${idx}`}>
-                    <span className="flex items-center gap-2">{item}</span>
+                    <span className="flex items-center gap-1.5">{item}</span>
                     <span className="text-neutral-400">•</span>
                   </React.Fragment>
                 ))}
@@ -386,25 +386,26 @@ export function HomePage() {
       })()}
 
       {/* ═══════════════════════════════════════════
-          2. CATEGORY STRIP — Luxury Lifestyle Collection Cards (Tight Spacing)
+          2. CATEGORY STRIP — Luxury Lifestyle Collection Cards (Swipeable on Mobile)
       ═══════════════════════════════════════════ */}
       {categories.length > 0 && (
-        <section className="pt-3.5 pb-2 sm:pt-4 sm:pb-2.5 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="flex items-end justify-between mb-3">
+        <section className="pt-2.5 pb-2 sm:pt-4 sm:pb-2.5 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="flex items-end justify-between mb-2.5 sm:mb-3">
             <div>
-              <div className="flex items-center gap-2 mb-0.5">
+              <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-amber-600" />
-                <p className="text-[10.5px] font-black uppercase tracking-[0.25em] text-neutral-500">Curated Collections</p>
+                <p className="text-[10px] sm:text-[10.5px] font-black uppercase tracking-[0.25em] text-neutral-500">Curated Collections</p>
               </div>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-neutral-950 font-display">Shop by Category</h2>
+              <h2 className="text-lg sm:text-2xl md:text-3xl font-black tracking-tight text-neutral-950 font-display">Shop by Category</h2>
             </div>
-            <Link to="/products" className="group text-xs font-bold uppercase tracking-wider text-neutral-800 hover:text-black transition-colors flex items-center gap-1.5 bg-white border border-black/[0.08] px-3.5 py-1.5 rounded-full shadow-2xs hover:shadow-xs">
+            <Link to="/products" className="group text-[11px] sm:text-xs font-bold uppercase tracking-wider text-neutral-800 hover:text-black transition-colors flex items-center gap-1 bg-white border border-black/[0.08] px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full shadow-2xs hover:shadow-xs">
               <span>View All</span>
-              <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+              <ChevronRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-2 sm:gap-2.5 md:gap-3">
+          {/* Mobile Horizontal Snap Row / Desktop Grid */}
+          <div className="flex sm:grid sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-2 sm:gap-2.5 md:gap-3 overflow-x-auto hide-scrollbar snap-x px-1 sm:px-0 pb-1">
             {categories.map((cat: any) => {
               const slug = cat.slug?.toLowerCase() || ""
               const imgSrc = getCategoryPhoto(cat)
@@ -414,7 +415,7 @@ export function HomePage() {
                 <Link
                   key={cat._id}
                   to={`/products?category=${cat.slug || cat._id}`}
-                  className={`group relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-2xl sm:rounded-3xl bg-[#FAF7F2] border border-black/[0.06] ${colorInfo.border} transition-all duration-300 shadow-2xs hover:-translate-y-1 ${colorInfo.glow}`}
+                  className={`group relative min-w-[115px] sm:min-w-0 flex-1 shrink-0 snap-start aspect-[3/4] overflow-hidden rounded-2xl sm:rounded-3xl bg-neutral-900 border border-black/[0.06] ${colorInfo.border} transition-all duration-300 shadow-2xs hover:-translate-y-1 ${colorInfo.glow}`}
                 >
                   <img
                     src={imgSrc}
@@ -426,11 +427,11 @@ export function HomePage() {
                     }}
                   />
                   {/* Subtle luxury vignette */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
 
-                  {/* Floating Frosted Glass Label Pill with Color Accent Dot */}
-                  <div className="absolute inset-x-2 bottom-2 flex justify-center">
-                    <span className="w-full flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-xl sm:rounded-2xl bg-white/95 group-hover:bg-neutral-950 text-neutral-900 group-hover:text-white backdrop-blur-md text-[10.5px] sm:text-xs font-black uppercase tracking-wider shadow-2xs transition-all duration-300 truncate">
+                  {/* Refined Label Pill with Color Accent Dot */}
+                  <div className="absolute inset-x-1.5 bottom-1.5 sm:inset-x-2 sm:bottom-2 flex justify-center">
+                    <span className="w-full flex items-center justify-center gap-1 sm:gap-1.5 py-1 sm:py-1.5 px-1.5 sm:px-2 rounded-xl sm:rounded-2xl bg-white/95 group-hover:bg-neutral-950 text-neutral-900 group-hover:text-white backdrop-blur-md text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-2xs transition-all duration-300 truncate">
                       <span className={`h-1.5 w-1.5 rounded-full ${colorInfo.dot} shrink-0 animate-pulse`} />
                       <span className="truncate">{cat.name}</span>
                     </span>
