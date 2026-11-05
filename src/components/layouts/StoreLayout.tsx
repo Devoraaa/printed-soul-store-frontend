@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react"
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom"
-import { ShoppingBag, Search, Menu, X, User, Package, LogOut, ChevronDown, Truck, ShieldCheck, Lock, Sparkles } from "lucide-react"
+import { ShoppingBag, Search, Menu, X, User, Package, LogOut, ChevronDown, Truck, ShieldCheck, Lock, Sparkles, Heart } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { useAuth } from "../../context/AuthContext"
 import { useCart } from "../../context/CartContext"
+import { useWishlist } from "../../context/WishlistContext"
 import { AuthModal } from "../ui/AuthModal"
 import { SearchModal } from "../ui/SearchModal"
 import { CartDrawer } from "../ui/CartDrawer"
@@ -13,6 +14,7 @@ import { catalogApi } from "../../lib/api"
 export function StoreLayout() {
   const { user, isAuthenticated, logout, openAuthModal } = useAuth()
   const { totalItems } = useCart()
+  const { wishlistCount } = useWishlist()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -212,6 +214,22 @@ export function StoreLayout() {
                   <span className="hidden lg:inline">Search…</span>
                 </button>
 
+                {/* Wishlist */}
+                <Link
+                  to="/products?wishlist=true"
+                  aria-label="Wishlist"
+                  className={`relative p-2.5 transition-all group cursor-pointer rounded-full hover:scale-110 active:scale-95 ${
+                    isTransparent ? "hover:bg-white/25 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" : "hover:bg-black/5 text-neutral-900"
+                  }`}
+                >
+                  <Heart className="h-6 w-6" strokeWidth={2.2} />
+                  {wishlistCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 h-5 w-5 text-[10px] font-black flex items-center justify-center rounded-full bg-rose-500 text-white shadow-md">
+                      {wishlistCount > 9 ? "9+" : wishlistCount}
+                    </span>
+                  )}
+                </Link>
+
                 {/* Cart */}
                 <button
                   onClick={() => setCartDrawerOpen(true)}
@@ -348,6 +366,22 @@ export function StoreLayout() {
                   <span>Explore All Collections</span>
                   <ChevronRight className="h-3.5 w-3.5 text-neutral-400" />
                 </Link>
+
+                <Link
+                  to="/products?wishlist=true"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-neutral-900 hover:bg-neutral-50 transition-colors border-t border-black/[0.04] mt-1"
+                >
+                  <span className="flex items-center gap-2">
+                    <Heart className="h-4 w-4 text-rose-500 fill-rose-500" />
+                    <span>My Wishlist</span>
+                  </span>
+                  {wishlistCount > 0 && (
+                    <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-rose-500 text-white">
+                      {wishlistCount}
+                    </span>
+                  )}
+                </Link>
               </div>
 
               {/* User Account or Sign In */}
@@ -422,6 +456,25 @@ export function StoreLayout() {
       <main className="flex-1">
         <Outlet />
       </main>
+
+      {/* Floating WhatsApp CTA */}
+      <aside aria-label="Customer Support" className="fixed bottom-6 right-6 z-40 flex items-center gap-2 group">
+        <div className="hidden md:flex items-center bg-white/95 text-neutral-900 text-xs font-bold px-3.5 py-2 rounded-full shadow-lg border border-black/[0.08] backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-2 group-hover:translate-x-0 pointer-events-none">
+          Need custom help? Chat with us! 👋
+        </div>
+        <a
+          href="https://wa.me/919999999999?text=Hi%20Printed%20Soul%2C%20I%20have%20a%20question%20about%20an%20order"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Chat on WhatsApp"
+          className="relative h-13 w-13 sm:h-14 sm:w-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-[0_8px_24px_rgba(37,211,102,0.45)] hover:bg-[#20ba59] hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer"
+        >
+          <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-30" />
+          <svg className="h-7 w-7 fill-current relative z-10" viewBox="0 0 24 24">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.772.78 2.791.78h.005c3.18 0 5.767-2.587 5.767-5.766.001-3.187-2.575-5.966-5.766-5.966zm3.385 8.232c-.144.405-.837.774-1.17.824-.312.045-.694.06-2.184-.555-1.907-.788-3.125-2.766-3.22-2.893-.095-.127-.775-1.03-.775-1.964 0-.933.49-1.392.664-1.581.174-.189.38-.236.507-.236.126 0 .253.002.364.007.118.005.276-.045.432.329.16.386.55 1.341.598 1.439.048.098.08.213.016.341-.063.128-.095.207-.19.317-.095.11-.2.247-.286.332-.095.095-.195.198-.084.388.111.19.493.813 1.058 1.317.728.648 1.342.849 1.532.944.19.095.302.08.414-.048.111-.127.476-.554.603-.744.127-.19.254-.158.428-.095.175.064 1.111.524 1.301.62.19.095.317.143.365.222.048.08.048.461-.096.866z"/>
+          </svg>
+        </a>
+      </aside>
 
       {/* Trust Strip */}
       <section className="max-w-[1700px] mx-auto px-3 md:px-6 my-8 w-full">

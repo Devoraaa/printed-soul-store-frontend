@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { useSearchParams, Link } from "react-router-dom"
-import { Filter, X, Search, SlidersHorizontal, ChevronDown, ChevronRight } from "lucide-react"
+import { Filter, X, Search, SlidersHorizontal, ChevronDown, ChevronRight, Heart } from "lucide-react"
 import { productApi, catalogApi } from "../../lib/api"
 import { ProductCard } from "../../components/ui/ProductCard"
 import { formatPrice } from "../../lib/utils"
 import { SEO } from "../../components/ui/SEO"
+import { useWishlist } from "../../context/WishlistContext"
 
 export function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -107,8 +108,16 @@ export function ProductsPage() {
     enabled: !!categoriesData,
   })
 
+  const { isInWishlist, wishlistCount } = useWishlist()
+  const isWishlistMode = searchParams.get("wishlist") === "true"
+
   const products: any[] = productsData?.data?.data || []
   const meta: any = productsData?.data?.meta || {}
+
+  // Filter for wishlist mode
+  const displayedProducts = isWishlistMode
+    ? products.filter((p: any) => isInWishlist(p._id))
+    : products
 
   // --- Filter Helpers ---
   const setFilter = (key: string, value: string) => {
@@ -135,10 +144,12 @@ export function ProductsPage() {
     setSearchParams(p)
   }
 
-  const hasFilters = search || categoryParam || brandParam || deviceModelParam || minPriceParam || maxPriceParam
+  const hasFilters = search || categoryParam || brandParam || deviceModelParam || minPriceParam || maxPriceParam || isWishlistMode
 
   // Page title logic
-  const pageTitle = selectedCatObj
+  const pageTitle = isWishlistMode
+    ? "My Saved Wishlist"
+    : selectedCatObj
     ? selectedCatObj.name
     : categoryParam
     ? categoryParam.replace(/-/g, " ")
@@ -604,30 +615,41 @@ export function ProductsPage() {
                   <div key={i} className="aspect-[3/4] bg-neutral-200/50 animate-pulse rounded-2xl" />
                 ))}
               </div>
-            ) : products.length === 0 ? (
-              <div className="text-center py-20 bg-white border border-gray-200">
+            ) : isWishlistMode && displayedProducts.length === 0 ? (
+              <div className="text-center py-20 px-6 bg-white rounded-3xl border border-black/[0.06] shadow-sm max-w-lg mx-auto">
+                <div className="w-16 h-16 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center mx-auto mb-4">
+                  <Heart className="h-8 w-8 fill-rose-500 text-rose-500" />
+                </div>
+                <h3 className="text-xl font-bold text-neutral-900 mb-2">Your Wishlist is Empty</h3>
+                <p className="text-neutral-500 text-xs max-w-sm mx-auto mb-6">Explore our curated collections and tap the heart icon on any design to save your favorites!</p>
+                <Link to="/products" className="inline-flex items-center gap-2 px-6 py-3 bg-neutral-900 text-white rounded-full font-bold text-xs uppercase tracking-wider hover:bg-black transition-colors shadow-sm cursor-pointer">
+                  Explore Designs
+                </Link>
+              </div>
+            ) : displayedProducts.length === 0 ? (
+              <div className="text-center py-20 px-6 bg-white rounded-3xl border border-black/[0.06] shadow-sm max-w-lg mx-auto">
                 <div className="text-4xl mb-3">✨</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">No Designs Found</h3>
-                <p className="text-gray-500 text-sm">Try resetting your filters or search term.</p>
-                <button onClick={clearFilters} className="mt-5 px-6 py-2.5 bg-black text-white font-bold text-xs uppercase tracking-widest hover:bg-gray-800 transition-colors cursor-pointer">
+                <p className="text-gray-500 text-sm mb-6">Try resetting your filters or search term.</p>
+                <button onClick={clearFilters} className="px-6 py-2.5 bg-black text-white font-bold text-xs uppercase tracking-widest rounded-full hover:bg-gray-800 transition-colors cursor-pointer shadow-sm">
                   Reset Filters
                 </button>
               </div>
             ) : (
               <>
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-2.5 md:gap-2.5">
-                  {products.map((product: any) => (
+                  {displayedProducts.map((product: any) => (
                     <ProductCard key={product._id} product={product} />
                   ))}
                 </div>
 
                 {/* Pagination */}
-                {meta.total > 20 && (
+                {!isWishlistMode && meta.total > 20 && (
                   <div className="flex justify-center gap-2 mt-8 mb-4">
                     {page > 1 && (
                       <button
                         onClick={() => setFilter("page", String(page - 1))}
-                        className="px-4 py-2 border border-gray-200 bg-white text-gray-900 font-bold text-xs hover:border-black transition-all cursor-pointer"
+                        className="px-4 py-2 border border-black/[0.08] bg-white text-gray-900 font-bold text-xs rounded-full hover:border-black transition-all cursor-pointer shadow-xs"
                       >
                         ← Prev
                       </button>
@@ -638,7 +660,7 @@ export function ProductsPage() {
                     {page * 20 < meta.total && (
                       <button
                         onClick={() => setFilter("page", String(page + 1))}
-                        className="px-4 py-2 border border-gray-200 bg-white text-gray-900 font-bold text-xs hover:border-black transition-all cursor-pointer"
+                        className="px-4 py-2 border border-black/[0.08] bg-white text-gray-900 font-bold text-xs rounded-full hover:border-black transition-all cursor-pointer shadow-xs"
                       >
                         Next →
                       </button>

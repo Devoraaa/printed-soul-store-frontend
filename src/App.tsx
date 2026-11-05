@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { AuthProvider, useAuth } from "./context/AuthContext"
 import { CartProvider } from "./context/CartContext"
+import { WishlistProvider } from "./context/WishlistContext"
 import { ScrollToTop } from "./components/ScrollToTop"
 
 // Layouts
@@ -58,45 +59,47 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <CartProvider>
-          <BrowserRouter>
-            <ScrollToTop />
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                {/* Store */}
-                <Route path="/" element={<StoreLayout />}>
-                  <Route index element={<HomePage />} />
-                  <Route path="products" element={<ProductsPage />} />
-                  <Route path="products/:slug" element={<ProductDetailPage />} />
-                  <Route path="phone-covers" element={<PhoneCoversHubPage />} />
-                  <Route path="categories/:slug" element={<CategoryPage />} />
-                  <Route path="cart" element={<CartPage />} />
-                  <Route path="track" element={<OrderTrackingPage />} />
-                  <Route path="checkout" element={<CheckoutPage />} />
-                  <Route path="order-success/:id" element={<OrderSuccessPage />} />
-                  <Route path="about" element={<AboutPage />} />
-                  <Route path="contact" element={<ContactPage />} />
-                </Route>
+          <WishlistProvider>
+            <BrowserRouter>
+              <ScrollToTop />
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  {/* Store */}
+                  <Route path="/" element={<StoreLayout />}>
+                    <Route index element={<HomePage />} />
+                    <Route path="products" element={<ProductsPage />} />
+                    <Route path="products/:slug" element={<ProductDetailPage />} />
+                    <Route path="phone-covers" element={<PhoneCoversHubPage />} />
+                    <Route path="categories/:slug" element={<CategoryPage />} />
+                    <Route path="cart" element={<CartPage />} />
+                    <Route path="track" element={<OrderTrackingPage />} />
+                    <Route path="checkout" element={<CheckoutPage />} />
+                    <Route path="order-success/:id" element={<OrderSuccessPage />} />
+                    <Route path="about" element={<AboutPage />} />
+                    <Route path="contact" element={<ContactPage />} />
+                  </Route>
 
-                {/* Auth */}
-                <Route element={<AuthLayout />}>
-                  <Route path="login" element={<LoginPage />} />
-                  <Route path="register" element={<RegisterPage />} />
-                  <Route path="forgot-password" element={<ForgotPasswordPage />} />
-                </Route>
+                  {/* Auth */}
+                  <Route element={<AuthLayout />}>
+                    <Route path="login" element={<LoginPage />} />
+                    <Route path="register" element={<RegisterPage />} />
+                    <Route path="forgot-password" element={<ForgotPasswordPage />} />
+                  </Route>
 
-                {/* Account */}
-                <Route path="account" element={<ProtectedRoute><StoreLayout /></ProtectedRoute>}>
-                  <Route index element={<AccountDashboardPage />} />
-                  <Route path="orders" element={<OrdersPage />} />
-                  <Route path="orders/:id" element={<OrderDetailPage />} />
-                  <Route path="addresses" element={<AddressesPage />} />
-                  <Route path="profile" element={<ProfilePage />} />
-                </Route>
+                  {/* Account */}
+                  <Route path="account" element={<ProtectedRoute><StoreLayout /></ProtectedRoute>}>
+                    <Route index element={<AccountDashboardPage />} />
+                    <Route path="orders" element={<OrdersPage />} />
+                    <Route path="orders/:id" element={<OrderDetailPage />} />
+                    <Route path="addresses" element={<AddressesPage />} />
+                    <Route path="profile" element={<ProfilePage />} />
+                  </Route>
 
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Suspense>
-          </BrowserRouter>
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </Suspense>
+            </BrowserRouter>
+          </WishlistProvider>
         </CartProvider>
       </AuthProvider>
     </QueryClientProvider>

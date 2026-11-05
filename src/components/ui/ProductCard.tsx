@@ -1,9 +1,10 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
-import { Star, ShoppingBag, Check, Plus } from "lucide-react"
+import { Star, ShoppingBag, Check, Plus, Heart } from "lucide-react"
 import { getImageUrl, formatPrice } from "../../lib/utils"
 import { useCart } from "../../context/CartContext"
 import { useAuth } from "../../context/AuthContext"
+import { useWishlist } from "../../context/WishlistContext"
 
 interface ProductCardProps {
   product: any
@@ -13,8 +14,17 @@ interface ProductCardProps {
 export function ProductCard({ product, className = "" }: ProductCardProps) {
   const { addToCart } = useCart()
   const { isAuthenticated, openAuthModal } = useAuth()
+  const { isInWishlist, toggleWishlist } = useWishlist()
   const [isHovered, setIsHovered] = useState(false)
   const [added, setAdded] = useState(false)
+
+  const isWishlisted = isInWishlist(product._id)
+
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    toggleWishlist(product)
+  }
 
   const primaryImage = product.images?.[0] ? getImageUrl(product.images[0]) : "/placeholder.png"
   const secondaryImage = product.images?.[1] ? getImageUrl(product.images[1]) : primaryImage
@@ -83,6 +93,19 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
               </span>
             )}
           </div>
+
+          {/* Wishlist Heart Button */}
+          <button
+            onClick={handleWishlistToggle}
+            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            className="absolute top-2.5 right-2.5 z-20 h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-white/85 hover:bg-white backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-600 shadow-xs transition-all duration-200 active:scale-90 cursor-pointer"
+          >
+            <Heart
+              className={`h-3.5 w-3.5 sm:h-4 sm:w-4 transition-colors ${
+                isWishlisted ? "fill-rose-500 text-rose-500" : "text-neutral-700"
+              }`}
+            />
+          </button>
 
           {/* Out of Stock Overlay */}
           {product.stock === 0 && (

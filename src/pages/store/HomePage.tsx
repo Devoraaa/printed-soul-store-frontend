@@ -155,10 +155,37 @@ export function HomePage() {
   const nextHero = () => setCurrentHero((prev) => (prev + 1) % heroBanners.length)
   const prevHero = () => setCurrentHero((prev) => (prev - 1 + heroBanners.length) % heroBanners.length)
 
-  // Category fallback images
-  const getCatFallback = (slug: string) => {
+  // Category photo resolver — matches actual products in catalog for rich, distinct category thumbnails
+  const getCategoryPhoto = (cat: any) => {
+    if (cat.image) return getImageUrl(cat.image)
+
+    const slug = (cat.slug || "").toLowerCase()
+    const name = (cat.name || "").toLowerCase()
+
+    // Find actual matching product from loaded catalog
+    const match = allProducts.find((p: any) => {
+      const pCatSlug = p.category?.slug?.toLowerCase() || ""
+      const pCatId = p.category?._id || p.category
+      const pName = p.name?.toLowerCase() || ""
+      return (
+        pCatSlug === slug ||
+        pCatId === cat._id ||
+        (slug.includes("coaster") && pName.includes("coaster")) ||
+        (slug.includes("mouse") && (pName.includes("mouse") || pName.includes("pad"))) ||
+        (slug.includes("tote") && (pName.includes("tote") || pName.includes("bag"))) ||
+        (slug.includes("frame") && pName.includes("frame")) ||
+        (slug.includes("mug") && (pName.includes("mug") || pName.includes("cup"))) ||
+        (slug.includes("tumbler") && (pName.includes("tumbler") || pName.includes("sipper"))) ||
+        (slug.includes("cover") && (pName.includes("case") || pName.includes("cover")))
+      )
+    })
+
+    if (match?.images?.[0]) {
+      return getImageUrl(match.images[0])
+    }
+
     if (slug.includes("coaster")) return "/costers.webp"
-    if (slug.includes("glass") || slug.includes("iphone") || slug.includes("case")) return "/glass.webp"
+    if (slug.includes("glass")) return "/glass.webp"
     if (slug.includes("dual")) return "/small.webp"
     if (slug.includes("metal")) return "/metal.webp"
     if (slug.includes("mug")) return "/mug.webp"
@@ -287,42 +314,51 @@ export function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════
-          2. CATEGORY STRIP — Full bleed image tiles
+          2. CATEGORY STRIP — Luxury Lifestyle Collection Cards
       ═══════════════════════════════════════════ */}
       {categories.length > 0 && (
-        <section className="py-6 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="flex items-end justify-between mb-4">
+        <section className="py-7 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="flex items-end justify-between mb-5">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-400">Collections</p>
-              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-neutral-900">Shop by Category</h2>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-600" />
+                <p className="text-[11px] font-black uppercase tracking-[0.25em] text-neutral-500">Curated Collections</p>
+              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-neutral-950 font-display">Shop by Category</h2>
             </div>
-            <Link to="/products" className="text-xs font-bold uppercase tracking-wider text-neutral-700 hover:text-black transition-colors flex items-center gap-1 bg-white border border-black/[0.08] px-3.5 py-1.5 rounded-full shadow-sm">
-              All <ChevronRight className="h-3.5 w-3.5" />
+            <Link to="/products" className="group text-xs font-bold uppercase tracking-wider text-neutral-800 hover:text-black transition-colors flex items-center gap-1.5 bg-white border border-black/[0.08] px-4 py-2 rounded-full shadow-xs hover:shadow-sm">
+              <span>View All</span>
+              <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-2.5 md:gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-3 sm:gap-3.5 md:gap-4">
             {categories.map((cat: any) => {
-              const slug = cat.slug?.toLowerCase() || ""
-              const imgSrc = cat.image ? getImageUrl(cat.image) : getCatFallback(slug)
+              const imgSrc = getCategoryPhoto(cat)
               return (
                 <Link
                   key={cat._id}
                   to={`/products?category=${cat.slug || cat._id}`}
-                  className="group relative aspect-square overflow-hidden rounded-2xl bg-white border border-black/[0.05] hover:border-black/20 transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="group relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-3xl bg-[#FAF7F2] border border-black/[0.06] hover:border-black/25 transition-all duration-300 shadow-xs hover:shadow-xl hover:-translate-y-1"
                 >
                   <img
                     src={imgSrc}
                     alt={cat.name}
                     loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                    onError={(e) => { (e.target as HTMLImageElement).src = getCatFallback(slug) }}
+                    className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "/hero.webp"
+                    }}
                   />
-                  {/* Dark gradient + name */}
+                  {/* Subtle luxury vignette */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <span className="absolute bottom-2 left-0 right-0 text-center text-white text-[11px] font-bold uppercase tracking-wider px-1 leading-tight drop-shadow">
-                    {cat.name}
-                  </span>
+
+                  {/* Floating Frosted Glass Label Pill */}
+                  <div className="absolute inset-x-2.5 bottom-2.5 flex justify-center">
+                    <span className="w-full text-center py-2 px-2.5 rounded-2xl bg-white/95 group-hover:bg-neutral-950 text-neutral-900 group-hover:text-white backdrop-blur-md text-[11px] sm:text-xs font-black uppercase tracking-wider shadow-sm transition-all duration-300 truncate">
+                      {cat.name}
+                    </span>
+                  </div>
                 </Link>
               )
             })}
@@ -441,29 +477,31 @@ export function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════
-          4. PROMO BANNERS GRID
+          4. PROMO BANNERS GRID — Editorial Lookbook
       ═══════════════════════════════════════════ */}
       {promoBanners.length > 0 && (
-        <section className="py-4 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className={`grid gap-2 sm:gap-3 ${
+        <section className="py-5 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className={`grid gap-3 sm:gap-4 ${
             promoBanners.length === 1 ? "grid-cols-1"
-            : promoBanners.length === 2 ? "grid-cols-2"
+            : promoBanners.length === 2 ? "grid-cols-1 md:grid-cols-2"
             : "grid-cols-1 md:grid-cols-3"
           }`}>
             {promoBanners.slice(0, 3).map((banner: any, i: number) => {
               const content = (
-                <div className="relative overflow-hidden group aspect-[16/9] md:aspect-[4/3] bg-white rounded-3xl border border-black/[0.05] shadow-sm">
+                <div className="relative overflow-hidden group aspect-[16/9] md:aspect-[16/10] bg-[#161513] rounded-3xl border border-black/[0.06] shadow-sm hover:shadow-xl transition-all duration-300">
                   <img
                     src={getImageUrl(banner.imageUrl)}
                     alt={banner.title || "Promo"}
                     loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 ease-out"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent p-5 flex flex-col justify-end">
-                    {banner.title && <h3 className="text-white font-bold text-lg leading-tight mb-1">{banner.title}</h3>}
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-amber-300 flex items-center gap-1">
-                      Shop Now <ArrowRight className="h-3 w-3" />
-                    </span>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent p-5 sm:p-6 flex flex-col justify-end">
+                    {banner.title && <h3 className="text-white font-black text-lg sm:text-xl leading-tight mb-2 drop-shadow-sm">{banner.title}</h3>}
+                    <div className="flex items-center">
+                      <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 group-hover:bg-amber-400 text-neutral-900 group-hover:text-neutral-950 backdrop-blur-md text-[11px] font-black uppercase tracking-wider shadow-sm transition-all duration-300">
+                        Shop Now <ArrowRight className="h-3.5 w-3.5" />
+                      </span>
+                    </div>
                   </div>
                 </div>
               )
@@ -479,14 +517,18 @@ export function HomePage() {
           5. NEW ARRIVALS — Larger products, tight gaps
       ═══════════════════════════════════════════ */}
       {allProducts.length > 0 && (
-        <section className="py-7 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="flex items-end justify-between mb-4">
+        <section className="py-8 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="flex items-end justify-between mb-5">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-400">Trending Drops</p>
-              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-neutral-900">New Arrivals</h2>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse" />
+                <p className="text-[11px] font-black uppercase tracking-[0.25em] text-neutral-500">Trending Drops</p>
+              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-neutral-950 font-display">New Arrivals</h2>
             </div>
-            <Link to="/products" className="text-xs font-bold uppercase tracking-wider text-neutral-700 hover:text-black transition-colors flex items-center gap-1 bg-white border border-black/[0.08] px-3.5 py-1.5 rounded-full shadow-sm">
-              View All <ChevronRight className="h-3.5 w-3.5" />
+            <Link to="/products?sort=new" className="group text-xs font-bold uppercase tracking-wider text-neutral-800 hover:text-black transition-colors flex items-center gap-1.5 bg-white border border-black/[0.08] px-4 py-2 rounded-full shadow-xs hover:shadow-sm">
+              <span>Explore All</span>
+              <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
 
@@ -507,21 +549,26 @@ export function HomePage() {
       )}
 
       {/* ═══════════════════════════════════════════
-          6. FEATURED PRODUCTS
+          6. FEATURED PRODUCTS — Dark Luxury Ambient Card
       ═══════════════════════════════════════════ */}
       {featured.length > 0 && (
-        <section className="py-6 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="bg-[#161513] text-white rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl border border-white/5">
-            <div className="flex items-end justify-between mb-5">
+        <section className="py-8 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="relative overflow-hidden bg-gradient-to-br from-[#1A1917] via-[#141311] to-[#0A0908] text-white rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl border border-amber-500/15">
+            <div className="absolute -top-24 -right-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="relative flex items-end justify-between mb-6">
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-amber-400">Hand-Picked</p>
-                <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white font-display">Featured Best Sellers</h2>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+                  <p className="text-[11px] font-black uppercase tracking-[0.25em] text-amber-400">Hand-Picked Selection</p>
+                </div>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white font-display">Featured Best Sellers</h2>
               </div>
-              <Link to="/products?featured=true" className="text-xs font-bold uppercase tracking-wider text-neutral-300 hover:text-white transition-colors flex items-center gap-1 bg-white/10 border border-white/10 px-3.5 py-1.5 rounded-full hover:bg-white/20">
-                View All <ChevronRight className="h-3.5 w-3.5" />
+              <Link to="/products?featured=true" className="group text-xs font-bold uppercase tracking-wider text-neutral-200 hover:text-white transition-colors flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/15 px-4 py-2 rounded-full shadow-sm">
+                <span>View All</span>
+                <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3">
+            <div className="relative grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2.5 sm:gap-3 md:gap-3.5">
               {featured.slice(0, 8).map((product: any) => (
                 <ProductCard key={product._id} product={product} />
               ))}
@@ -625,21 +672,35 @@ export function HomePage() {
       )}
 
       {/* ═══════════════════════════════════════════
-          9. CTA BANNER
+          9. CTA BANNER — High-Impact Brand Statement
       ═══════════════════════════════════════════ */}
-      <section className="max-w-[1700px] mx-auto px-3 md:px-6 my-8">
-        <div className="bg-[#161513] rounded-3xl py-14 text-center px-6 border border-white/5 shadow-2xl">
-          <div className="max-w-lg mx-auto">
-            <h2 className="text-2xl md:text-4xl font-black text-white mb-3 tracking-tight leading-tight font-display">
-              Wear Your Soul.<br />Shield Your Phone.
+      <section className="max-w-[1700px] mx-auto px-3 md:px-6 my-10">
+        <div className="relative overflow-hidden bg-gradient-to-br from-[#1C1B18] via-[#12110F] to-[#0A0908] rounded-3xl py-16 px-6 sm:px-12 text-center border border-white/10 shadow-2xl">
+          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative max-w-xl mx-auto space-y-4">
+            <span className="inline-block px-3.5 py-1 text-[10px] font-black uppercase tracking-[0.25em] rounded-full bg-white/10 text-amber-300 border border-amber-300/20">
+              The Printed Soul Difference
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight font-display">
+              Wear Your Soul.<br />Shield Your Device.
             </h2>
-            <p className="text-neutral-400 text-sm mb-6">Premium drop protection meets bold artistic expression.</p>
-            <Link
-              to="/products"
-              className="inline-flex items-center gap-2 bg-white text-black px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-neutral-200 transition-all shadow-md active:scale-95"
-            >
-              Explore Catalog <ArrowRight className="h-4 w-4" />
-            </Link>
+            <p className="text-neutral-400 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
+              Military-grade drop defense tailored with personalized HD artwork. 100% precision fit guaranteed.
+            </p>
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link
+                to="/products"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-black px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-neutral-200 transition-all shadow-md active:scale-95 cursor-pointer"
+              >
+                Shop All Collections <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/track"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 text-white hover:bg-white/20 border border-white/15 px-6 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest transition-all cursor-pointer"
+              >
+                Track Your Order
+              </Link>
+            </div>
           </div>
         </div>
       </section>
