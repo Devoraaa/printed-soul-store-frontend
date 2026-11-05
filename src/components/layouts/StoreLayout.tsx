@@ -32,6 +32,24 @@ export function StoreLayout() {
 
   const isTransparent = isHome && !isScrolled
 
+  const isLinkActive = (to: string) => {
+    if (to === "/") return location.pathname === "/" && !location.search
+    return (location.pathname + location.search) === to
+  }
+
+  const getLinkClasses = (to: string) => {
+    const active = isLinkActive(to)
+    const base = "px-4 py-2 text-[14px] sm:text-[15px] font-bold rounded-full transition-all whitespace-nowrap"
+    if (isTransparent) {
+      return active
+        ? `${base} bg-white/25 text-white shadow-sm ring-1 ring-white/30 backdrop-blur-md drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`
+        : `${base} text-white/95 hover:text-white hover:bg-white/20 hover:shadow-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`
+    }
+    return active
+      ? `${base} bg-neutral-900 text-[#F4EFEA] shadow-sm`
+      : `${base} text-neutral-800 hover:text-white hover:bg-black`
+  }
+
   // Hover menu state
   const [hoveredCategory, setHoveredCategory] = useState<HoverCategoryItem | null>(null)
   const [isHoverMenuOpen, setIsHoverMenuOpen] = useState(false)
@@ -93,44 +111,30 @@ export function StoreLayout() {
       <header className={`w-full z-50 transition-all duration-300 ${
         isHome ? "fixed top-0 left-0 right-0" : "sticky top-0"
       }`}>
-        {/* Luxury Announcement Bar */}
-        <div className={`transition-all duration-300 text-[10px] sm:text-[11px] font-semibold tracking-wider py-1.5 px-4 text-center flex items-center justify-center gap-2 relative ${
-          isTransparent
-            ? "bg-black/40 backdrop-blur-md text-white border-b border-white/10"
-            : "bg-[#191816] text-[#F4EFEA]"
-        }`}>
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="uppercase tracking-[0.14em]">Free Express Delivery Across India on Orders Above ₹499 • 100% Satisfaction Guaranteed</span>
-        </div>
-
         {/* Main Navbar */}
         <div className={`w-full transition-all duration-300 ${
           isTransparent
-            ? "bg-gradient-to-b from-black/60 via-black/25 to-transparent text-white border-transparent"
-            : "bg-[#F4EFEA]/95 backdrop-blur-xl border-b border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.02)] text-neutral-900"
+            ? "bg-gradient-to-b from-black/90 via-black/50 to-transparent text-white border-transparent pt-2 pb-6"
+            : "bg-[#F4EFEA]/95 backdrop-blur-xl border-b border-black/[0.08] shadow-[0_4px_20px_rgba(0,0,0,0.04)] text-neutral-900 py-2 sm:py-2.5"
         }`}>
-          <div className="max-w-[1700px] mx-auto px-3 md:px-6">
-            <div className="flex h-15 items-center justify-between gap-4">
+          <div className="max-w-[1700px] mx-auto px-4 md:px-8">
+            <div className="flex h-18 sm:h-20 items-center justify-between gap-4">
 
               {/* Official Printed Soul Unified Horizontal Logo */}
               <Link to="/" onMouseEnter={handleMenuClose} className="flex items-center shrink-0 group py-1">
                 <img
                   src={isTransparent ? "/logo-horizontal-white.png" : "/logo-horizontal.png"}
                   alt="Printed Soul"
-                  className="h-7 sm:h-8 md:h-9 w-auto object-contain transition-all duration-300 group-hover:scale-102"
+                  className="h-9 sm:h-10 md:h-12 w-auto object-contain transition-all duration-300 group-hover:scale-105 drop-shadow-sm"
                 />
               </Link>
 
               {/* ─── Category Nav (desktop) ───────────── */}
-              <nav className="hidden lg:flex items-center gap-1 flex-1 overflow-x-auto hide-scrollbar px-2">
+              <nav className="hidden lg:flex items-center gap-1.5 flex-1 overflow-x-auto hide-scrollbar px-3">
                 <Link
                   to="/"
                   onMouseEnter={handleMenuClose}
-                  className={`px-3.5 py-1.5 text-[13px] font-semibold rounded-full transition-all whitespace-nowrap ${
-                    isTransparent
-                      ? "text-white/90 hover:text-white hover:bg-white/20 drop-shadow-sm"
-                      : "text-neutral-700 hover:text-black hover:bg-black/[0.05]"
-                  }`}
+                  className={getLinkClasses("/")}
                 >
                   Home
                 </Link>
@@ -145,41 +149,36 @@ export function StoreLayout() {
                     })
                   }
                   onMouseLeave={handleCategoryMouseLeave}
-                  className={`px-3.5 py-1.5 text-[13px] font-semibold rounded-full transition-all whitespace-nowrap flex items-center gap-1.5 ${
-                    isTransparent
-                      ? "text-white/90 hover:text-white hover:bg-white/20 drop-shadow-sm"
-                      : "text-neutral-700 hover:text-black hover:bg-black/[0.05]"
-                  }`}
+                  className={`${getLinkClasses("/products?sort=new")} flex items-center gap-1.5`}
                 >
                   <span>New Arrivals</span>
-                  <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
+                  <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse" />
                 </Link>
 
                 {/* Dynamic categories from DB */}
-                {categories.map((cat: any) => (
-                  <Link
-                    key={cat._id}
-                    to={`/products?category=${cat.slug || cat._id}`}
-                    onMouseEnter={() =>
-                      handleCategoryMouseEnter({
-                        type: "category",
-                        _id: cat._id,
-                        name: cat.name,
-                        slug: cat.slug,
-                        description: cat.description,
-                        subcategories: cat.subcategories,
-                      })
-                    }
-                    onMouseLeave={handleCategoryMouseLeave}
-                    className={`px-3.5 py-1.5 text-[13px] font-semibold rounded-full transition-all whitespace-nowrap ${
-                      isTransparent
-                        ? "text-white/90 hover:text-white hover:bg-white/20 drop-shadow-sm"
-                        : "text-neutral-700 hover:text-black hover:bg-black/[0.05]"
-                    }`}
-                  >
-                    {cat.name}
-                  </Link>
-                ))}
+                {categories.map((cat: any) => {
+                  const catPath = `/products?category=${cat.slug || cat._id}`
+                  return (
+                    <Link
+                      key={cat._id}
+                      to={catPath}
+                      onMouseEnter={() =>
+                        handleCategoryMouseEnter({
+                          type: "category",
+                          _id: cat._id,
+                          name: cat.name,
+                          slug: cat.slug,
+                          description: cat.description,
+                          subcategories: cat.subcategories,
+                        })
+                      }
+                      onMouseLeave={handleCategoryMouseLeave}
+                      className={getLinkClasses(catPath)}
+                    >
+                      {cat.name}
+                    </Link>
+                  )
+                })}
 
                 <Link
                   to="/products"
@@ -191,43 +190,39 @@ export function StoreLayout() {
                     })
                   }
                   onMouseLeave={handleCategoryMouseLeave}
-                  className={`px-3.5 py-1.5 text-[13px] font-semibold rounded-full transition-all whitespace-nowrap ${
-                    isTransparent
-                      ? "text-white/90 hover:text-white hover:bg-white/20 drop-shadow-sm"
-                      : "text-neutral-700 hover:text-black hover:bg-black/[0.05]"
-                  }`}
+                  className={getLinkClasses("/products")}
                 >
                   Shop All
                 </Link>
               </nav>
 
               {/* ─── Action Icons ────────────────────── */}
-              <div onMouseEnter={handleMenuClose} className="flex items-center gap-1 sm:gap-2 shrink-0">
+              <div onMouseEnter={handleMenuClose} className="flex items-center gap-2 sm:gap-3 shrink-0">
                 {/* Search */}
                 <button
                   onClick={() => setSearchOpen(true)}
-                  className={`p-2 transition-colors rounded-full lg:px-3.5 lg:py-1.5 lg:text-xs lg:font-medium lg:flex lg:items-center lg:gap-2 shadow-sm cursor-pointer ${
+                  className={`p-2.5 transition-all rounded-full lg:px-4 lg:py-2.5 lg:text-xs lg:font-bold lg:flex lg:items-center lg:gap-2.5 shadow-sm cursor-pointer hover:scale-105 active:scale-95 ${
                     isTransparent
-                      ? "text-white hover:bg-white/20 lg:bg-white/20 lg:border lg:border-white/30 lg:text-white lg:hover:bg-white/30 backdrop-blur-md"
-                      : "text-neutral-700 hover:bg-black/[0.04] lg:text-neutral-500 lg:bg-white lg:border lg:border-black/[0.08] lg:hover:border-black/30"
+                      ? "text-white hover:bg-white/30 lg:bg-white/20 lg:border lg:border-white/40 lg:text-white lg:hover:bg-white/35 backdrop-blur-md shadow-md"
+                      : "text-neutral-800 hover:bg-black/5 lg:text-neutral-700 lg:bg-white lg:border lg:border-black/15 lg:hover:border-black"
                   }`}
                   aria-label="Search"
                 >
-                  <Search className="h-4 w-4 lg:h-3.5 lg:w-3.5" strokeWidth={2.2} />
+                  <Search className="h-4 w-4 lg:h-4 lg:w-4" strokeWidth={2.5} />
                   <span className="hidden lg:inline">Search…</span>
                 </button>
 
                 {/* Cart */}
                 <button
                   onClick={() => setCartDrawerOpen(true)}
-                  className={`relative p-2 transition-colors group cursor-pointer rounded-full ${
-                    isTransparent ? "hover:bg-white/20 text-white" : "hover:bg-black/[0.04] text-neutral-900"
+                  className={`relative p-2.5 transition-all group cursor-pointer rounded-full hover:scale-110 active:scale-95 ${
+                    isTransparent ? "hover:bg-white/25 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" : "hover:bg-black/5 text-neutral-900"
                   }`}
                 >
-                  <ShoppingBag className="h-5 w-5" strokeWidth={2} />
+                  <ShoppingBag className="h-6 w-6" strokeWidth={2.2} />
                   {totalItems > 0 && (
-                    <span className={`absolute -top-0.5 -right-0.5 h-4 w-4 text-[9px] font-black flex items-center justify-center rounded-full shadow-sm ${
-                      isTransparent ? "bg-white text-black" : "bg-black text-white"
+                    <span className={`absolute -top-0.5 -right-0.5 h-5 w-5 text-[10px] font-black flex items-center justify-center rounded-full shadow-md ${
+                      isTransparent ? "bg-white text-black" : "bg-neutral-900 text-white"
                     }`}>
                       {totalItems > 9 ? "9+" : totalItems}
                     </span>
@@ -239,32 +234,32 @@ export function StoreLayout() {
                   <div className="relative">
                     <button
                       onClick={() => setAccountOpen(!accountOpen)}
-                      className={`flex items-center gap-1.5 p-1 transition-colors cursor-pointer rounded-full ${
-                        isTransparent ? "hover:bg-white/20" : "hover:bg-black/[0.04]"
+                      className={`flex items-center gap-1.5 p-1 transition-all cursor-pointer rounded-full hover:scale-105 ${
+                        isTransparent ? "hover:bg-white/20" : "hover:bg-black/5"
                       }`}
                     >
-                      <div className="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                      <div className="w-9 h-9 rounded-full bg-neutral-900 flex items-center justify-center text-white text-xs font-black shadow-md border-2 border-white/20">
                         {user?.name[0].toUpperCase()}
                       </div>
-                      <ChevronDown className={`h-3 w-3 hidden md:block ${isTransparent ? "text-white/80" : "text-neutral-500"}`} />
+                      <ChevronDown className={`h-3.5 w-3.5 hidden md:block ${isTransparent ? "text-white" : "text-neutral-700"}`} />
                     </button>
                     {accountOpen && (
                       <div
-                        className="absolute right-0 mt-2 w-52 rounded-2xl border border-black/[0.08] bg-white shadow-xl py-2 z-50 overflow-hidden text-neutral-900"
+                        className="absolute right-0 mt-2 w-52 rounded-2xl border border-black/[0.08] bg-white shadow-2xl py-2 z-50 overflow-hidden text-neutral-900"
                         onMouseLeave={() => setAccountOpen(false)}
                       >
-                        <div className="px-3 py-2 border-b">
+                        <div className="px-4 py-2.5 border-b border-black/[0.05]">
                           <p className="text-xs font-bold text-gray-900">{user?.name}</p>
                           <p className="text-[10px] text-gray-500 truncate">{user?.email}</p>
                         </div>
-                        <Link to="/account" onClick={() => setAccountOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+                        <Link to="/account" onClick={() => setAccountOpen(false)} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
                           <User className="h-3.5 w-3.5 text-gray-500" /> My Account
                         </Link>
-                        <Link to="/account/orders" onClick={() => setAccountOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+                        <Link to="/account/orders" onClick={() => setAccountOpen(false)} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
                           <Package className="h-3.5 w-3.5 text-gray-500" /> My Orders
                         </Link>
-                        <div className="border-t my-1" />
-                        <button onClick={() => { logout(); setAccountOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors cursor-pointer">
+                        <div className="border-t border-black/[0.05] my-1" />
+                        <button onClick={() => { logout(); setAccountOpen(false) }} className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer">
                           <LogOut className="h-3.5 w-3.5" /> Sign Out
                         </button>
                       </div>
@@ -273,10 +268,10 @@ export function StoreLayout() {
                 ) : (
                   <button
                     onClick={openAuthModal}
-                    className={`hidden md:flex items-center justify-center px-4 py-1.5 text-[11px] font-bold tracking-wide rounded-full active:scale-95 transition-all cursor-pointer shadow-sm ${
+                    className={`hidden md:flex items-center justify-center px-6 py-2.5 text-xs font-black tracking-wider rounded-full active:scale-95 hover:scale-105 transition-all cursor-pointer shadow-md uppercase ${
                       isTransparent
-                        ? "bg-white text-black hover:bg-neutral-200"
-                        : "bg-black text-white hover:bg-neutral-800"
+                        ? "bg-white text-neutral-950 hover:bg-neutral-100"
+                        : "bg-neutral-900 text-white hover:bg-black"
                     }`}
                   >
                     Sign In
@@ -287,10 +282,10 @@ export function StoreLayout() {
                 <button
                   onClick={() => setMobileOpen(!mobileOpen)}
                   className={`lg:hidden p-2 rounded-full cursor-pointer transition-colors ${
-                    isTransparent ? "text-white hover:bg-white/20" : "text-gray-700 hover:bg-gray-100"
+                    isTransparent ? "text-white hover:bg-white/20 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
-                  {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                  {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                 </button>
               </div>
             </div>
