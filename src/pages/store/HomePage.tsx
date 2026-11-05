@@ -554,77 +554,107 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* ─── Subtle Section Divider ─── */}
+      <div className="max-w-[1700px] mx-auto px-4 my-2 sm:my-3">
+        <div className="h-px bg-gradient-to-r from-transparent via-black/[0.08] to-transparent" />
+      </div>
+
       {/* ═══════════════════════════════════════════
-          4. PROMO BANNERS GRID — Editorial Lookbook (Compact Spacing)
+          3. NEW ARRIVALS — Luxury Island Card (Clean Framing)
+      ═══════════════════════════════════════════ */}
+      {allProducts.length > 0 && (
+        <section className="py-2.5 sm:py-3.5 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="bg-white rounded-3xl border border-black/[0.06] p-4 sm:p-6 md:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.02)]">
+            <div className="flex items-end justify-between mb-4">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse" />
+                  <p className="text-[10.5px] font-black uppercase tracking-[0.25em] text-neutral-500">Trending Drops</p>
+                </div>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-neutral-950 font-display">New Arrivals</h2>
+              </div>
+              <Link to="/products?sort=new" className="group text-xs font-bold uppercase tracking-wider text-neutral-800 hover:text-black transition-colors flex items-center gap-1.5 bg-[#FAF7F2] border border-black/[0.06] px-3.5 py-1.5 rounded-full shadow-2xs hover:shadow-xs">
+                <span>Explore All</span>
+                <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+            </div>
+
+            {isAllLoading ? (
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-2 sm:gap-2.5 md:gap-3">
+                {[...Array(10)].map((_, i) => (
+                  <div key={i} className="aspect-[3/4] bg-neutral-100 animate-pulse rounded-2xl" />
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-2 sm:gap-2.5 md:gap-3">
+                {allProducts.slice(0, 10).map((product: any) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* ─── Subtle Section Divider ─── */}
+      <div className="max-w-[1700px] mx-auto px-4 my-2 sm:my-3">
+        <div className="h-px bg-gradient-to-r from-transparent via-black/[0.08] to-transparent" />
+      </div>
+
+      {/* ═══════════════════════════════════════════
+          4. PROMO BANNERS GRID — Exclusive Drops & Offers Lookbook
       ═══════════════════════════════════════════ */}
       {promoBanners.length > 0 && (
-        <section className="py-2 sm:py-2.5 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className={`grid gap-2.5 sm:gap-3 ${
+        <section className="py-2.5 sm:py-3.5 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="flex items-end justify-between mb-3.5">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+                <p className="text-[10.5px] font-black uppercase tracking-[0.25em] text-neutral-500">Spotlight Highlights</p>
+              </div>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-neutral-950 font-display">Special Offers &amp; Drops</h2>
+            </div>
+          </div>
+
+          <div className={`grid gap-3 sm:gap-4 ${
             promoBanners.length === 1 ? "grid-cols-1"
             : promoBanners.length === 2 ? "grid-cols-1 md:grid-cols-2"
             : "grid-cols-1 md:grid-cols-3"
           }`}>
             {promoBanners.slice(0, 3).map((banner: any, i: number) => {
               const content = (
-                <div className="relative overflow-hidden group aspect-[16/9] md:aspect-[16/10] bg-[#161513] rounded-2xl sm:rounded-3xl border border-black/[0.06] shadow-2xs hover:shadow-lg transition-all duration-300">
+                <div className="relative overflow-hidden group aspect-[16/9] md:aspect-[16/10] bg-[#161513] rounded-2xl sm:rounded-3xl border border-black/[0.08] shadow-xs hover:shadow-xl transition-all duration-300">
                   <img
                     src={getImageUrl(banner.imageUrl)}
-                    alt={banner.title || "Promo"}
+                    alt={banner.title || "Special Offer"}
                     loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 ease-out"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent p-4 sm:p-5 flex flex-col justify-end">
-                    {banner.title && <h3 className="text-white font-black text-base sm:text-lg leading-tight mb-1.5 drop-shadow-sm">{banner.title}</h3>}
+                  {/* Subtle Clean Floating Pill on Hover */}
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/25 transition-colors p-4 sm:p-5 flex flex-col justify-end">
+                    {banner.title && banner.title.length > 3 && (
+                      <h3 className="text-white font-black text-base sm:text-lg leading-tight mb-1.5 drop-shadow-md">{banner.title}</h3>
+                    )}
                     <div className="flex items-center">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 group-hover:bg-amber-400 text-neutral-900 group-hover:text-neutral-950 backdrop-blur-md text-[10px] sm:text-[10.5px] font-black uppercase tracking-wider shadow-2xs transition-all duration-300">
-                        Shop Now <ArrowRight className="h-3 w-3" />
+                      <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 group-hover:bg-amber-400 text-neutral-900 group-hover:text-neutral-950 backdrop-blur-md text-[10.5px] font-black uppercase tracking-wider shadow-sm transition-all duration-300">
+                        Explore Offer <ArrowRight className="h-3.5 w-3.5" />
                       </span>
                     </div>
                   </div>
                 </div>
               )
               return banner.link
-                ? <Link key={banner._id || i} to={banner.link}>{content}</Link>
+                ? <Link key={banner._id || i} to={banner.link} className="block group">{content}</Link>
                 : <div key={banner._id || i}>{content}</div>
             })}
           </div>
         </section>
       )}
 
-      {/* ═══════════════════════════════════════════
-          5. NEW ARRIVALS — Larger products, ultra tight gaps
-      ═══════════════════════════════════════════ */}
-      {allProducts.length > 0 && (
-        <section className="py-3 sm:py-3.5 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="flex items-end justify-between mb-2.5 sm:mb-3">
-            <div>
-              <div className="flex items-center gap-2 mb-0.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
-                <p className="text-[10.5px] font-black uppercase tracking-[0.25em] text-neutral-500">Trending Drops</p>
-              </div>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-neutral-950 font-display">New Arrivals</h2>
-            </div>
-            <Link to="/products?sort=new" className="group text-xs font-bold uppercase tracking-wider text-neutral-800 hover:text-black transition-colors flex items-center gap-1.5 bg-white border border-black/[0.08] px-3.5 py-1.5 rounded-full shadow-2xs hover:shadow-xs">
-              <span>Explore All</span>
-              <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
-          </div>
-
-          {isAllLoading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-2 sm:gap-2.5 md:gap-3">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="aspect-[3/4] bg-neutral-200/50 animate-pulse rounded-2xl" />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-2 sm:gap-2.5 md:gap-3">
-              {allProducts.slice(0, 10).map((product: any) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
-          )}
-        </section>
-      )}
+      {/* ─── Subtle Section Divider ─── */}
+      <div className="max-w-[1700px] mx-auto px-4 my-2 sm:my-3">
+        <div className="h-px bg-gradient-to-r from-transparent via-black/[0.08] to-transparent" />
+      </div>
 
       {/* ═══════════════════════════════════════════
           6. FEATURED PRODUCTS — Dark Luxury Ambient Card (Compact)
