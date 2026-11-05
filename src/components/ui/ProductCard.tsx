@@ -38,15 +38,15 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Box */}
-      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl bg-white border border-black/[0.06] transition-all duration-300 group-hover:shadow-[0_14px_32px_rgba(0,0,0,0.07)] group-hover:border-black/15 flex items-center justify-center">
-        <Link to={`/products/${product.slug}`} className="relative block w-full h-full p-2 sm:p-2.5 flex items-center justify-center">
+      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl bg-neutral-100 border border-black/[0.06] transition-all duration-300 group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] group-hover:border-black/15">
+        <Link to={`/products/${product.slug}`} className="relative block w-full h-full overflow-hidden">
           {/* Primary Image */}
           <img
             src={primaryImage}
             alt={product.name}
             loading="lazy"
             decoding="async"
-            className={`w-full h-full object-contain transition-all duration-500 ease-out ${
+            className={`w-full h-full object-cover transition-all duration-500 ease-out ${
               isHovered && product.images?.length > 1 ? "opacity-0 scale-105" : "opacity-100 scale-100"
             }`}
           />
@@ -58,7 +58,7 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
               alt={`${product.name} alternate view`}
               loading="lazy"
               decoding="async"
-              className={`absolute inset-0 w-full h-full object-contain p-2 sm:p-2.5 transition-all duration-500 ease-out ${
+              className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-out ${
                 isHovered ? "opacity-100 scale-105" : "opacity-0 scale-100"
               }`}
             />

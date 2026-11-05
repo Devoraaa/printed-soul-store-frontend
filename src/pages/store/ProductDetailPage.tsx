@@ -352,7 +352,7 @@ export function ProductDetailPage() {
           {/* Left Column: Gallery */}
           <div className="space-y-3 md:sticky md:top-20">
             <motion.div 
-              className="relative aspect-square overflow-hidden rounded-3xl bg-white border border-black/[0.05] shadow-sm group"
+              className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-neutral-100 border border-black/[0.05] shadow-sm group"
               layoutId={`product-${product._id}`}
             >
               <img
@@ -361,18 +361,18 @@ export function ProductDetailPage() {
                 loading="eager"
                 decoding="sync"
                 fetchPriority="high"
-                className="w-full h-full object-contain p-3 md:p-6 transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
 
               {/* Floating Badges */}
-              <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10 pointer-events-none">
+              <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 z-10 pointer-events-none">
                 {discountPercent > 0 && (
-                  <span className="bg-red-600 text-white text-[10px] uppercase font-black px-2 py-1 rounded-sm shadow-sm">
+                  <span className="bg-neutral-900 text-[#F4EFEA] text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full shadow-sm">
                     -{discountPercent}% OFF
                   </span>
                 )}
                 {product.stock > 0 && (
-                  <span className="bg-emerald-600 text-white text-[10px] uppercase font-black px-2 py-1 rounded-sm shadow-sm">
+                  <span className="bg-emerald-600 text-white text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full shadow-sm">
                     IN STOCK
                   </span>
                 )}
@@ -383,13 +383,13 @@ export function ProductDetailPage() {
                 <>
                   <button 
                     onClick={() => setActiveImageIdx((prev) => (prev > 0 ? prev - 1 : product.images.length - 1))}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 border border-gray-200 shadow-sm hover:bg-white text-gray-900 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer rounded-sm"
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/90 border border-black/[0.08] shadow-md hover:bg-white text-neutral-900 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer rounded-full backdrop-blur-sm"
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </button>
                   <button 
                     onClick={() => setActiveImageIdx((prev) => (prev < product.images.length - 1 ? prev + 1 : 0))}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 border border-gray-200 shadow-sm hover:bg-white text-gray-900 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer rounded-sm"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/90 border border-black/[0.08] shadow-md hover:bg-white text-neutral-900 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer rounded-full backdrop-blur-sm"
                   >
                     <ChevronLeft className="h-4 w-4 rotate-180" />
                   </button>
@@ -415,7 +415,7 @@ export function ProductDetailPage() {
                       alt={`${product.name} thumbnail ${i + 1}`}
                       loading="lazy"
                       decoding="async"
-                      className="w-full h-full object-contain p-1"
+                      className="w-full h-full object-cover"
                     />
                   </button>
                 ))}
