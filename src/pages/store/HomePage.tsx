@@ -349,26 +349,60 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* ─── Ultra-Compact Infinite Luxury Perks Ticker ─── */}
+      <div className="w-full bg-[#ECE5DC]/90 border-b border-black/[0.06] overflow-hidden py-2 backdrop-blur-md select-none">
+        <div className="flex animate-marquee whitespace-nowrap text-[10.5px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-neutral-800">
+          <div className="flex items-center gap-8 px-4 shrink-0">
+            <span className="flex items-center gap-2"><span className="text-amber-600">⚡</span> Free Express Delivery Across India on Orders Above ₹499</span>
+            <span className="text-neutral-400">•</span>
+            <span className="flex items-center gap-2"><span className="text-rose-500">🛡️</span> 9H Toughened Glass &amp; Shockproof Armor Protection</span>
+            <span className="text-neutral-400">•</span>
+            <span className="flex items-center gap-2"><span className="text-emerald-600">🎁</span> Use Code SPECIAL200 for Instant ₹200 OFF</span>
+            <span className="text-neutral-400">•</span>
+            <span className="flex items-center gap-2"><span className="text-amber-500">★</span> 10,000+ Happy Customers &amp; 4.9/5 Rating</span>
+            <span className="text-neutral-400">•</span>
+            <span className="flex items-center gap-2"><span className="text-sky-600">🇮🇳</span> 100% Precision Crafted &amp; Printed In India</span>
+            <span className="text-neutral-400">•</span>
+            <span className="flex items-center gap-2"><span className="text-indigo-600">🔄</span> 7-Day Easy Replacement Guarantee</span>
+            <span className="text-neutral-400">•</span>
+          </div>
+          <div className="flex items-center gap-8 px-4 shrink-0">
+            <span className="flex items-center gap-2"><span className="text-amber-600">⚡</span> Free Express Delivery Across India on Orders Above ₹499</span>
+            <span className="text-neutral-400">•</span>
+            <span className="flex items-center gap-2"><span className="text-rose-500">🛡️</span> 9H Toughened Glass &amp; Shockproof Armor Protection</span>
+            <span className="text-neutral-400">•</span>
+            <span className="flex items-center gap-2"><span className="text-emerald-600">🎁</span> Use Code SPECIAL200 for Instant ₹200 OFF</span>
+            <span className="text-neutral-400">•</span>
+            <span className="flex items-center gap-2"><span className="text-amber-500">★</span> 10,000+ Happy Customers &amp; 4.9/5 Rating</span>
+            <span className="text-neutral-400">•</span>
+            <span className="flex items-center gap-2"><span className="text-sky-600">🇮🇳</span> 100% Precision Crafted &amp; Printed In India</span>
+            <span className="text-neutral-400">•</span>
+            <span className="flex items-center gap-2"><span className="text-indigo-600">🔄</span> 7-Day Easy Replacement Guarantee</span>
+            <span className="text-neutral-400">•</span>
+          </div>
+        </div>
+      </div>
+
       {/* ═══════════════════════════════════════════
-          2. CATEGORY STRIP — Luxury Lifestyle Collection Cards
+          2. CATEGORY STRIP — Luxury Lifestyle Collection Cards (Tight Spacing)
       ═══════════════════════════════════════════ */}
       {categories.length > 0 && (
-        <section className="py-7 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="flex items-end justify-between mb-5">
+        <section className="pt-3.5 pb-2 sm:pt-4 sm:pb-2.5 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="flex items-end justify-between mb-3">
             <div>
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex items-center gap-2 mb-0.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-amber-600" />
-                <p className="text-[11px] font-black uppercase tracking-[0.25em] text-neutral-500">Curated Collections</p>
+                <p className="text-[10.5px] font-black uppercase tracking-[0.25em] text-neutral-500">Curated Collections</p>
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-neutral-950 font-display">Shop by Category</h2>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-neutral-950 font-display">Shop by Category</h2>
             </div>
-            <Link to="/products" className="group text-xs font-bold uppercase tracking-wider text-neutral-800 hover:text-black transition-colors flex items-center gap-1.5 bg-white border border-black/[0.08] px-4 py-2 rounded-full shadow-xs hover:shadow-sm">
+            <Link to="/products" className="group text-xs font-bold uppercase tracking-wider text-neutral-800 hover:text-black transition-colors flex items-center gap-1.5 bg-white border border-black/[0.08] px-3.5 py-1.5 rounded-full shadow-2xs hover:shadow-xs">
               <span>View All</span>
               <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-3 sm:gap-3.5 md:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-2 sm:gap-2.5 md:gap-3">
             {categories.map((cat: any) => {
               const slug = cat.slug?.toLowerCase() || ""
               const imgSrc = getCategoryPhoto(cat)
@@ -378,7 +412,7 @@ export function HomePage() {
                 <Link
                   key={cat._id}
                   to={`/products?category=${cat.slug || cat._id}`}
-                  className={`group relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-3xl bg-[#FAF7F2] border border-black/[0.06] ${colorInfo.border} transition-all duration-500 shadow-xs hover:-translate-y-1.5 ${colorInfo.glow}`}
+                  className={`group relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-2xl sm:rounded-3xl bg-[#FAF7F2] border border-black/[0.06] ${colorInfo.border} transition-all duration-300 shadow-2xs hover:-translate-y-1 ${colorInfo.glow}`}
                 >
                   <img
                     src={imgSrc}
@@ -393,8 +427,8 @@ export function HomePage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                   {/* Floating Frosted Glass Label Pill with Color Accent Dot */}
-                  <div className="absolute inset-x-2.5 bottom-2.5 flex justify-center">
-                    <span className="w-full flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-2xl bg-white/95 group-hover:bg-neutral-950 text-neutral-900 group-hover:text-white backdrop-blur-md text-[11px] sm:text-xs font-black uppercase tracking-wider shadow-sm transition-all duration-300 truncate">
+                  <div className="absolute inset-x-2 bottom-2 flex justify-center">
+                    <span className="w-full flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-xl sm:rounded-2xl bg-white/95 group-hover:bg-neutral-950 text-neutral-900 group-hover:text-white backdrop-blur-md text-[10.5px] sm:text-xs font-black uppercase tracking-wider shadow-2xs transition-all duration-300 truncate">
                       <span className={`h-1.5 w-1.5 rounded-full ${colorInfo.dot} shrink-0 animate-pulse`} />
                       <span className="truncate">{cat.name}</span>
                     </span>
@@ -407,21 +441,21 @@ export function HomePage() {
       )}
 
       {/* ═══════════════════════════════════════════
-          2.5 QUICK FILTERS (Navigates directly to Shop All)
+          2.5 QUICK FILTERS (Navigates directly to Shop All — Ultra Compact)
       ═══════════════════════════════════════════ */}
-      <section className="py-4 max-w-[1700px] mx-auto px-3 md:px-6">
-        <div className="bg-white border border-black/[0.05] rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
+      <section className="py-2 sm:py-2.5 max-w-[1700px] mx-auto px-3 md:px-6">
+        <div className="bg-white border border-black/[0.05] rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 shadow-2xs space-y-2.5">
           {/* Top Row: Title, Filters Icon & Search */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <span className="p-2 rounded-full bg-neutral-900 text-white shadow-sm">
-                <Filter className="w-3.5 h-3.5" />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-full bg-neutral-900 text-white shadow-2xs">
+                <Filter className="w-3 h-3" />
               </span>
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-900">
+                <h3 className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-neutral-900">
                   Quick Filters
                 </h3>
-                <p className="text-[11px] text-neutral-500">Search designs, choose a category or phone brand</p>
+                <p className="text-[10px] text-neutral-500">Filter by category, brand, or price range</p>
               </div>
             </div>
 
@@ -433,19 +467,19 @@ export function HomePage() {
                   navigate(`/products?search=${encodeURIComponent(homeSearch.trim())}`)
                 }
               }}
-              className="relative w-full sm:w-80"
+              className="relative w-full sm:w-72"
             >
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-neutral-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-neutral-400" />
               <input
                 type="text"
                 value={homeSearch}
                 onChange={(e) => setHomeSearch(e.target.value)}
                 placeholder="Search design, anime, aesthetic..."
-                className="w-full pl-9 pr-20 py-2.5 text-xs font-medium border border-neutral-200/80 bg-neutral-50/70 rounded-full focus:bg-white focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
+                className="w-full pl-8 pr-16 py-1.5 text-xs font-medium border border-neutral-200/80 bg-neutral-50/70 rounded-full focus:bg-white focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
               />
               <button
                 type="submit"
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 px-3.5 py-1.5 bg-neutral-900 text-white text-[10px] font-bold uppercase tracking-wider rounded-full hover:bg-black transition-colors cursor-pointer"
+                className="absolute right-1 top-1/2 -translate-y-1/2 px-3 py-1 bg-neutral-900 text-white text-[9.5px] font-bold uppercase tracking-wider rounded-full hover:bg-black transition-colors cursor-pointer"
               >
                 Search
               </button>
@@ -453,11 +487,11 @@ export function HomePage() {
           </div>
 
           {/* Categories Filter Strip */}
-          <div className="pt-3 border-t border-neutral-100 flex items-center gap-2 overflow-x-auto hide-scrollbar py-1">
-            <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400 shrink-0">Category:</span>
+          <div className="pt-2 border-t border-neutral-100 flex items-center gap-1.5 overflow-x-auto hide-scrollbar py-0.5">
+            <span className="text-[9.5px] font-black uppercase tracking-widest text-neutral-400 shrink-0">Category:</span>
             <Link
               to="/products"
-              className="px-4 py-1.5 text-xs font-bold bg-neutral-900 text-white rounded-full shrink-0 hover:bg-black transition-all shadow-sm active:scale-95"
+              className="px-3 py-1 text-[11px] font-bold bg-neutral-900 text-white rounded-full shrink-0 hover:bg-black transition-all shadow-2xs active:scale-95"
             >
               All Categories
             </Link>
@@ -467,7 +501,7 @@ export function HomePage() {
                 <Link
                   key={cat._id}
                   to={`/products?category=${cat.slug || cat._id}`}
-                  className="group/pill inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold bg-[#FAF7F2] border border-black/[0.06] text-neutral-800 hover:bg-neutral-900 hover:text-white hover:border-black rounded-full transition-all duration-200 shrink-0 hover:scale-105 active:scale-95 shadow-2xs"
+                  className="group/pill inline-flex items-center gap-1.5 px-3 py-1 text-[11px] font-semibold bg-[#FAF7F2] border border-black/[0.06] text-neutral-800 hover:bg-neutral-900 hover:text-white hover:border-black rounded-full transition-all duration-200 shrink-0 hover:scale-105 active:scale-95 shadow-2xs"
                 >
                   <span className={`h-1.5 w-1.5 rounded-full ${color.dot} group-hover/pill:scale-125 transition-transform`} />
                   <span>{cat.name}</span>
@@ -477,13 +511,13 @@ export function HomePage() {
           </div>
 
           {/* Brands & Price Filter Strip */}
-          <div className="pt-3 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-3">
+          <div className="pt-2 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-2.5">
             {brands.length > 0 && (
-              <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar py-0.5">
-                <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400 shrink-0">Brand:</span>
+              <div className="flex items-center gap-1.5 overflow-x-auto hide-scrollbar py-0.5">
+                <span className="text-[9.5px] font-black uppercase tracking-widest text-neutral-400 shrink-0">Brand:</span>
                 <Link
                   to="/products"
-                  className="px-3.5 py-1 text-[11px] font-bold bg-neutral-200 text-neutral-900 hover:bg-black hover:text-white rounded-full transition-all shrink-0 active:scale-95"
+                  className="px-3 py-0.5 text-[10.5px] font-bold bg-neutral-200 text-neutral-900 hover:bg-black hover:text-white rounded-full transition-all shrink-0 active:scale-95"
                 >
                   All Brands
                 </Link>
@@ -491,7 +525,7 @@ export function HomePage() {
                   <Link
                     key={brand._id}
                     to={`/products?brand=${brand.slug || brand._id}`}
-                    className="px-3.5 py-1 text-[11px] font-bold bg-white border border-neutral-200 text-neutral-700 hover:border-black hover:bg-black hover:text-white rounded-full transition-all shrink-0 shadow-2xs active:scale-95"
+                    className="px-3 py-0.5 text-[10.5px] font-bold bg-white border border-neutral-200 text-neutral-700 hover:border-black hover:bg-black hover:text-white rounded-full transition-all shrink-0 shadow-2xs active:scale-95"
                   >
                     {brand.name}
                   </Link>
@@ -521,29 +555,29 @@ export function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════
-          4. PROMO BANNERS GRID — Editorial Lookbook
+          4. PROMO BANNERS GRID — Editorial Lookbook (Compact Spacing)
       ═══════════════════════════════════════════ */}
       {promoBanners.length > 0 && (
-        <section className="py-5 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className={`grid gap-3 sm:gap-4 ${
+        <section className="py-2 sm:py-2.5 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className={`grid gap-2.5 sm:gap-3 ${
             promoBanners.length === 1 ? "grid-cols-1"
             : promoBanners.length === 2 ? "grid-cols-1 md:grid-cols-2"
             : "grid-cols-1 md:grid-cols-3"
           }`}>
             {promoBanners.slice(0, 3).map((banner: any, i: number) => {
               const content = (
-                <div className="relative overflow-hidden group aspect-[16/9] md:aspect-[16/10] bg-[#161513] rounded-3xl border border-black/[0.06] shadow-sm hover:shadow-xl transition-all duration-300">
+                <div className="relative overflow-hidden group aspect-[16/9] md:aspect-[16/10] bg-[#161513] rounded-2xl sm:rounded-3xl border border-black/[0.06] shadow-2xs hover:shadow-lg transition-all duration-300">
                   <img
                     src={getImageUrl(banner.imageUrl)}
                     alt={banner.title || "Promo"}
                     loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 ease-out"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent p-5 sm:p-6 flex flex-col justify-end">
-                    {banner.title && <h3 className="text-white font-black text-lg sm:text-xl leading-tight mb-2 drop-shadow-sm">{banner.title}</h3>}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent p-4 sm:p-5 flex flex-col justify-end">
+                    {banner.title && <h3 className="text-white font-black text-base sm:text-lg leading-tight mb-1.5 drop-shadow-sm">{banner.title}</h3>}
                     <div className="flex items-center">
-                      <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 group-hover:bg-amber-400 text-neutral-900 group-hover:text-neutral-950 backdrop-blur-md text-[11px] font-black uppercase tracking-wider shadow-sm transition-all duration-300">
-                        Shop Now <ArrowRight className="h-3.5 w-3.5" />
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 group-hover:bg-amber-400 text-neutral-900 group-hover:text-neutral-950 backdrop-blur-md text-[10px] sm:text-[10.5px] font-black uppercase tracking-wider shadow-2xs transition-all duration-300">
+                        Shop Now <ArrowRight className="h-3 w-3" />
                       </span>
                     </div>
                   </div>
@@ -558,19 +592,19 @@ export function HomePage() {
       )}
 
       {/* ═══════════════════════════════════════════
-          5. NEW ARRIVALS — Larger products, tight gaps
+          5. NEW ARRIVALS — Larger products, ultra tight gaps
       ═══════════════════════════════════════════ */}
       {allProducts.length > 0 && (
-        <section className="py-8 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="flex items-end justify-between mb-5">
+        <section className="py-3 sm:py-3.5 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="flex items-end justify-between mb-2.5 sm:mb-3">
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse" />
-                <p className="text-[11px] font-black uppercase tracking-[0.25em] text-neutral-500">Trending Drops</p>
+              <div className="flex items-center gap-2 mb-0.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
+                <p className="text-[10.5px] font-black uppercase tracking-[0.25em] text-neutral-500">Trending Drops</p>
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-neutral-950 font-display">New Arrivals</h2>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-neutral-950 font-display">New Arrivals</h2>
             </div>
-            <Link to="/products?sort=new" className="group text-xs font-bold uppercase tracking-wider text-neutral-800 hover:text-black transition-colors flex items-center gap-1.5 bg-white border border-black/[0.08] px-4 py-2 rounded-full shadow-xs hover:shadow-sm">
+            <Link to="/products?sort=new" className="group text-xs font-bold uppercase tracking-wider text-neutral-800 hover:text-black transition-colors flex items-center gap-1.5 bg-white border border-black/[0.08] px-3.5 py-1.5 rounded-full shadow-2xs hover:shadow-xs">
               <span>Explore All</span>
               <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
             </Link>
@@ -593,26 +627,26 @@ export function HomePage() {
       )}
 
       {/* ═══════════════════════════════════════════
-          6. FEATURED PRODUCTS — Dark Luxury Ambient Card
+          6. FEATURED PRODUCTS — Dark Luxury Ambient Card (Compact)
       ═══════════════════════════════════════════ */}
       {featured.length > 0 && (
-        <section className="py-8 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="relative overflow-hidden bg-gradient-to-br from-[#1A1917] via-[#141311] to-[#0A0908] text-white rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl border border-amber-500/15">
-            <div className="absolute -top-24 -right-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="relative flex items-end justify-between mb-6">
+        <section className="py-2.5 sm:py-3 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="relative overflow-hidden bg-gradient-to-br from-[#1A1917] via-[#141311] to-[#0A0908] text-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 shadow-xl border border-amber-500/15">
+            <div className="absolute -top-24 -right-24 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="relative flex items-end justify-between mb-3.5">
               <div>
-                <div className="flex items-center gap-2 mb-1.5">
+                <div className="flex items-center gap-2 mb-1">
                   <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                  <p className="text-[11px] font-black uppercase tracking-[0.25em] text-amber-400">Hand-Picked Selection</p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.25em] text-amber-400">Hand-Picked Selection</p>
                 </div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white font-display">Featured Best Sellers</h2>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-white font-display">Featured Best Sellers</h2>
               </div>
-              <Link to="/products?featured=true" className="group text-xs font-bold uppercase tracking-wider text-neutral-200 hover:text-white transition-colors flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/15 px-4 py-2 rounded-full shadow-sm">
+              <Link to="/products?featured=true" className="group text-xs font-bold uppercase tracking-wider text-neutral-200 hover:text-white transition-colors flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/15 px-3.5 py-1.5 rounded-full shadow-2xs">
                 <span>View All</span>
                 <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
-            <div className="relative grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2.5 sm:gap-3 md:gap-3.5">
+            <div className="relative grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3">
               {featured.slice(0, 8).map((product: any) => (
                 <ProductCard key={product._id} product={product} />
               ))}
@@ -622,46 +656,46 @@ export function HomePage() {
       )}
 
       {/* ═══════════════════════════════════════════
-          7. DYNAMIC CATEGORY SHOWCASE SECTIONS (7 CATEGORIES) — Colorful Ambient Islands
+          7. DYNAMIC CATEGORY SHOWCASE SECTIONS (7 CATEGORIES) — Colorful Ambient Islands (Ultra Tight Margins)
       ═══════════════════════════════════════════ */}
       {showcaseSections.map((sec: any) => {
         if (sec.products.length === 0) return null
 
         return (
-          <section key={sec.id} className="py-6 max-w-[1700px] mx-auto px-3 md:px-6">
-            <div className={`relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br ${sec.accentGradient} p-5 sm:p-7 md:p-8 border ${sec.accentBorder} shadow-[0_8px_30px_rgba(0,0,0,0.02)] transition-all duration-300`}>
+          <section key={sec.id} className="py-2 sm:py-2.5 max-w-[1700px] mx-auto px-3 md:px-6">
+            <div className={`relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br ${sec.accentGradient} p-3.5 sm:p-5 md:p-6 border ${sec.accentBorder} shadow-[0_4px_20px_rgba(0,0,0,0.02)] transition-all duration-300`}>
               {/* Subtle ambient light orb */}
-              <div className={`absolute -top-16 -right-16 w-64 h-64 ${sec.glowColor} rounded-full blur-3xl pointer-events-none`} />
+              <div className={`absolute -top-16 -right-16 w-60 h-60 ${sec.glowColor} rounded-full blur-3xl pointer-events-none`} />
 
-              <div className="relative flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-3">
+              <div className="relative flex flex-col sm:flex-row sm:items-end justify-between mb-3.5 gap-2">
                 <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className={`text-[10px] font-black uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full border ${sec.tagColor}`}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className={`text-[9.5px] font-black uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full border ${sec.tagColor}`}>
                       {sec.tag}
                     </span>
                     {sec.badge && (
-                      <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${sec.badgeColor} shadow-xs`}>
+                      <span className={`text-[9.5px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${sec.badgeColor} shadow-2xs`}>
                         {sec.badge}
                       </span>
                     )}
                   </div>
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-neutral-950 font-display">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-neutral-950 font-display">
                     {sec.title}
                   </h2>
-                  <p className="text-xs sm:text-sm text-neutral-600 mt-1 max-w-xl font-medium">
+                  <p className="text-xs sm:text-[13px] text-neutral-600 mt-0.5 max-w-xl font-medium">
                     {sec.subtitle}
                   </p>
                 </div>
                 <Link
                   to={sec.link}
-                  className="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-900 bg-white hover:bg-neutral-950 hover:text-white border border-black/[0.08] px-4 py-2 rounded-full shadow-xs hover:shadow-md transition-all shrink-0 active:scale-95 cursor-pointer"
+                  className="group inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-900 bg-white hover:bg-neutral-950 hover:text-white border border-black/[0.08] px-3.5 py-1.5 rounded-full shadow-2xs hover:shadow-xs transition-all shrink-0 active:scale-95 cursor-pointer"
                 >
                   <span>Explore Collection</span>
-                  <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
               </div>
 
-              <div className="relative grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2.5 sm:gap-3 md:gap-3.5">
+              <div className="relative grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3">
                 {sec.products.slice(0, 8).map((product: any) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
@@ -671,27 +705,27 @@ export function HomePage() {
         )
       })}
 
-      <div className="py-10 text-center border-t border-black/[0.05] bg-transparent">
+      <div className="py-4 text-center border-t border-black/[0.05] bg-transparent">
         <Link
           to="/products"
-          className="inline-flex items-center gap-2 bg-neutral-900 text-white px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-black transition-all shadow-md active:scale-95"
+          className="inline-flex items-center gap-2 bg-neutral-900 text-white px-7 py-2.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-black transition-all shadow-sm active:scale-95"
         >
           Explore Full Store Catalog <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
 
       {/* ═══════════════════════════════════════════
-          8. SOCIAL FEED
+          8. SOCIAL FEED (Compact)
       ═══════════════════════════════════════════ */}
       {socialPosts.length > 0 && (
-        <section className="py-10 max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="bg-[#161513] text-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/5">
-            <div className="text-center mb-6">
-              <p className="text-[10px] uppercase tracking-[0.3em] text-amber-400 font-bold mb-1">@PrintedSoulStore</p>
-              <h2 className="text-2xl font-black tracking-tight text-white font-display">Trending on Social 🔥</h2>
-              <p className="text-neutral-400 text-xs mt-1">Tag #PrintedSoul to get featured</p>
+        <section className="py-2.5 sm:py-3 max-w-[1700px] mx-auto px-3 md:px-6">
+          <div className="bg-[#161513] text-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-white/5">
+            <div className="text-center mb-4">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-amber-400 font-bold mb-0.5">@PrintedSoulStore</p>
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white font-display">Trending on Social 🔥</h2>
+              <p className="text-neutral-400 text-xs mt-0.5">Tag #PrintedSoul to get featured</p>
             </div>
-            <div className="flex overflow-x-auto md:grid md:grid-cols-3 gap-4 snap-x snap-mandatory hide-scrollbar pb-2">
+            <div className="flex overflow-x-auto md:grid md:grid-cols-3 gap-3 snap-x snap-mandatory hide-scrollbar pb-1">
               {socialPosts.slice(0, 3).map((post: any) => {
                 let embedUrl = post.url
                 if (post.url.includes("instagram.com")) {
@@ -722,31 +756,31 @@ export function HomePage() {
       )}
 
       {/* ═══════════════════════════════════════════
-          9. CTA BANNER — High-Impact Brand Statement
+          9. CTA BANNER — High-Impact Brand Statement (Ultra Sleek)
       ═══════════════════════════════════════════ */}
-      <section className="max-w-[1700px] mx-auto px-3 md:px-6 my-10">
-        <div className="relative overflow-hidden bg-gradient-to-br from-[#1C1B18] via-[#12110F] to-[#0A0908] rounded-3xl py-16 px-6 sm:px-12 text-center border border-white/10 shadow-2xl">
-          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="relative max-w-xl mx-auto space-y-4">
-            <span className="inline-block px-3.5 py-1 text-[10px] font-black uppercase tracking-[0.25em] rounded-full bg-white/10 text-amber-300 border border-amber-300/20">
+      <section className="max-w-[1700px] mx-auto px-3 md:px-6 my-3 sm:my-4">
+        <div className="relative overflow-hidden bg-gradient-to-br from-[#1C1B18] via-[#12110F] to-[#0A0908] rounded-2xl sm:rounded-3xl py-8 sm:py-10 px-4 sm:px-8 text-center border border-white/10 shadow-xl">
+          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative max-w-xl mx-auto space-y-3">
+            <span className="inline-block px-3 py-0.5 text-[9.5px] font-black uppercase tracking-[0.25em] rounded-full bg-white/10 text-amber-300 border border-amber-300/20">
               The Printed Soul Difference
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight font-display">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight font-display">
               Wear Your Soul.<br />Shield Your Device.
             </h2>
-            <p className="text-neutral-400 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
+            <p className="text-neutral-400 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
               Military-grade drop defense tailored with personalized HD artwork. 100% precision fit guaranteed.
             </p>
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div className="pt-1 flex flex-col sm:flex-row items-center justify-center gap-2.5">
               <Link
                 to="/products"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-black px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-neutral-200 transition-all shadow-md active:scale-95 cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-black px-7 py-2.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-neutral-200 transition-all shadow-sm active:scale-95 cursor-pointer"
               >
                 Shop All Collections <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 to="/track"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 text-white hover:bg-white/20 border border-white/15 px-6 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest transition-all cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 text-white hover:bg-white/20 border border-white/15 px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-widest transition-all cursor-pointer"
               >
                 Track Your Order
               </Link>

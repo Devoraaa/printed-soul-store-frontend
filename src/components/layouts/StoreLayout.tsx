@@ -478,10 +478,10 @@ export function StoreLayout() {
         </a>
       </aside>
 
-      {/* Trust Strip */}
-      <section className="max-w-[1700px] mx-auto px-3 md:px-6 my-8 w-full">
-        <div className="bg-white rounded-3xl border border-black/[0.06] py-7 px-6 sm:px-8 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+      {/* Trust Strip (Compact) */}
+      <section className="max-w-[1700px] mx-auto px-3 md:px-6 my-3 sm:my-4 w-full">
+        <div className="bg-white rounded-2xl sm:rounded-3xl border border-black/[0.06] py-4 sm:py-5 px-4 sm:px-6 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {[
               { icon: Truck, title: "Free Express Shipping", sub: "On all orders above ₹499" },
               { icon: ShieldCheck, title: "Armor Grade Cases", sub: "Drop-tested & scratch proof" },
@@ -490,13 +490,13 @@ export function StoreLayout() {
             ].map((item) => {
               const Icon = item.icon
               return (
-                <div key={item.title} className="flex items-center gap-3.5">
-                  <div className="h-11 w-11 rounded-2xl bg-[#F4EFEA] text-neutral-900 border border-black/[0.05] flex items-center justify-center shrink-0 shadow-xs">
-                    <Icon className="h-5 w-5" strokeWidth={1.8} />
+                <div key={item.title} className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl sm:rounded-2xl bg-[#F4EFEA] text-neutral-900 border border-black/[0.05] flex items-center justify-center shrink-0 shadow-2xs">
+                    <Icon className="h-4 w-4 sm:h-4.5 sm:w-4.5" strokeWidth={1.8} />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-neutral-900 uppercase tracking-wider">{item.title}</p>
-                    <p className="text-[11px] text-neutral-500 mt-0.5 leading-snug">{item.sub}</p>
+                    <p className="text-[11px] sm:text-xs font-bold text-neutral-900 uppercase tracking-wider">{item.title}</p>
+                    <p className="text-[10px] sm:text-[10.5px] text-neutral-500 mt-0.5 leading-snug">{item.sub}</p>
                   </div>
                 </div>
               )
@@ -505,21 +505,21 @@ export function StoreLayout() {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Footer (Compact Luxury) */}
       <footer className="bg-[#121211] text-neutral-400 border-t border-neutral-800">
-        <div className="max-w-[1700px] mx-auto px-4 py-12 md:py-16">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+        <div className="max-w-[1700px] mx-auto px-4 py-7 md:py-9">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-5 sm:gap-6 md:gap-8">
             <div className="col-span-2">
-              <Link to="/" className="inline-flex items-center mb-4 group">
-                <img src="/logo-horizontal-white.png" alt="Printed Soul" className="h-8 md:h-9 w-auto object-contain opacity-95 group-hover:opacity-100 transition-opacity" />
+              <Link to="/" className="inline-flex items-center mb-3 group">
+                <img src="/logo-horizontal-white.png" alt="Printed Soul" className="h-7 md:h-8 w-auto object-contain opacity-95 group-hover:opacity-100 transition-opacity" />
               </Link>
               <p className="text-xs leading-relaxed text-neutral-400 max-w-sm">
                 Premium custom phone cases for every personality and device. Make it yours.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-3 text-xs text-white uppercase tracking-widest">Shop</h4>
-              <ul className="space-y-2 text-xs">
+              <h4 className="font-semibold mb-2.5 text-xs text-white uppercase tracking-widest">Shop</h4>
+              <ul className="space-y-1.5 text-xs">
                 <li><Link to="/products" className="hover:text-white transition-colors">All Products</Link></li>
                 <li><Link to="/products?featured=true" className="hover:text-white transition-colors">Featured</Link></li>
                 {categories.slice(0, 4).map((cat: any) => (
@@ -530,30 +530,30 @@ export function StoreLayout() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-3 text-xs text-white uppercase tracking-widest">Company</h4>
-              <ul className="space-y-2 text-xs">
+              <h4 className="font-semibold mb-2.5 text-xs text-white uppercase tracking-widest">Company</h4>
+              <ul className="space-y-1.5 text-xs">
                 <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
                 <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-3 text-xs text-white uppercase tracking-widest">Support</h4>
-              <ul className="space-y-2 text-xs">
+              <h4 className="font-semibold mb-2.5 text-xs text-white uppercase tracking-widest">Support</h4>
+              <ul className="space-y-1.5 text-xs">
                 <li><Link to="/track" className="hover:text-white transition-colors">Track Order</Link></li>
                 <li><a href="https://wa.me/919999999999?text=Hi%20Printed%20Soul%2C%20I%20need%20help" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">WhatsApp Support</a></li>
                 <li><a href="mailto:support@printedsoul.in" className="hover:text-white transition-colors">Email Support</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-3 text-xs text-white uppercase tracking-widest">Newsletter</h4>
-              <p className="text-[11px] text-neutral-400 mb-3">Get exclusive drops & discounts.</p>
+              <h4 className="font-semibold mb-2.5 text-xs text-white uppercase tracking-widest">Newsletter</h4>
+              <p className="text-[11px] text-neutral-400 mb-2">Get exclusive drops &amp; discounts.</p>
               <form className="flex rounded-full overflow-hidden border border-neutral-800 bg-neutral-900 p-1" onSubmit={(e) => e.preventDefault()}>
                 <input type="email" placeholder="Email address" className="bg-transparent text-white text-xs px-3 py-1.5 w-full focus:outline-none" required />
-                <button type="submit" className="bg-white text-black font-bold px-4 py-1.5 text-xs rounded-full hover:bg-neutral-200 transition-colors cursor-pointer shrink-0">Join</button>
+                <button type="submit" className="bg-white text-black font-bold px-3.5 py-1 text-xs rounded-full hover:bg-neutral-200 transition-colors cursor-pointer shrink-0">Join</button>
               </form>
             </div>
           </div>
-          <div className="mt-12 pt-8 border-t border-neutral-800/80 flex flex-col md:flex-row items-center justify-between text-[11px] gap-4">
+          <div className="mt-7 pt-5 border-t border-neutral-800/80 flex flex-col md:flex-row items-center justify-between text-[11px] gap-3">
             <p>© {new Date().getFullYear()} Printed Soul Store. All rights reserved.</p>
             <div className="flex items-center gap-2 grayscale opacity-70 hover:opacity-100 transition-opacity">
               {["VISA", "MC", "UPI", "RUPAY"].map(m => (
