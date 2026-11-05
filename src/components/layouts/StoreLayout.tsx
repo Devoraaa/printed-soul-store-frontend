@@ -9,6 +9,7 @@ import { AuthModal } from "../ui/AuthModal"
 import { SearchModal } from "../ui/SearchModal"
 import { CartDrawer } from "../ui/CartDrawer"
 import { CategoryHoverMenu, type HoverCategoryItem } from "../ui/CategoryHoverMenu"
+import { LiveSocialProof } from "../ui/LiveSocialProof"
 import { catalogApi } from "../../lib/api"
 
 export function StoreLayout() {
@@ -457,8 +458,11 @@ export function StoreLayout() {
         <Outlet />
       </main>
 
+      {/* Live Social Proof Floating Notification */}
+      <LiveSocialProof />
+
       {/* Floating WhatsApp CTA */}
-      <aside aria-label="Customer Support" className="fixed bottom-6 right-6 z-40 flex items-center gap-2 group">
+      <aside aria-label="Customer Support" className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-40 flex items-center gap-2 group">
         <div className="hidden md:flex items-center bg-white/95 text-neutral-900 text-xs font-bold px-3.5 py-2 rounded-full shadow-lg border border-black/[0.08] backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-2 group-hover:translate-x-0 pointer-events-none">
           Need custom help? Chat with us! 👋
         </div>

@@ -49,7 +49,7 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
 
   return (
     <div
-      className={`group flex flex-col w-full ${className}`}
+      className={`group flex flex-col w-full transition-all duration-300 hover:-translate-y-1 ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -83,12 +83,12 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
           {/* Badges */}
           <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none">
             {discountPercent > 0 && (
-              <span className="bg-neutral-900 text-[#F4EFEA] text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
+              <span className="bg-gradient-to-r from-rose-600 via-rose-500 to-amber-600 text-white text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-sm shadow-rose-500/20">
                 -{discountPercent}%
               </span>
             )}
             {product.isFeatured && (
-              <span className="bg-amber-400 text-neutral-950 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
+              <span className="bg-gradient-to-r from-amber-400 to-amber-500 text-neutral-950 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-sm shadow-amber-500/20">
                 ★ Featured
               </span>
             )}
@@ -98,7 +98,11 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
           <button
             onClick={handleWishlistToggle}
             aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-            className="absolute top-2.5 right-2.5 z-20 h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-white/85 hover:bg-white backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-600 shadow-xs transition-all duration-200 active:scale-90 cursor-pointer"
+            className={`absolute top-2.5 right-2.5 z-20 h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-white/85 hover:bg-white backdrop-blur-md flex items-center justify-center transition-all duration-200 active:scale-90 cursor-pointer ${
+              isWishlisted
+                ? "shadow-[0_2px_12px_rgba(244,63,94,0.35)] text-rose-500"
+                : "text-neutral-700 hover:text-rose-600 shadow-xs"
+            }`}
           >
             <Heart
               className={`h-3.5 w-3.5 sm:h-4 sm:w-4 transition-colors ${
@@ -178,13 +182,13 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
           </div>
 
           {product.ratings?.count && product.ratings.count > 0 ? (
-            <div className="flex items-center gap-0.5 text-[10px] font-bold text-amber-700 bg-amber-500/10 px-2 py-0.5 rounded-full">
+            <div className="flex items-center gap-1 text-[10px] font-black text-amber-800 bg-amber-500/15 border border-amber-500/25 px-2 py-0.5 rounded-full shadow-2xs">
               <Star className="h-2.5 w-2.5 fill-amber-500 text-amber-500" />
               <span>{product.ratings.average.toFixed(1)}</span>
             </div>
           ) : (
-            <div className="flex items-center text-[9px] font-bold text-neutral-600 bg-neutral-200/50 px-2 py-0.5 rounded-full tracking-wide uppercase">
-              New
+            <div className="flex items-center text-[9px] font-black text-emerald-800 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full tracking-wider uppercase shadow-2xs">
+              ★ New
             </div>
           )}
         </div>

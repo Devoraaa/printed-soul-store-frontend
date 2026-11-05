@@ -78,9 +78,13 @@ export function HomePage() {
       title: "Frames & Acrylic Wall Art",
       subtitle: "High-definition acrylic & metal artwork for your bedroom, setup, or living room",
       link: "/products?category=frames",
-      products: frameProducts.slice(0, 6),
+      products: frameProducts.slice(0, 8),
       badge: "Best Value",
-      badgeColor: "bg-amber-500 text-white"
+      badgeColor: "bg-gradient-to-r from-amber-500 to-amber-600 text-neutral-950 font-bold",
+      accentGradient: "from-amber-100/40 via-amber-50/20 to-transparent",
+      accentBorder: "border-amber-900/10",
+      tagColor: "text-amber-800 bg-amber-500/10 border-amber-500/20",
+      glowColor: "bg-amber-400/15"
     },
     {
       id: "mugs",
@@ -88,9 +92,13 @@ export function HomePage() {
       title: "Coffee Mugs & Cups",
       subtitle: "11oz premium ceramic coffee mugs with vibrant anime, gaming & personalized prints",
       link: "/products?category=mugs",
-      products: mugProducts.slice(0, 6),
+      products: mugProducts.slice(0, 8),
       badge: "Popular Gift",
-      badgeColor: "bg-emerald-600 text-white"
+      badgeColor: "bg-gradient-to-r from-orange-500 to-amber-600 text-white font-bold",
+      accentGradient: "from-orange-100/40 via-orange-50/20 to-transparent",
+      accentBorder: "border-orange-900/10",
+      tagColor: "text-orange-800 bg-orange-500/10 border-orange-500/20",
+      glowColor: "bg-orange-400/15"
     },
     {
       id: "tumblers",
@@ -98,9 +106,13 @@ export function HomePage() {
       title: "Tumblers & Sippers",
       subtitle: "Stainless steel skinny tumblers & leak-proof bottles for hot and cold sips",
       link: "/products?category=tumblers",
-      products: tumblerProducts.slice(0, 6),
+      products: tumblerProducts.slice(0, 8),
       badge: "Hot Sellers",
-      badgeColor: "bg-blue-600 text-white"
+      badgeColor: "bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-bold",
+      accentGradient: "from-teal-100/40 via-cyan-50/20 to-transparent",
+      accentBorder: "border-teal-900/10",
+      tagColor: "text-teal-800 bg-teal-500/10 border-teal-500/20",
+      glowColor: "bg-teal-400/15"
     },
     {
       id: "mousepads",
@@ -108,9 +120,13 @@ export function HomePage() {
       title: "Gaming Mousepads & Desk Mats",
       subtitle: "Ultra-smooth micro-weave cloth with anti-slip rubber base for speed & precision",
       link: "/products?category=mousepads",
-      products: mousepadProducts.slice(0, 6),
+      products: mousepadProducts.slice(0, 8),
       badge: "Gamers Choice",
-      badgeColor: "bg-purple-600 text-white"
+      badgeColor: "bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold",
+      accentGradient: "from-purple-100/40 via-indigo-50/20 to-transparent",
+      accentBorder: "border-purple-900/10",
+      tagColor: "text-purple-800 bg-purple-500/10 border-purple-500/20",
+      glowColor: "bg-purple-400/15"
     },
     {
       id: "tote-bags",
@@ -118,9 +134,13 @@ export function HomePage() {
       title: "Aesthetic Canvas Tote Bags",
       subtitle: "Eco-friendly heavy-duty tote bags for everyday shopping, college, and casual outings",
       link: "/products?category=tote-bags",
-      products: toteBagProducts.slice(0, 6),
+      products: toteBagProducts.slice(0, 8),
       badge: "Eco Friendly",
-      badgeColor: "bg-teal-600 text-white"
+      badgeColor: "bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold",
+      accentGradient: "from-emerald-100/40 via-teal-50/20 to-transparent",
+      accentBorder: "border-emerald-900/10",
+      tagColor: "text-emerald-800 bg-emerald-500/10 border-emerald-500/20",
+      glowColor: "bg-emerald-400/15"
     },
     {
       id: "coasters",
@@ -128,9 +148,13 @@ export function HomePage() {
       title: "Designer Coaster Sets",
       subtitle: "Glossy waterproof coasters in sets of 4 with anti-scratch bottom padding",
       link: "/products?category=coasters",
-      products: coasterProducts.slice(0, 5),
+      products: coasterProducts.slice(0, 8),
       badge: "Set of 4",
-      badgeColor: "bg-pink-600 text-white"
+      badgeColor: "bg-gradient-to-r from-rose-500 to-pink-600 text-white font-bold",
+      accentGradient: "from-rose-100/40 via-pink-50/20 to-transparent",
+      accentBorder: "border-rose-900/10",
+      tagColor: "text-rose-800 bg-rose-500/10 border-rose-500/20",
+      glowColor: "bg-rose-400/15"
     },
   ]
 
@@ -190,6 +214,18 @@ export function HomePage() {
     if (slug.includes("metal")) return "/metal.webp"
     if (slug.includes("mug")) return "/mug.webp"
     return "/hero.webp"
+  }
+
+  // Category luxury color identities for lively hover micro-glows & indicator dots
+  const getCategoryColor = (slug: string) => {
+    const s = slug.toLowerCase()
+    if (s.includes("coaster")) return { dot: "bg-rose-500", border: "group-hover:border-rose-400", glow: "group-hover:shadow-[0_16px_36px_rgba(244,63,94,0.18)]", tag: "bg-rose-500/10 text-rose-700" }
+    if (s.includes("mouse")) return { dot: "bg-purple-500", border: "group-hover:border-purple-400", glow: "group-hover:shadow-[0_16px_36px_rgba(168,85,247,0.18)]", tag: "bg-purple-500/10 text-purple-700" }
+    if (s.includes("tote")) return { dot: "bg-emerald-500", border: "group-hover:border-emerald-400", glow: "group-hover:shadow-[0_16px_36px_rgba(16,185,129,0.18)]", tag: "bg-emerald-500/10 text-emerald-700" }
+    if (s.includes("frame")) return { dot: "bg-amber-500", border: "group-hover:border-amber-400", glow: "group-hover:shadow-[0_16px_36px_rgba(245,158,11,0.18)]", tag: "bg-amber-500/10 text-amber-700" }
+    if (s.includes("mug")) return { dot: "bg-orange-500", border: "group-hover:border-orange-400", glow: "group-hover:shadow-[0_16px_36px_rgba(249,115,22,0.18)]", tag: "bg-orange-500/10 text-orange-700" }
+    if (s.includes("tumbler")) return { dot: "bg-teal-500", border: "group-hover:border-teal-400", glow: "group-hover:shadow-[0_16px_36px_rgba(20,184,166,0.18)]", tag: "bg-teal-500/10 text-teal-700" }
+    return { dot: "bg-blue-500", border: "group-hover:border-blue-400", glow: "group-hover:shadow-[0_16px_36px_rgba(59,130,246,0.18)]", tag: "bg-blue-500/10 text-blue-700" }
   }
 
   const homeStructuredData = [
@@ -334,18 +370,21 @@ export function HomePage() {
 
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-3 sm:gap-3.5 md:gap-4">
             {categories.map((cat: any) => {
+              const slug = cat.slug?.toLowerCase() || ""
               const imgSrc = getCategoryPhoto(cat)
+              const colorInfo = getCategoryColor(slug)
+
               return (
                 <Link
                   key={cat._id}
                   to={`/products?category=${cat.slug || cat._id}`}
-                  className="group relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-3xl bg-[#FAF7F2] border border-black/[0.06] hover:border-black/25 transition-all duration-300 shadow-xs hover:shadow-xl hover:-translate-y-1"
+                  className={`group relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-3xl bg-[#FAF7F2] border border-black/[0.06] ${colorInfo.border} transition-all duration-500 shadow-xs hover:-translate-y-1.5 ${colorInfo.glow}`}
                 >
                   <img
                     src={imgSrc}
                     alt={cat.name}
                     loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "/hero.webp"
                     }}
@@ -353,10 +392,11 @@ export function HomePage() {
                   {/* Subtle luxury vignette */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                  {/* Floating Frosted Glass Label Pill */}
+                  {/* Floating Frosted Glass Label Pill with Color Accent Dot */}
                   <div className="absolute inset-x-2.5 bottom-2.5 flex justify-center">
-                    <span className="w-full text-center py-2 px-2.5 rounded-2xl bg-white/95 group-hover:bg-neutral-950 text-neutral-900 group-hover:text-white backdrop-blur-md text-[11px] sm:text-xs font-black uppercase tracking-wider shadow-sm transition-all duration-300 truncate">
-                      {cat.name}
+                    <span className="w-full flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-2xl bg-white/95 group-hover:bg-neutral-950 text-neutral-900 group-hover:text-white backdrop-blur-md text-[11px] sm:text-xs font-black uppercase tracking-wider shadow-sm transition-all duration-300 truncate">
+                      <span className={`h-1.5 w-1.5 rounded-full ${colorInfo.dot} shrink-0 animate-pulse`} />
+                      <span className="truncate">{cat.name}</span>
                     </span>
                   </div>
                 </Link>
@@ -413,33 +453,37 @@ export function HomePage() {
           </div>
 
           {/* Categories Filter Strip */}
-          <div className="pt-3 border-t border-neutral-100 flex items-center gap-2 overflow-x-auto hide-scrollbar py-0.5">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 shrink-0">Category:</span>
+          <div className="pt-3 border-t border-neutral-100 flex items-center gap-2 overflow-x-auto hide-scrollbar py-1">
+            <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400 shrink-0">Category:</span>
             <Link
               to="/products"
-              className="px-3.5 py-1.5 text-xs font-bold bg-neutral-900 text-white rounded-full shrink-0 hover:bg-black transition-all shadow-sm"
+              className="px-4 py-1.5 text-xs font-bold bg-neutral-900 text-white rounded-full shrink-0 hover:bg-black transition-all shadow-sm active:scale-95"
             >
               All Categories
             </Link>
-            {categories.map((cat: any) => (
-              <Link
-                key={cat._id}
-                to={`/products?category=${cat.slug || cat._id}`}
-                className="px-3.5 py-1.5 text-xs font-medium bg-neutral-50 border border-neutral-200/80 text-neutral-700 hover:bg-black hover:text-white hover:border-black rounded-full transition-all shrink-0"
-              >
-                {cat.name}
-              </Link>
-            ))}
+            {categories.map((cat: any) => {
+              const color = getCategoryColor(cat.slug || "")
+              return (
+                <Link
+                  key={cat._id}
+                  to={`/products?category=${cat.slug || cat._id}`}
+                  className="group/pill inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold bg-[#FAF7F2] border border-black/[0.06] text-neutral-800 hover:bg-neutral-900 hover:text-white hover:border-black rounded-full transition-all duration-200 shrink-0 hover:scale-105 active:scale-95 shadow-2xs"
+                >
+                  <span className={`h-1.5 w-1.5 rounded-full ${color.dot} group-hover/pill:scale-125 transition-transform`} />
+                  <span>{cat.name}</span>
+                </Link>
+              )
+            })}
           </div>
 
           {/* Brands & Price Filter Strip */}
           <div className="pt-3 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-3">
             {brands.length > 0 && (
               <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar py-0.5">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 shrink-0">Brand:</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400 shrink-0">Brand:</span>
                 <Link
                   to="/products"
-                  className="px-3 py-1 text-[11px] font-bold bg-neutral-200 text-neutral-800 hover:bg-black hover:text-white rounded-full transition-all shrink-0"
+                  className="px-3.5 py-1 text-[11px] font-bold bg-neutral-200 text-neutral-900 hover:bg-black hover:text-white rounded-full transition-all shrink-0 active:scale-95"
                 >
                   All Brands
                 </Link>
@@ -447,7 +491,7 @@ export function HomePage() {
                   <Link
                     key={brand._id}
                     to={`/products?brand=${brand.slug || brand._id}`}
-                    className="px-3 py-1 text-[11px] font-medium bg-white border border-neutral-200/80 text-neutral-700 hover:border-black hover:text-black rounded-full transition-all shrink-0"
+                    className="px-3.5 py-1 text-[11px] font-bold bg-white border border-neutral-200 text-neutral-700 hover:border-black hover:bg-black hover:text-white rounded-full transition-all shrink-0 shadow-2xs active:scale-95"
                   >
                     {brand.name}
                   </Link>
@@ -455,18 +499,18 @@ export function HomePage() {
               </div>
             )}
 
-            {/* Quick Price Links */}
+            {/* Quick Price Links with playful colors */}
             <div className="flex items-center gap-1.5 shrink-0">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mr-1">Price:</span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400 mr-1">Price:</span>
               {[
-                { label: "Under ₹299", min: "", max: "299" },
-                { label: "₹299–₹499", min: "299", max: "499" },
-                { label: "₹500+", min: "500", max: "" },
+                { label: "Under ₹299", min: "", max: "299", cls: "text-emerald-700 bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-600 hover:text-white" },
+                { label: "₹299–₹499", min: "299", max: "499", cls: "text-indigo-700 bg-indigo-500/10 border-indigo-500/20 hover:bg-indigo-600 hover:text-white" },
+                { label: "₹500+", min: "500", max: "", cls: "text-amber-800 bg-amber-500/10 border-amber-500/20 hover:bg-amber-600 hover:text-white" },
               ].map((item) => (
                 <Link
                   key={item.label}
                   to={`/products?${item.min ? `minPrice=${item.min}&` : ""}${item.max ? `maxPrice=${item.max}` : ""}`}
-                  className="px-3 py-1 text-[10px] font-bold text-neutral-600 border border-neutral-200/80 hover:border-black hover:text-black rounded-full transition-all bg-white shadow-xs"
+                  className={`px-3 py-1 text-[11px] font-bold border rounded-full transition-all shadow-2xs hover:scale-105 active:scale-95 cursor-pointer ${item.cls}`}
                 >
                   {item.label}
                 </Link>
@@ -578,44 +622,50 @@ export function HomePage() {
       )}
 
       {/* ═══════════════════════════════════════════
-          7. DYNAMIC CATEGORY SHOWCASE SECTIONS (7 CATEGORIES)
+          7. DYNAMIC CATEGORY SHOWCASE SECTIONS (7 CATEGORIES) — Colorful Ambient Islands
       ═══════════════════════════════════════════ */}
-      {showcaseSections.map((sec) => {
+      {showcaseSections.map((sec: any) => {
         if (sec.products.length === 0) return null
 
         return (
-          <section key={sec.id} className="py-8 border-t border-black/[0.05] max-w-[1700px] mx-auto px-3 md:px-6">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-5 gap-3">
-              <div>
-                <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">
-                    {sec.tag}
-                  </span>
-                  {sec.badge && (
-                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${sec.badgeColor}`}>
-                      {sec.badge}
-                    </span>
-                  )}
-                </div>
-                <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-neutral-900">
-                  {sec.title}
-                </h2>
-                <p className="text-xs sm:text-sm text-neutral-500 mt-1 max-w-xl">
-                  {sec.subtitle}
-                </p>
-              </div>
-              <Link
-                to={sec.link}
-                className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-900 hover:text-black transition-all shrink-0 bg-white hover:bg-neutral-100 border border-black/[0.08] px-4 py-2 rounded-full shadow-sm"
-              >
-                View All {sec.title.split("&")[0].trim()} <ChevronRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
+          <section key={sec.id} className="py-6 max-w-[1700px] mx-auto px-3 md:px-6">
+            <div className={`relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br ${sec.accentGradient} p-5 sm:p-7 md:p-8 border ${sec.accentBorder} shadow-[0_8px_30px_rgba(0,0,0,0.02)] transition-all duration-300`}>
+              {/* Subtle ambient light orb */}
+              <div className={`absolute -top-16 -right-16 w-64 h-64 ${sec.glowColor} rounded-full blur-3xl pointer-events-none`} />
 
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3">
-              {sec.products.slice(0, 8).map((product: any) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
+              <div className="relative flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-3">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className={`text-[10px] font-black uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full border ${sec.tagColor}`}>
+                      {sec.tag}
+                    </span>
+                    {sec.badge && (
+                      <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${sec.badgeColor} shadow-xs`}>
+                        {sec.badge}
+                      </span>
+                    )}
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-neutral-950 font-display">
+                    {sec.title}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-neutral-600 mt-1 max-w-xl font-medium">
+                    {sec.subtitle}
+                  </p>
+                </div>
+                <Link
+                  to={sec.link}
+                  className="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-900 bg-white hover:bg-neutral-950 hover:text-white border border-black/[0.08] px-4 py-2 rounded-full shadow-xs hover:shadow-md transition-all shrink-0 active:scale-95 cursor-pointer"
+                >
+                  <span>Explore Collection</span>
+                  <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+
+              <div className="relative grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2.5 sm:gap-3 md:gap-3.5">
+                {sec.products.slice(0, 8).map((product: any) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
+              </div>
             </div>
           </section>
         )
