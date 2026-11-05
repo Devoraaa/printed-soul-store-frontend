@@ -17,8 +17,20 @@ export function StoreLayout() {
   const [accountOpen, setAccountOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
+  const isHome = location.pathname === "/"
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 30)
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const isTransparent = isHome && !isScrolled
 
   // Hover menu state
   const [hoveredCategory, setHoveredCategory] = useState<HoverCategoryItem | null>(null)
@@ -77,162 +89,210 @@ export function StoreLayout() {
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
       <CartDrawer isOpen={cartDrawerOpen} onClose={() => setCartDrawerOpen(false)} />
 
-      {/* ─── Luxury Announcement Bar ────────────────── */}
-      <div className="bg-[#191816] text-[#F4EFEA] text-[10px] sm:text-[11px] font-semibold tracking-wider py-2 px-4 text-center flex items-center justify-center gap-2 relative z-50">
-        <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span className="uppercase tracking-[0.15em]">Free Express Delivery Across India on Orders Above ₹499 • 100% Satisfaction Guaranteed</span>
-      </div>
+      {/* ─── Header Container ───────────────────────── */}
+      <header className={`w-full z-50 transition-all duration-300 ${
+        isHome ? "fixed top-0 left-0 right-0" : "sticky top-0"
+      }`}>
+        {/* Luxury Announcement Bar */}
+        <div className={`transition-all duration-300 text-[10px] sm:text-[11px] font-semibold tracking-wider py-1.5 px-4 text-center flex items-center justify-center gap-2 relative ${
+          isTransparent
+            ? "bg-black/40 backdrop-blur-md text-white border-b border-white/10"
+            : "bg-[#191816] text-[#F4EFEA]"
+        }`}>
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="uppercase tracking-[0.14em]">Free Express Delivery Across India on Orders Above ₹499 • 100% Satisfaction Guaranteed</span>
+        </div>
 
-      {/* ─── Main Navbar ───────────────────────────── */}
-      <header className="sticky top-0 z-50 w-full bg-[#F4EFEA]/90 backdrop-blur-xl border-b border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.02)] relative">
-        <div className="max-w-[1700px] mx-auto px-3 md:px-6">
-          <div className="flex h-15 items-center justify-between gap-4">
+        {/* Main Navbar */}
+        <div className={`w-full transition-all duration-300 ${
+          isTransparent
+            ? "bg-gradient-to-b from-black/60 via-black/25 to-transparent text-white border-transparent"
+            : "bg-[#F4EFEA]/95 backdrop-blur-xl border-b border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.02)] text-neutral-900"
+        }`}>
+          <div className="max-w-[1700px] mx-auto px-3 md:px-6">
+            <div className="flex h-15 items-center justify-between gap-4">
 
-            {/* Official Printed Soul Unified Horizontal Logo */}
-            <Link to="/" onMouseEnter={handleMenuClose} className="flex items-center shrink-0 group py-1">
-              <img
-                src="/logo-horizontal.png"
-                alt="Printed Soul"
-                className="h-7 sm:h-8 md:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-102"
-              />
-            </Link>
-
-            {/* ─── Category Nav (desktop) ───────────── */}
-            <nav className="hidden lg:flex items-center gap-1 flex-1 overflow-x-auto hide-scrollbar px-2">
-              <Link
-                to="/"
-                onMouseEnter={handleMenuClose}
-                className="px-3.5 py-1.5 text-[13px] font-semibold text-neutral-700 hover:text-black rounded-full hover:bg-black/[0.05] transition-all whitespace-nowrap"
-              >
-                Home
+              {/* Official Printed Soul Unified Horizontal Logo */}
+              <Link to="/" onMouseEnter={handleMenuClose} className="flex items-center shrink-0 group py-1">
+                <img
+                  src={isTransparent ? "/logo-horizontal-white.png" : "/logo-horizontal.png"}
+                  alt="Printed Soul"
+                  className="h-7 sm:h-8 md:h-9 w-auto object-contain transition-all duration-300 group-hover:scale-102"
+                />
               </Link>
 
-              <Link
-                to="/products?sort=new"
-                onMouseEnter={() =>
-                  handleCategoryMouseEnter({
-                    type: "new",
-                    name: "New Arrivals",
-                    slug: "new",
-                  })
-                }
-                onMouseLeave={handleCategoryMouseLeave}
-                className="px-3.5 py-1.5 text-[13px] font-semibold text-neutral-700 hover:text-black rounded-full hover:bg-black/[0.05] transition-all whitespace-nowrap flex items-center gap-1.5"
-              >
-                <span>New Arrivals</span>
-                <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
-              </Link>
-
-              {/* Dynamic categories from DB */}
-              {categories.map((cat: any) => (
+              {/* ─── Category Nav (desktop) ───────────── */}
+              <nav className="hidden lg:flex items-center gap-1 flex-1 overflow-x-auto hide-scrollbar px-2">
                 <Link
-                  key={cat._id}
-                  to={`/products?category=${cat.slug || cat._id}`}
+                  to="/"
+                  onMouseEnter={handleMenuClose}
+                  className={`px-3.5 py-1.5 text-[13px] font-semibold rounded-full transition-all whitespace-nowrap ${
+                    isTransparent
+                      ? "text-white/90 hover:text-white hover:bg-white/20 drop-shadow-sm"
+                      : "text-neutral-700 hover:text-black hover:bg-black/[0.05]"
+                  }`}
+                >
+                  Home
+                </Link>
+
+                <Link
+                  to="/products?sort=new"
                   onMouseEnter={() =>
                     handleCategoryMouseEnter({
-                      type: "category",
-                      _id: cat._id,
-                      name: cat.name,
-                      slug: cat.slug,
-                      description: cat.description,
-                      subcategories: cat.subcategories,
+                      type: "new",
+                      name: "New Arrivals",
+                      slug: "new",
                     })
                   }
                   onMouseLeave={handleCategoryMouseLeave}
-                  className="px-3.5 py-1.5 text-[13px] font-semibold text-neutral-700 hover:text-black rounded-full hover:bg-black/[0.05] transition-all whitespace-nowrap"
+                  className={`px-3.5 py-1.5 text-[13px] font-semibold rounded-full transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                    isTransparent
+                      ? "text-white/90 hover:text-white hover:bg-white/20 drop-shadow-sm"
+                      : "text-neutral-700 hover:text-black hover:bg-black/[0.05]"
+                  }`}
                 >
-                  {cat.name}
+                  <span>New Arrivals</span>
+                  <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
                 </Link>
-              ))}
 
-              <Link
-                to="/products"
-                onMouseEnter={() =>
-                  handleCategoryMouseEnter({
-                    type: "all",
-                    name: "All Collections",
-                    slug: "all",
-                  })
-                }
-                onMouseLeave={handleCategoryMouseLeave}
-                className="px-3.5 py-1.5 text-[13px] font-semibold text-neutral-700 hover:text-black rounded-full hover:bg-black/[0.05] transition-all whitespace-nowrap"
-              >
-                Shop All
-              </Link>
-            </nav>
-
-            {/* ─── Action Icons ────────────────────── */}
-            <div onMouseEnter={handleMenuClose} className="flex items-center gap-1 sm:gap-2 shrink-0">
-              {/* Search */}
-              <button
-                onClick={() => setSearchOpen(true)}
-                className="p-2 text-neutral-700 hover:bg-black/[0.04] transition-colors rounded-full lg:px-3.5 lg:py-1.5 lg:text-xs lg:font-medium lg:text-neutral-500 lg:bg-white lg:border lg:border-black/[0.08] lg:flex lg:items-center lg:gap-2 shadow-sm cursor-pointer hover:border-black/30"
-                aria-label="Search"
-              >
-                <Search className="h-4 w-4 lg:h-3.5 lg:w-3.5" strokeWidth={2.2} />
-                <span className="hidden lg:inline">Search…</span>
-              </button>
-
-              {/* Cart */}
-              <button
-                onClick={() => setCartDrawerOpen(true)}
-                className="relative p-2 hover:bg-black/[0.04] transition-colors group cursor-pointer rounded-full"
-              >
-                <ShoppingBag className="h-5 w-5 text-neutral-900" strokeWidth={2} />
-                {totalItems > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-black text-white text-[9px] font-black flex items-center justify-center rounded-full shadow-sm">
-                    {totalItems > 9 ? "9+" : totalItems}
-                  </span>
-                )}
-              </button>
-
-              {/* Account */}
-              {isAuthenticated ? (
-                <div className="relative">
-                  <button
-                    onClick={() => setAccountOpen(!accountOpen)}
-                    className="flex items-center gap-1.5 p-1 hover:bg-black/[0.04] transition-colors cursor-pointer rounded-full"
+                {/* Dynamic categories from DB */}
+                {categories.map((cat: any) => (
+                  <Link
+                    key={cat._id}
+                    to={`/products?category=${cat.slug || cat._id}`}
+                    onMouseEnter={() =>
+                      handleCategoryMouseEnter({
+                        type: "category",
+                        _id: cat._id,
+                        name: cat.name,
+                        slug: cat.slug,
+                        description: cat.description,
+                        subcategories: cat.subcategories,
+                      })
+                    }
+                    onMouseLeave={handleCategoryMouseLeave}
+                    className={`px-3.5 py-1.5 text-[13px] font-semibold rounded-full transition-all whitespace-nowrap ${
+                      isTransparent
+                        ? "text-white/90 hover:text-white hover:bg-white/20 drop-shadow-sm"
+                        : "text-neutral-700 hover:text-black hover:bg-black/[0.05]"
+                    }`}
                   >
-                    <div className="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center text-white text-xs font-bold shadow-sm">
-                      {user?.name[0].toUpperCase()}
-                    </div>
-                    <ChevronDown className="h-3 w-3 text-neutral-500 hidden md:block" />
-                  </button>
-                  {accountOpen && (
-                    <div
-                      className="absolute right-0 mt-2 w-52 rounded-2xl border border-black/[0.08] bg-white shadow-xl py-2 z-50 overflow-hidden"
-                      onMouseLeave={() => setAccountOpen(false)}
-                    >
-                      <div className="px-3 py-2 border-b">
-                        <p className="text-xs font-bold text-gray-900">{user?.name}</p>
-                        <p className="text-[10px] text-gray-500 truncate">{user?.email}</p>
-                      </div>
-                      <Link to="/account" onClick={() => setAccountOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
-                        <User className="h-3.5 w-3.5 text-gray-500" /> My Account
-                      </Link>
-                      <Link to="/account/orders" onClick={() => setAccountOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
-                        <Package className="h-3.5 w-3.5 text-gray-500" /> My Orders
-                      </Link>
-                      <div className="border-t my-1" />
-                      <button onClick={() => { logout(); setAccountOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors cursor-pointer">
-                        <LogOut className="h-3.5 w-3.5" /> Sign Out
-                      </button>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <button
-                  onClick={openAuthModal}
-                  className="hidden md:flex items-center justify-center px-4 py-1.5 text-[11px] font-bold tracking-wide bg-black text-white hover:bg-gray-900 active:scale-95 transition-all cursor-pointer"
-                >
-                  Sign In
-                </button>
-              )}
+                    {cat.name}
+                  </Link>
+                ))}
 
-              {/* Mobile Menu */}
-              <button onClick={() => setMobileOpen(!mobileOpen)} className="lg:hidden p-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
-                {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </button>
+                <Link
+                  to="/products"
+                  onMouseEnter={() =>
+                    handleCategoryMouseEnter({
+                      type: "all",
+                      name: "All Collections",
+                      slug: "all",
+                    })
+                  }
+                  onMouseLeave={handleCategoryMouseLeave}
+                  className={`px-3.5 py-1.5 text-[13px] font-semibold rounded-full transition-all whitespace-nowrap ${
+                    isTransparent
+                      ? "text-white/90 hover:text-white hover:bg-white/20 drop-shadow-sm"
+                      : "text-neutral-700 hover:text-black hover:bg-black/[0.05]"
+                  }`}
+                >
+                  Shop All
+                </Link>
+              </nav>
+
+              {/* ─── Action Icons ────────────────────── */}
+              <div onMouseEnter={handleMenuClose} className="flex items-center gap-1 sm:gap-2 shrink-0">
+                {/* Search */}
+                <button
+                  onClick={() => setSearchOpen(true)}
+                  className={`p-2 transition-colors rounded-full lg:px-3.5 lg:py-1.5 lg:text-xs lg:font-medium lg:flex lg:items-center lg:gap-2 shadow-sm cursor-pointer ${
+                    isTransparent
+                      ? "text-white hover:bg-white/20 lg:bg-white/20 lg:border lg:border-white/30 lg:text-white lg:hover:bg-white/30 backdrop-blur-md"
+                      : "text-neutral-700 hover:bg-black/[0.04] lg:text-neutral-500 lg:bg-white lg:border lg:border-black/[0.08] lg:hover:border-black/30"
+                  }`}
+                  aria-label="Search"
+                >
+                  <Search className="h-4 w-4 lg:h-3.5 lg:w-3.5" strokeWidth={2.2} />
+                  <span className="hidden lg:inline">Search…</span>
+                </button>
+
+                {/* Cart */}
+                <button
+                  onClick={() => setCartDrawerOpen(true)}
+                  className={`relative p-2 transition-colors group cursor-pointer rounded-full ${
+                    isTransparent ? "hover:bg-white/20 text-white" : "hover:bg-black/[0.04] text-neutral-900"
+                  }`}
+                >
+                  <ShoppingBag className="h-5 w-5" strokeWidth={2} />
+                  {totalItems > 0 && (
+                    <span className={`absolute -top-0.5 -right-0.5 h-4 w-4 text-[9px] font-black flex items-center justify-center rounded-full shadow-sm ${
+                      isTransparent ? "bg-white text-black" : "bg-black text-white"
+                    }`}>
+                      {totalItems > 9 ? "9+" : totalItems}
+                    </span>
+                  )}
+                </button>
+
+                {/* Account */}
+                {isAuthenticated ? (
+                  <div className="relative">
+                    <button
+                      onClick={() => setAccountOpen(!accountOpen)}
+                      className={`flex items-center gap-1.5 p-1 transition-colors cursor-pointer rounded-full ${
+                        isTransparent ? "hover:bg-white/20" : "hover:bg-black/[0.04]"
+                      }`}
+                    >
+                      <div className="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                        {user?.name[0].toUpperCase()}
+                      </div>
+                      <ChevronDown className={`h-3 w-3 hidden md:block ${isTransparent ? "text-white/80" : "text-neutral-500"}`} />
+                    </button>
+                    {accountOpen && (
+                      <div
+                        className="absolute right-0 mt-2 w-52 rounded-2xl border border-black/[0.08] bg-white shadow-xl py-2 z-50 overflow-hidden text-neutral-900"
+                        onMouseLeave={() => setAccountOpen(false)}
+                      >
+                        <div className="px-3 py-2 border-b">
+                          <p className="text-xs font-bold text-gray-900">{user?.name}</p>
+                          <p className="text-[10px] text-gray-500 truncate">{user?.email}</p>
+                        </div>
+                        <Link to="/account" onClick={() => setAccountOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+                          <User className="h-3.5 w-3.5 text-gray-500" /> My Account
+                        </Link>
+                        <Link to="/account/orders" onClick={() => setAccountOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+                          <Package className="h-3.5 w-3.5 text-gray-500" /> My Orders
+                        </Link>
+                        <div className="border-t my-1" />
+                        <button onClick={() => { logout(); setAccountOpen(false) }} className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors cursor-pointer">
+                          <LogOut className="h-3.5 w-3.5" /> Sign Out
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <button
+                    onClick={openAuthModal}
+                    className={`hidden md:flex items-center justify-center px-4 py-1.5 text-[11px] font-bold tracking-wide rounded-full active:scale-95 transition-all cursor-pointer shadow-sm ${
+                      isTransparent
+                        ? "bg-white text-black hover:bg-neutral-200"
+                        : "bg-black text-white hover:bg-neutral-800"
+                    }`}
+                  >
+                    Sign In
+                  </button>
+                )}
+
+                {/* Mobile Menu */}
+                <button
+                  onClick={() => setMobileOpen(!mobileOpen)}
+                  className={`lg:hidden p-2 rounded-full cursor-pointer transition-colors ${
+                    isTransparent ? "text-white hover:bg-white/20" : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                </button>
+              </div>
             </div>
           </div>
         </div>

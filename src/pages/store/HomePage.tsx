@@ -217,10 +217,10 @@ export function HomePage() {
       </h1>
 
       {/* ═══════════════════════════════════════════
-          1. HERO SLIDER — Auto-Adaptive Banner Container
+          1. HERO SLIDER — Full Bleed Edge-to-Edge
       ═══════════════════════════════════════════ */}
-      <section className="max-w-[1700px] mx-auto px-2 sm:px-3 md:px-6 pt-2 md:pt-4">
-        <div className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl group border border-black/10 bg-neutral-950 transition-all duration-300">
+      <section className="w-full m-0 p-0 overflow-hidden">
+        <div className="relative w-full overflow-hidden bg-neutral-950">
         {heroBanners.length > 0 ? (
           <div className="relative w-full">
             {heroBanners.map((banner: any, idx: number) => {
@@ -258,7 +258,7 @@ export function HomePage() {
             })}
           </div>
         ) : (
-          <div className="w-full py-20 md:py-32 bg-gradient-to-br from-neutral-950 via-neutral-900 to-black flex flex-col items-center justify-center text-center px-6">
+          <div className="w-full pt-36 pb-24 md:pt-48 md:pb-36 bg-gradient-to-br from-neutral-950 via-neutral-900 to-black flex flex-col items-center justify-center text-center px-6">
             <span className="text-amber-400 text-xs font-black uppercase tracking-[0.3em] mb-4">Official Store</span>
             <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight mb-4 uppercase font-display">PRINTED SOUL</h1>
             <p className="text-neutral-400 text-sm md:text-base mb-8 max-w-md">Premium custom phone cases & personalized accessories.</p>
@@ -270,13 +270,13 @@ export function HomePage() {
 
         {heroBanners.length > 1 && (
           <>
-            <button onClick={prevHero} aria-label="Previous" className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 bg-black/60 hover:bg-black text-white rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-md">
-              <ChevronLeft className="h-5 w-5" />
+            <button onClick={prevHero} aria-label="Previous" className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 bg-black/40 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-lg backdrop-blur-sm">
+              <ChevronLeft className="h-6 w-6" />
             </button>
-            <button onClick={nextHero} aria-label="Next" className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 bg-black/60 hover:bg-black text-white rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-md">
-              <ChevronRight className="h-5 w-5" />
+            <button onClick={nextHero} aria-label="Next" className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 bg-black/40 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-lg backdrop-blur-sm">
+              <ChevronRight className="h-6 w-6" />
             </button>
-            <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full">
+            <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full">
               {heroBanners.map((_: any, idx: number) => (
                 <button key={idx} onClick={() => setCurrentHero(idx)} className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${idx === currentHero ? "bg-white w-6" : "bg-white/40 w-1.5"}`} />
               ))}
