@@ -167,7 +167,7 @@ export function ProductsPage() {
             value={search}
             onChange={(e) => setFilter("search", e.target.value)}
             placeholder="Search design..."
-            className="w-full pl-9 pr-3 py-2.5 text-xs font-semibold  border border-gray-200 bg-gray-50 focus:outline-none focus:border-black transition-all"
+            className="w-full pl-9 pr-3 py-2 text-xs font-semibold rounded-xl border border-neutral-200 bg-neutral-50/70 focus:outline-none focus:bg-white focus:border-black transition-all"
           />
         </div>
       </div>
@@ -185,8 +185,8 @@ export function ProductsPage() {
           <div className="space-y-1">
             <button
               onClick={() => setFilter("category", "")}
-              className={`w-full text-left text-xs font-bold px-3 py-2  transition-all cursor-pointer ${
-                !categoryParam ? "bg-black text-white" : "hover:bg-gray-100 text-gray-600"
+              className={`w-full text-left text-xs font-bold px-3 py-2 rounded-xl transition-all cursor-pointer ${
+                !categoryParam ? "bg-black text-white shadow-xs" : "hover:bg-neutral-100 text-neutral-700"
               }`}
             >
               All Categories
@@ -195,10 +195,10 @@ export function ProductsPage() {
               <button
                 key={cat._id}
                 onClick={() => setFilter("category", cat.slug || cat._id)}
-                className={`w-full text-left text-xs font-bold px-3 py-2  transition-all cursor-pointer ${
+                className={`w-full text-left text-xs font-bold px-3 py-2 rounded-xl transition-all cursor-pointer ${
                   categoryParam === cat.slug || categoryParam === cat._id
-                    ? "bg-black text-white"
-                    : "hover:bg-gray-100 text-gray-600"
+                    ? "bg-black text-white shadow-xs"
+                    : "hover:bg-neutral-100 text-neutral-700"
                 }`}
               >
                 {cat.name}
@@ -222,8 +222,8 @@ export function ProductsPage() {
             <div className="space-y-1">
               <button
                 onClick={() => setFilter("subCategory", "")}
-                className={`w-full text-left text-xs font-bold px-3 py-2  transition-all cursor-pointer ${
-                  !subCategoryParam ? "bg-violet-600 text-white" : "hover:bg-gray-100 text-gray-600"
+                className={`w-full text-left text-xs font-bold px-3 py-2 rounded-xl transition-all cursor-pointer ${
+                  !subCategoryParam ? "bg-neutral-900 text-white shadow-xs" : "hover:bg-neutral-100 text-neutral-700"
                 }`}
               >
                 All {selectedCatObj?.name}
@@ -232,10 +232,10 @@ export function ProductsPage() {
                 <button
                   key={sub._id}
                   onClick={() => setFilter("subCategory", sub.slug || sub._id)}
-                  className={`w-full text-left text-xs font-bold px-3 py-2  transition-all cursor-pointer flex items-center gap-2 ${
+                  className={`w-full text-left text-xs font-bold px-3 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-2 ${
                     subCategoryParam === sub.slug || subCategoryParam === sub._id
-                      ? "bg-violet-600 text-white"
-                      : "hover:bg-violet-50 text-gray-600"
+                      ? "bg-neutral-900 text-white shadow-xs"
+                      : "hover:bg-neutral-100 text-neutral-700"
                   }`}
                 >
                   <ChevronRight className="h-3 w-3 shrink-0" />
@@ -261,8 +261,8 @@ export function ProductsPage() {
             <div className="space-y-1">
               <button
                 onClick={() => setFilter("brand", "")}
-                className={`w-full text-left text-xs font-bold px-3 py-2  transition-all cursor-pointer ${
-                  !brandParam ? "bg-black text-white" : "hover:bg-gray-100 text-gray-600"
+                className={`w-full text-left text-xs font-bold px-3 py-2 rounded-xl transition-all cursor-pointer ${
+                  !brandParam ? "bg-black text-white shadow-xs" : "hover:bg-neutral-100 text-neutral-700"
                 }`}
               >
                 All Brands
@@ -271,10 +271,10 @@ export function ProductsPage() {
                 <button
                   key={b._id}
                   onClick={() => setFilter("brand", b.slug || b._id)}
-                  className={`w-full text-left text-xs font-bold px-3 py-2  transition-all cursor-pointer ${
+                  className={`w-full text-left text-xs font-bold px-3 py-2 rounded-xl transition-all cursor-pointer ${
                     brandParam === b.slug || brandParam === b._id
-                      ? "bg-black text-white"
-                      : "hover:bg-gray-100 text-gray-600"
+                      ? "bg-black text-white shadow-xs"
+                      : "hover:bg-neutral-100 text-neutral-700"
                   }`}
                 >
                   {b.name}
@@ -301,8 +301,8 @@ export function ProductsPage() {
             <div className="space-y-1 max-h-52 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-200">
               <button
                 onClick={() => setFilter("deviceModel", "")}
-                className={`w-full text-left text-xs font-bold px-3 py-2  transition-all cursor-pointer ${
-                  !deviceModelParam ? "bg-black text-white" : "hover:bg-gray-100 text-gray-600"
+                className={`w-full text-left text-xs font-bold px-3 py-2 rounded-xl transition-all cursor-pointer ${
+                  !deviceModelParam ? "bg-black text-white shadow-xs" : "hover:bg-neutral-100 text-neutral-700"
                 }`}
               >
                 All Models
@@ -311,10 +311,10 @@ export function ProductsPage() {
                 <button
                   key={dm._id}
                   onClick={() => setFilter("deviceModel", dm._id)}
-                  className={`w-full text-left text-xs font-bold px-3 py-2  transition-all cursor-pointer ${
+                  className={`w-full text-left text-xs font-bold px-3 py-2 rounded-xl transition-all cursor-pointer ${
                     deviceModelParam === dm._id
-                      ? "bg-black text-white"
-                      : "hover:bg-gray-100 text-gray-600"
+                      ? "bg-black text-white shadow-xs"
+                      : "hover:bg-neutral-100 text-neutral-700"
                   }`}
                 >
                   {dm.displayName || dm.name}
@@ -344,7 +344,7 @@ export function ProductsPage() {
                   value={localMinPrice}
                   onChange={(e) => setLocalMinPrice(e.target.value)}
                   placeholder="0"
-                  className="w-full px-3 py-2 text-xs font-bold  border border-gray-200 bg-gray-50 focus:outline-none focus:border-black"
+                  className="w-full px-3 py-2 text-xs font-bold rounded-xl border border-neutral-200 bg-neutral-50/70 focus:outline-none focus:bg-white focus:border-black"
                 />
               </div>
               <div className="text-gray-300 font-bold mt-4">—</div>
@@ -355,7 +355,7 @@ export function ProductsPage() {
                   value={localMaxPrice}
                   onChange={(e) => setLocalMaxPrice(e.target.value)}
                   placeholder="∞"
-                  className="w-full px-3 py-2 text-xs font-bold  border border-gray-200 bg-gray-50 focus:outline-none focus:border-black"
+                  className="w-full px-3 py-2 text-xs font-bold rounded-xl border border-neutral-200 bg-neutral-50/70 focus:outline-none focus:bg-white focus:border-black"
                 />
               </div>
             </div>

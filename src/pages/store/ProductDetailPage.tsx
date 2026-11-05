@@ -498,6 +498,17 @@ export function ProductDetailPage() {
               )}
             </div>
 
+            {/* Delivery & Protection Promise Card */}
+            <div className="p-3.5 rounded-2xl bg-[#F8F5F0] border border-black/[0.06] flex items-center gap-3">
+              <div className="h-9 w-9 rounded-xl bg-white border border-black/[0.05] flex items-center justify-center text-neutral-900 shrink-0 shadow-2xs">
+                <Truck className="h-4 w-4" />
+              </div>
+              <div className="text-xs">
+                <p className="font-bold text-neutral-900">Free Express Delivery Across India</p>
+                <p className="text-[11px] text-neutral-500">Dispatch in 24 hours • Delivered in 3–5 working days</p>
+              </div>
+            </div>
+
             {/* Case Type Switcher */}
             {showSwitcher && designVariants.length > 0 && (
               <div className="p-5 rounded-2xl bg-white border border-black/[0.05] shadow-sm space-y-2.5">
@@ -1093,19 +1104,35 @@ export function ProductDetailPage() {
 
       {/* Mobile Sticky Bottom Action Bar */}
       {product.stock > 0 && (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-black/[0.06] p-2.5 flex items-center gap-2 shadow-[0_-8px_25px_rgba(0,0,0,0.05)]">
-          <div className="flex-1 bg-neutral-100/70 rounded-full py-1.5 px-3.5 border border-black/[0.05]">
-            <span className="text-[9px] text-neutral-500 font-bold block uppercase tracking-wider">Price</span>
-            <span className="text-sm font-bold text-neutral-900">{formatPrice(product.price)}</span>
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-black/[0.08] px-3.5 py-2.5 flex items-center justify-between gap-2 shadow-[0_-8px_30px_rgba(0,0,0,0.08)]">
+          <div className="min-w-0 pr-1">
+            <span className="font-black text-sm text-neutral-900 tracking-tight block leading-tight">
+              {formatPrice(product.price)}
+            </span>
+            <span className="text-[10px] text-emerald-600 font-bold block leading-tight">Free Delivery</span>
           </div>
 
-          <button
-            onClick={handleBuyNow}
-            className="flex-[2] py-3 rounded-full bg-neutral-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider active:scale-95 shadow-md flex items-center justify-center gap-1.5"
-          >
-            <Zap className="h-3.5 w-3.5 fill-white" />
-            Buy Now
-          </button>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={handleAddToCart}
+              disabled={cartLoading}
+              className={`h-10 px-4 rounded-full font-bold text-xs uppercase tracking-wider transition-all active:scale-95 border cursor-pointer ${
+                addedToCart
+                  ? "bg-emerald-600 text-white border-emerald-600"
+                  : "bg-white text-neutral-900 border-neutral-300 hover:border-black"
+              }`}
+            >
+              {addedToCart ? "Added" : "Add to Bag"}
+            </button>
+
+            <button
+              onClick={handleBuyNow}
+              className="h-10 px-5 rounded-full bg-neutral-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider active:scale-95 shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <Zap className="h-3.5 w-3.5 fill-white" />
+              Buy Now
+            </button>
+          </div>
         </div>
       )}
 

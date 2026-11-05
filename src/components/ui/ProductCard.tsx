@@ -1,8 +1,9 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
-import { Star, ShoppingBag, Check } from "lucide-react"
+import { Star, ShoppingBag, Check, Plus } from "lucide-react"
 import { getImageUrl, formatPrice } from "../../lib/utils"
 import { useCart } from "../../context/CartContext"
+import { useAuth } from "../../context/AuthContext"
 
 interface ProductCardProps {
   product: any
@@ -11,6 +12,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product, className = "" }: ProductCardProps) {
   const { addToCart } = useCart()
+  const { isAuthenticated, openAuthModal } = useAuth()
   const [isHovered, setIsHovered] = useState(false)
   const [added, setAdded] = useState(false)
 
@@ -24,6 +26,10 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
   const handleQuickAdd = async (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
+    if (!isAuthenticated) {
+      openAuthModal()
+      return
+    }
     if (product.stock > 0) {
       await addToCart(product._id)
       setAdded(true)
@@ -38,7 +44,7 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Box */}
-      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl bg-neutral-100 border border-black/[0.06] transition-all duration-300 group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] group-hover:border-black/15">
+      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl bg-[#F8F5F0] border border-black/[0.06] transition-all duration-300 group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] group-hover:border-black/15">
         <Link to={`/products/${product.slug}`} className="relative block w-full h-full overflow-hidden">
           {/* Primary Image */}
           <img
@@ -47,7 +53,7 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
             loading="lazy"
             decoding="async"
             className={`w-full h-full object-cover transition-all duration-500 ease-out ${
-              isHovered && product.images?.length > 1 ? "opacity-0 scale-105" : "opacity-100 scale-100"
+              isHovered && product.images?.length > 1 ? "opacity-0 scale-105" : "opacity-100 scale-100 group-hover:scale-105"
             }`}
           />
 
@@ -67,12 +73,12 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
           {/* Badges */}
           <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none">
             {discountPercent > 0 && (
-              <span className="bg-neutral-900 text-[#F4EFEA] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
+              <span className="bg-neutral-900 text-[#F4EFEA] text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
                 -{discountPercent}%
               </span>
             )}
             {product.isFeatured && (
-              <span className="bg-amber-400 text-neutral-950 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
+              <span className="bg-amber-400 text-neutral-950 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
                 ★ Featured
               </span>
             )}
@@ -87,19 +93,34 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
             </div>
           )}
 
-          {/* Quick Add Button — floating pill on hover */}
+          {/* Mobile Quick Add (Floating Circle) */}
+          {product.stock > 0 && (
+            <button
+              onClick={handleQuickAdd}
+              aria-label="Quick add to cart"
+              className={`md:hidden absolute bottom-2.5 right-2.5 z-20 h-8 w-8 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-all cursor-pointer ${
+                added
+                  ? "bg-emerald-600 text-white"
+                  : "bg-neutral-900/90 text-[#F4EFEA] backdrop-blur-md"
+              }`}
+            >
+              {added ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+            </button>
+          )}
+
+          {/* Desktop Quick Add Button — floating pill on hover */}
           <div className="hidden md:block absolute bottom-2.5 left-2.5 right-2.5 z-20 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200">
             <button
               onClick={handleQuickAdd}
               disabled={product.stock === 0}
-              className={`w-full py-2 px-3 font-bold text-[10px] uppercase tracking-wider rounded-full transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-lg active:scale-95 ${
+              className={`w-full py-2.5 px-3 font-bold text-[10px] uppercase tracking-wider rounded-full transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-lg active:scale-95 ${
                 added
                   ? "bg-emerald-600 text-white"
                   : "bg-neutral-900/90 hover:bg-black text-[#F4EFEA] backdrop-blur-md"
               }`}
             >
               {added ? (
-                <><Check className="h-3.5 w-3.5" /> Added</>
+                <><Check className="h-3.5 w-3.5" /> Added to Cart</>
               ) : (
                 <><ShoppingBag className="h-3.5 w-3.5" /> Quick Add</>
               )}
@@ -116,14 +137,14 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
 
         <Link
           to={`/products/${product.slug}`}
-          className="font-medium text-[13px] sm:text-[14px] leading-snug text-neutral-900 line-clamp-1 hover:text-neutral-600 transition-colors"
+          className="font-bold text-[13px] sm:text-[14px] leading-snug text-neutral-900 line-clamp-1 hover:text-neutral-600 transition-colors"
         >
           {product.name}
         </Link>
 
         <div className="flex items-center justify-between mt-1">
           <div className="flex items-baseline gap-1.5">
-            <span className="font-bold text-sm sm:text-[15px] text-neutral-900 tracking-tight">
+            <span className="font-black text-sm sm:text-[15px] text-neutral-900 tracking-tight">
               {formatPrice(product.price)}
             </span>
             {product.comparePrice && product.comparePrice > product.price && (

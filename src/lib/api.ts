@@ -26,8 +26,8 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem("pss_token")
       localStorage.removeItem("pss_user")
-      // Redirect to login only if not already there
-      if (!window.location.pathname.startsWith("/login")) {
+      // Redirect to login only if accessing protected account pages
+      if (window.location.pathname.startsWith("/account")) {
         window.location.href = "/login"
       }
     }

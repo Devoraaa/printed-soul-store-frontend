@@ -292,29 +292,119 @@ export function StoreLayout() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Modern Mobile Navigation Sheet */}
         {mobileOpen && (
-          <div className="lg:hidden border-t bg-white py-3 px-4">
-            <nav className="flex flex-col gap-0">
-              <Link to="/" onClick={() => setMobileOpen(false)} className="py-2.5 px-2 text-sm font-semibold text-gray-700 border-b border-gray-100 hover:bg-gray-50">Home</Link>
-              <Link to="/products?sort=new" onClick={() => setMobileOpen(false)} className="py-2.5 px-2 text-sm font-semibold text-gray-700 border-b border-gray-100 hover:bg-gray-50">New Arrivals</Link>
-              {categories.map((cat: any) => (
+          <div className="lg:hidden fixed inset-0 top-[72px] sm:top-[80px] z-50 bg-black/40 backdrop-blur-sm animate-in fade-in">
+            <div className="bg-[#F4EFEA] border-b border-black/[0.08] shadow-2xl p-5 max-h-[85vh] overflow-y-auto space-y-4 rounded-b-3xl">
+              {/* Quick Search Trigger */}
+              <button
+                onClick={() => { setMobileOpen(false); setSearchOpen(true); }}
+                className="w-full flex items-center gap-2.5 px-4 py-3 bg-white border border-black/[0.08] rounded-2xl text-xs font-semibold text-neutral-500 shadow-2xs cursor-pointer"
+              >
+                <Search className="h-4 w-4 text-neutral-400" />
+                <span>Search designs, models, anime...</span>
+              </button>
+
+              {/* Main Links */}
+              <div className="bg-white rounded-2xl border border-black/[0.06] p-2 space-y-0.5 shadow-2xs">
                 <Link
-                  key={cat._id}
-                  to={`/products?category=${cat.slug || cat._id}`}
+                  to="/"
                   onClick={() => setMobileOpen(false)}
-                  className="py-2.5 px-2 text-sm font-semibold text-gray-700 border-b border-gray-100 hover:bg-gray-50"
+                  className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-neutral-900 hover:bg-neutral-50 transition-colors"
                 >
-                  {cat.name}
+                  <span>Home</span>
+                  <ChevronRight className="h-3.5 w-3.5 text-neutral-400" />
                 </Link>
-              ))}
-              <Link to="/products" onClick={() => setMobileOpen(false)} className="py-2.5 px-2 text-sm font-semibold text-gray-700 hover:bg-gray-50">Shop All</Link>
-              {!isAuthenticated && (
-                <button onClick={() => { openAuthModal(); setMobileOpen(false) }} className="mt-3 w-full py-2.5 bg-black text-white text-sm font-bold text-center cursor-pointer">
-                  Sign In / Register
-                </button>
-              )}
-            </nav>
+
+                <Link
+                  to="/products?sort=new"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-neutral-900 hover:bg-neutral-50 transition-colors"
+                >
+                  <span className="flex items-center gap-1.5">
+                    New Arrivals
+                    <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
+                  </span>
+                  <ChevronRight className="h-3.5 w-3.5 text-neutral-400" />
+                </Link>
+
+                {categories.map((cat: any) => (
+                  <Link
+                    key={cat._id}
+                    to={`/products?category=${cat.slug || cat._id}`}
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-neutral-900 hover:bg-neutral-50 transition-colors"
+                  >
+                    <span>{cat.name}</span>
+                    <ChevronRight className="h-3.5 w-3.5 text-neutral-400" />
+                  </Link>
+                ))}
+
+                <Link
+                  to="/products"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-neutral-900 hover:bg-neutral-50 transition-colors border-t border-black/[0.04] mt-1"
+                >
+                  <span>Explore All Collections</span>
+                  <ChevronRight className="h-3.5 w-3.5 text-neutral-400" />
+                </Link>
+              </div>
+
+              {/* User Account or Sign In */}
+              <div className="bg-white rounded-2xl border border-black/[0.06] p-3 shadow-2xs">
+                {isAuthenticated ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3 pb-2 border-b border-black/[0.05]">
+                      <div className="w-8 h-8 rounded-full bg-neutral-900 text-white font-black text-xs flex items-center justify-center">
+                        {user?.name?.[0]?.toUpperCase()}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold text-neutral-900 truncate">{user?.name}</p>
+                        <p className="text-[10px] text-neutral-400 truncate">{user?.email}</p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 pt-1">
+                      <Link
+                        to="/account"
+                        onClick={() => setMobileOpen(false)}
+                        className="text-center py-2 text-xs font-bold text-neutral-700 bg-neutral-50 rounded-xl hover:bg-neutral-100"
+                      >
+                        Account
+                      </Link>
+                      <Link
+                        to="/account/orders"
+                        onClick={() => setMobileOpen(false)}
+                        className="text-center py-2 text-xs font-bold text-neutral-700 bg-neutral-50 rounded-xl hover:bg-neutral-100"
+                      >
+                        My Orders
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => { setMobileOpen(false); openAuthModal(); }}
+                    className="w-full py-3 bg-neutral-900 text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-black transition-colors shadow-sm cursor-pointer"
+                  >
+                    Sign In / Create Account
+                  </button>
+                )}
+              </div>
+
+              {/* Track Order & Help shortcut */}
+              <div className="flex items-center justify-between text-xs font-semibold text-neutral-600 px-2 pt-1">
+                <Link to="/track" onClick={() => setMobileOpen(false)} className="hover:text-black">
+                  📦 Track Order
+                </Link>
+                <a
+                  href="https://wa.me/919999999999?text=Hi%20Printed%20Soul"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-black"
+                >
+                  💬 WhatsApp Help
+                </a>
+              </div>
+            </div>
           </div>
         )}
 
