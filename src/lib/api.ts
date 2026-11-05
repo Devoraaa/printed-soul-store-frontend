@@ -159,6 +159,7 @@ export const imageApi = {
 // ── Banners ───────────────────────────────────────────────────────────────
 export const bannerApi = {
   getAll: () => api.get("/banners"),
+  getTicker: () => api.get("/banners/ticker"),
 }
 
 // ── Social Posts ──────────────────────────────────────────────────────────

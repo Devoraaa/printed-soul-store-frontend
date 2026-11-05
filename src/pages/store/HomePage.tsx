@@ -44,6 +44,12 @@ export function HomePage() {
     queryFn: () => socialPostApi.getActive(),
   })
 
+  const { data: tickerData } = useQuery({
+    queryKey: ["storefront-ticker"],
+    queryFn: () => bannerApi.getTicker().then((res) => res.data.data),
+    staleTime: 60 * 1000,
+  })
+
   const featured = featuredData?.data?.data || []
   const allProducts = allProductsData?.data?.data || []
   const categories = (categoriesData?.data?.data || []).filter((c: any) => !c.parentCategory)
@@ -349,39 +355,35 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* ─── Ultra-Compact Infinite Luxury Perks Ticker ─── */}
-      <div className="w-full bg-[#ECE5DC]/90 border-b border-black/[0.06] overflow-hidden py-2 backdrop-blur-md select-none">
-        <div className="flex animate-marquee whitespace-nowrap text-[10.5px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-neutral-800">
-          <div className="flex items-center gap-8 px-4 shrink-0">
-            <span className="flex items-center gap-2"><span className="text-amber-600">⚡</span> Free Express Delivery Across India on Orders Above ₹499</span>
-            <span className="text-neutral-400">•</span>
-            <span className="flex items-center gap-2"><span className="text-rose-500">🛡️</span> 9H Toughened Glass &amp; Shockproof Armor Protection</span>
-            <span className="text-neutral-400">•</span>
-            <span className="flex items-center gap-2"><span className="text-emerald-600">🎁</span> Use Code SPECIAL200 for Instant ₹200 OFF</span>
-            <span className="text-neutral-400">•</span>
-            <span className="flex items-center gap-2"><span className="text-amber-500">★</span> 10,000+ Happy Customers &amp; 4.9/5 Rating</span>
-            <span className="text-neutral-400">•</span>
-            <span className="flex items-center gap-2"><span className="text-sky-600">🇮🇳</span> 100% Precision Crafted &amp; Printed In India</span>
-            <span className="text-neutral-400">•</span>
-            <span className="flex items-center gap-2"><span className="text-indigo-600">🔄</span> 7-Day Easy Replacement Guarantee</span>
-            <span className="text-neutral-400">•</span>
+      {/* ─── Dynamic Infinite Luxury Perks Ticker (Managed from Admin Panel) ─── */}
+      {tickerData?.isActive && tickerData?.items && tickerData.items.length > 0 && (() => {
+        const rawList = tickerData.items.filter((it: string) => it && it.trim())
+        if (rawList.length === 0) return null
+        const repeatedList = rawList.length < 4 ? [...rawList, ...rawList, ...rawList, ...rawList] : rawList
+
+        return (
+          <div className="w-full bg-[#ECE5DC]/90 border-b border-black/[0.06] overflow-hidden py-2 backdrop-blur-md select-none">
+            <div className="flex animate-marquee whitespace-nowrap text-[10.5px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-neutral-800">
+              <div className="flex items-center gap-8 px-4 shrink-0">
+                {repeatedList.map((item: string, idx: number) => (
+                  <React.Fragment key={`t1-${idx}`}>
+                    <span className="flex items-center gap-2">{item}</span>
+                    <span className="text-neutral-400">•</span>
+                  </React.Fragment>
+                ))}
+              </div>
+              <div className="flex items-center gap-8 px-4 shrink-0">
+                {repeatedList.map((item: string, idx: number) => (
+                  <React.Fragment key={`t2-${idx}`}>
+                    <span className="flex items-center gap-2">{item}</span>
+                    <span className="text-neutral-400">•</span>
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-8 px-4 shrink-0">
-            <span className="flex items-center gap-2"><span className="text-amber-600">⚡</span> Free Express Delivery Across India on Orders Above ₹499</span>
-            <span className="text-neutral-400">•</span>
-            <span className="flex items-center gap-2"><span className="text-rose-500">🛡️</span> 9H Toughened Glass &amp; Shockproof Armor Protection</span>
-            <span className="text-neutral-400">•</span>
-            <span className="flex items-center gap-2"><span className="text-emerald-600">🎁</span> Use Code SPECIAL200 for Instant ₹200 OFF</span>
-            <span className="text-neutral-400">•</span>
-            <span className="flex items-center gap-2"><span className="text-amber-500">★</span> 10,000+ Happy Customers &amp; 4.9/5 Rating</span>
-            <span className="text-neutral-400">•</span>
-            <span className="flex items-center gap-2"><span className="text-sky-600">🇮🇳</span> 100% Precision Crafted &amp; Printed In India</span>
-            <span className="text-neutral-400">•</span>
-            <span className="flex items-center gap-2"><span className="text-indigo-600">🔄</span> 7-Day Easy Replacement Guarantee</span>
-            <span className="text-neutral-400">•</span>
-          </div>
-        </div>
-      </div>
+        )
+      })()}
 
       {/* ═══════════════════════════════════════════
           2. CATEGORY STRIP — Luxury Lifestyle Collection Cards (Tight Spacing)
