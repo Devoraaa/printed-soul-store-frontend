@@ -288,39 +288,49 @@ export function HomePage() {
       {/* ═══════════════════════════════════════════
           1. HERO SLIDER — Full Bleed Edge-to-Edge with Mobile Balanced Height
       ═══════════════════════════════════════════ */}
-      <section className="w-full m-0 p-0 overflow-hidden max-h-[100dvh] rounded-b-[1.75rem] sm:rounded-b-[3.5rem] shadow-sm">
-        <div className="relative w-full group overflow-hidden bg-neutral-950 aspect-[16/10] sm:aspect-auto min-h-[240px] sm:min-h-[380px] md:min-h-0 max-h-[100dvh] rounded-b-[1.75rem] sm:rounded-b-[3.5rem]">
+      <section className="w-full m-0 p-0 overflow-hidden max-h-[100dvh] pt-[54px] sm:pt-0 rounded-b-[1.75rem] sm:rounded-b-[3.5rem] shadow-sm">
+        <div className="relative w-full group overflow-hidden bg-neutral-950 rounded-b-[1.75rem] sm:rounded-b-[3.5rem]">
         {heroBanners.length > 0 ? (
-          <div className="relative w-full h-full min-h-[240px] sm:min-h-[380px] md:min-h-0 max-h-[100dvh] rounded-b-[1.75rem] sm:rounded-b-[3.5rem] overflow-hidden">
+          <div className="relative w-full overflow-hidden rounded-b-[1.75rem] sm:rounded-b-[3.5rem]">
             {heroBanners.map((banner: any, idx: number) => {
               const isActive = idx === currentHero
               return (
                 <div
                   key={banner._id || idx}
-                  className={`w-full h-full min-h-[240px] sm:min-h-[380px] md:min-h-0 max-h-[100dvh] rounded-b-[1.75rem] sm:rounded-b-[3.5rem] overflow-hidden transition-opacity duration-500 ease-in-out ${
+                  className={`w-full transition-opacity duration-500 ease-in-out ${
                     isActive ? "opacity-100 relative" : "opacity-0 absolute inset-0 pointer-events-none"
                   }`}
                 >
                   {banner.link ? (
-                    <Link to={banner.link} className="block w-full h-full min-h-[240px] sm:min-h-[380px] md:min-h-0 max-h-[100dvh] rounded-b-[1.75rem] sm:rounded-b-[3.5rem] overflow-hidden">
+                    <Link to={banner.link} className="block w-full overflow-hidden rounded-b-[1.75rem] sm:rounded-b-[3.5rem]">
+                      <picture className="w-full block">
+                        {banner.mobileImageUrl && (
+                          <source media="(max-width: 640px)" srcSet={getImageUrl(banner.mobileImageUrl)} />
+                        )}
+                        <img
+                          src={getImageUrl(banner.imageUrl)}
+                          alt={banner.title || "Printed Soul Banner"}
+                          loading={idx === 0 ? "eager" : "lazy"}
+                          decoding={idx === 0 ? "sync" : "async"}
+                          fetchPriority={idx === 0 ? "high" : "low"}
+                          className="w-full h-auto max-h-[100dvh] block object-contain sm:object-cover rounded-b-[1.75rem] sm:rounded-b-[3.5rem]"
+                        />
+                      </picture>
+                    </Link>
+                  ) : (
+                    <picture className="w-full block">
+                      {banner.mobileImageUrl && (
+                        <source media="(max-width: 640px)" srcSet={getImageUrl(banner.mobileImageUrl)} />
+                      )}
                       <img
                         src={getImageUrl(banner.imageUrl)}
                         alt={banner.title || "Printed Soul Banner"}
                         loading={idx === 0 ? "eager" : "lazy"}
                         decoding={idx === 0 ? "sync" : "async"}
                         fetchPriority={idx === 0 ? "high" : "low"}
-                        className="w-full h-full sm:h-auto min-h-[240px] sm:min-h-0 max-h-[100dvh] block object-cover object-center rounded-b-[1.75rem] sm:rounded-b-[3.5rem]"
+                        className="w-full h-auto max-h-[100dvh] block object-contain sm:object-cover rounded-b-[1.75rem] sm:rounded-b-[3.5rem]"
                       />
-                    </Link>
-                  ) : (
-                    <img
-                      src={getImageUrl(banner.imageUrl)}
-                      alt={banner.title || "Printed Soul Banner"}
-                      loading={idx === 0 ? "eager" : "lazy"}
-                      decoding={idx === 0 ? "sync" : "async"}
-                      fetchPriority={idx === 0 ? "high" : "low"}
-                      className="w-full h-full sm:h-auto min-h-[240px] sm:min-h-0 max-h-[100dvh] block object-cover object-center rounded-b-[1.75rem] sm:rounded-b-[3.5rem]"
-                    />
+                    </picture>
                   )}
                 </div>
               )
@@ -626,13 +636,18 @@ export function HomePage() {
           }`}>
             {promoBanners.slice(0, 3).map((banner: any, i: number) => {
               const content = (
-                <div className="relative overflow-hidden group aspect-[16/9] md:aspect-[16/10] bg-[#161513] rounded-2xl sm:rounded-3xl border border-black/[0.08] shadow-xs hover:shadow-xl transition-all duration-300">
-                  <img
-                    src={getImageUrl(banner.imageUrl)}
-                    alt={banner.title || "Special Offer"}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                  />
+                <div className="relative overflow-hidden group aspect-[4/3] sm:aspect-[16/10] bg-[#161513] rounded-2xl sm:rounded-3xl border border-black/[0.08] shadow-xs hover:shadow-xl transition-all duration-300">
+                  <picture className="w-full h-full block">
+                    {banner.mobileImageUrl && (
+                      <source media="(max-width: 640px)" srcSet={getImageUrl(banner.mobileImageUrl)} />
+                    )}
+                    <img
+                      src={getImageUrl(banner.imageUrl)}
+                      alt={banner.title || "Special Offer"}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+                  </picture>
                   {/* Subtle Clean Floating Pill on Hover */}
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-black/25 transition-colors p-4 sm:p-5 flex flex-col justify-end">
                     {banner.title && banner.title.length > 3 && (

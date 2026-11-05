@@ -115,19 +115,24 @@ export function StoreLayout() {
         isHome ? "fixed top-0 left-0 right-0" : "sticky top-0"
       } px-2 sm:px-4 md:px-6 pt-1.5 sm:pt-3 pointer-events-none`}>
         {/* Main Floating Capsule Navbar */}
-        <div className={`max-w-[1580px] mx-auto pointer-events-auto transition-all duration-300 rounded-full ${
+        <div className={`max-w-[1580px] mx-auto pointer-events-auto transition-all duration-300 rounded-full py-1.5 sm:py-2.5 px-3 sm:px-5 ${
           isTransparent
-            ? "bg-black/40 backdrop-blur-xl text-white border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.35)] py-1.5 sm:py-2.5 px-3 sm:px-5"
-            : "bg-white/95 backdrop-blur-2xl text-neutral-900 border border-black/[0.08] shadow-[0_10px_35px_rgba(0,0,0,0.06)] py-1.5 sm:py-2.5 px-3 sm:px-5"
+            ? "bg-white/95 text-neutral-900 border border-black/[0.08] shadow-[0_10px_35px_rgba(0,0,0,0.06)] sm:bg-black/40 sm:backdrop-blur-xl sm:text-white sm:border-white/20 sm:shadow-[0_8px_32px_rgba(0,0,0,0.35)]"
+            : "bg-white/95 backdrop-blur-2xl text-neutral-900 border border-black/[0.08] shadow-[0_10px_35px_rgba(0,0,0,0.06)]"
         }`}>
           <div className="flex h-11 sm:h-14 items-center justify-between gap-1.5 sm:gap-3">
 
             {/* Official Printed Soul Unified Horizontal Logo */}
             <Link to="/" onMouseEnter={handleMenuClose} className="flex items-center shrink-0 group py-0.5">
               <img
+                src="/logo-horizontal.png"
+                alt="Printed Soul"
+                className="h-5 w-auto object-contain transition-all duration-300 group-hover:scale-105 sm:hidden"
+              />
+              <img
                 src={isTransparent ? "/logo-horizontal-white.png" : "/logo-horizontal.png"}
                 alt="Printed Soul"
-                className="h-5 sm:h-8 md:h-9 w-auto object-contain transition-all duration-300 group-hover:scale-105"
+                className="h-8 md:h-9 w-auto object-contain transition-all duration-300 group-hover:scale-105 hidden sm:block"
               />
             </Link>
 
@@ -203,10 +208,10 @@ export function StoreLayout() {
               {/* Search */}
               <button
                 onClick={() => setSearchOpen(true)}
-                className={`h-8 w-8 sm:h-9 sm:w-auto sm:px-3 rounded-full text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer hover:scale-105 active:scale-95 ${
+                className={`h-8 w-8 sm:h-9 sm:w-auto sm:px-3 rounded-full text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer hover:scale-105 active:scale-95 text-neutral-700 bg-neutral-100/80 border border-black/[0.06] hover:bg-white hover:border-black ${
                   isTransparent
-                    ? "text-white bg-white/15 border border-white/20 hover:bg-white/25 backdrop-blur-md"
-                    : "text-neutral-700 bg-neutral-100/80 border border-black/[0.06] hover:bg-white hover:border-black"
+                    ? "sm:text-white sm:bg-white/15 sm:border-white/20 sm:hover:bg-white/25 sm:backdrop-blur-md"
+                    : "sm:text-neutral-700 sm:bg-neutral-100/80 sm:border-black/[0.06]"
                 }`}
                 aria-label="Search"
               >
@@ -218,8 +223,8 @@ export function StoreLayout() {
               <Link
                 to="/products?wishlist=true"
                 aria-label="Wishlist"
-                className={`relative h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center transition-all group cursor-pointer rounded-full hover:scale-110 active:scale-95 ${
-                  isTransparent ? "hover:bg-white/20 text-white" : "hover:bg-neutral-100 text-neutral-800"
+                className={`relative h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center transition-all group cursor-pointer rounded-full hover:scale-110 active:scale-95 text-neutral-800 hover:bg-neutral-100 ${
+                  isTransparent ? "sm:text-white sm:hover:bg-white/20" : "sm:text-neutral-800"
                 }`}
               >
                 <Heart className="h-4 w-4 sm:h-4.5 sm:w-4.5" strokeWidth={2.2} />
@@ -233,14 +238,14 @@ export function StoreLayout() {
               {/* Cart */}
               <button
                 onClick={() => setCartDrawerOpen(true)}
-                className={`relative h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center transition-all group cursor-pointer rounded-full hover:scale-110 active:scale-95 ${
-                  isTransparent ? "hover:bg-white/20 text-white" : "hover:bg-neutral-100 text-neutral-900"
+                className={`relative h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center transition-all group cursor-pointer rounded-full hover:scale-110 active:scale-95 text-neutral-900 hover:bg-neutral-100 ${
+                  isTransparent ? "sm:text-white sm:hover:bg-white/20" : "sm:text-neutral-900"
                 }`}
               >
                 <ShoppingBag className="h-4 w-4 sm:h-4.5 sm:w-4.5" strokeWidth={2.2} />
                 {totalItems > 0 && (
-                  <span className={`absolute -top-0.5 -right-0.5 h-3.5 w-3.5 sm:h-4 sm:w-4 text-[8px] sm:text-[9px] font-black flex items-center justify-center rounded-full shadow-sm ${
-                    isTransparent ? "bg-white text-black" : "bg-neutral-900 text-white"
+                  <span className={`absolute -top-0.5 -right-0.5 h-3.5 w-3.5 sm:h-4 sm:w-4 text-[8px] sm:text-[9px] font-black flex items-center justify-center rounded-full shadow-sm bg-neutral-900 text-white ${
+                    isTransparent ? "sm:bg-white sm:text-black" : "sm:bg-neutral-900 sm:text-white"
                   }`}>
                     {totalItems > 9 ? "9+" : totalItems}
                   </span>
@@ -252,8 +257,8 @@ export function StoreLayout() {
                 <div className="relative">
                   <button
                     onClick={() => setAccountOpen(!accountOpen)}
-                    className={`flex items-center gap-1.5 p-0.5 transition-all cursor-pointer rounded-full hover:scale-105 ${
-                      isTransparent ? "hover:bg-white/20" : "hover:bg-black/5"
+                    className={`flex items-center gap-1.5 p-0.5 transition-all cursor-pointer rounded-full hover:scale-105 hover:bg-black/5 ${
+                      isTransparent ? "sm:hover:bg-white/20" : ""
                     }`}
                   >
                     <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-neutral-900 flex items-center justify-center text-white text-[11px] sm:text-xs font-black shadow-md border-2 border-white/20">
@@ -299,8 +304,8 @@ export function StoreLayout() {
               {/* Mobile Menu */}
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className={`lg:hidden h-8 w-8 flex items-center justify-center rounded-full cursor-pointer transition-colors ${
-                  isTransparent ? "text-white hover:bg-white/20 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" : "text-gray-700 hover:bg-gray-100"
+                className={`lg:hidden h-8 w-8 flex items-center justify-center rounded-full cursor-pointer transition-colors text-neutral-800 hover:bg-neutral-100 ${
+                  isTransparent ? "sm:text-white sm:hover:bg-white/20" : ""
                 }`}
               >
                 {mobileOpen ? <X className="h-4.5 w-4.5" /> : <Menu className="h-4.5 w-4.5" />}
