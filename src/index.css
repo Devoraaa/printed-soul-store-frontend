@@ -97,6 +97,17 @@
 ::-webkit-scrollbar-thumb { background: #D9D2C7; border-radius: 9999px; }
 ::-webkit-scrollbar-thumb:hover { background: #BFB7AA; }
 
+/* Hide scrollbar utility */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 /* Page transitions */
 .page-enter { opacity: 0; transform: translateY(8px); }
 .page-enter-active { opacity: 1; transform: translateY(0); transition: opacity 300ms, transform 300ms; }

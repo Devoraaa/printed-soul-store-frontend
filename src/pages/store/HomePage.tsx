@@ -280,30 +280,30 @@ export function HomePage() {
       </h1>
 
       {/* ═══════════════════════════════════════════
-          1. HERO SLIDER — Full Bleed Edge-to-Edge (Capped at 100dvh full display)
+          1. HERO SLIDER — Full Bleed Edge-to-Edge with Rounded Bottom Corners
       ═══════════════════════════════════════════ */}
-      <section className="w-full m-0 p-0 overflow-hidden max-h-[100dvh]">
-        <div className="relative w-full group overflow-hidden bg-neutral-950 max-h-[100dvh]">
+      <section className="w-full m-0 p-0 overflow-hidden max-h-[100dvh] rounded-b-[2.5rem] sm:rounded-b-[3.5rem] shadow-sm">
+        <div className="relative w-full group overflow-hidden bg-neutral-950 max-h-[100dvh] rounded-b-[2.5rem] sm:rounded-b-[3.5rem]">
         {heroBanners.length > 0 ? (
-          <div className="relative w-full max-h-[100dvh]">
+          <div className="relative w-full max-h-[100dvh] rounded-b-[2.5rem] sm:rounded-b-[3.5rem] overflow-hidden">
             {heroBanners.map((banner: any, idx: number) => {
               const isActive = idx === currentHero
               return (
                 <div
                   key={banner._id || idx}
-                  className={`w-full max-h-[100dvh] transition-opacity duration-500 ease-in-out ${
+                  className={`w-full max-h-[100dvh] rounded-b-[2.5rem] sm:rounded-b-[3.5rem] overflow-hidden transition-opacity duration-500 ease-in-out ${
                     isActive ? "opacity-100 relative" : "opacity-0 absolute inset-0 pointer-events-none"
                   }`}
                 >
                   {banner.link ? (
-                    <Link to={banner.link} className="block w-full max-h-[100dvh]">
+                    <Link to={banner.link} className="block w-full max-h-[100dvh] rounded-b-[2.5rem] sm:rounded-b-[3.5rem] overflow-hidden">
                       <img
                         src={getImageUrl(banner.imageUrl)}
                         alt={banner.title || "Printed Soul Banner"}
                         loading={idx === 0 ? "eager" : "lazy"}
                         decoding={idx === 0 ? "sync" : "async"}
                         fetchPriority={idx === 0 ? "high" : "low"}
-                        className="w-full h-auto max-h-[100dvh] block object-cover object-center"
+                        className="w-full h-auto max-h-[100dvh] block object-cover object-center rounded-b-[2.5rem] sm:rounded-b-[3.5rem]"
                       />
                     </Link>
                   ) : (
@@ -313,7 +313,7 @@ export function HomePage() {
                       loading={idx === 0 ? "eager" : "lazy"}
                       decoding={idx === 0 ? "sync" : "async"}
                       fetchPriority={idx === 0 ? "high" : "low"}
-                      className="w-full h-auto max-h-[100dvh] block object-cover object-center"
+                      className="w-full h-auto max-h-[100dvh] block object-cover object-center rounded-b-[2.5rem] sm:rounded-b-[3.5rem]"
                     />
                   )}
                 </div>

@@ -42,15 +42,15 @@ export function StoreLayout() {
 
   const getLinkClasses = (to: string) => {
     const active = isLinkActive(to)
-    const base = "px-4 py-2 text-[14px] sm:text-[15px] font-bold rounded-full transition-all whitespace-nowrap"
+    const base = "px-3 py-1.5 text-[12.5px] sm:text-[13px] font-bold rounded-full transition-all whitespace-nowrap cursor-pointer"
     if (isTransparent) {
       return active
-        ? `${base} bg-white/25 text-white shadow-sm ring-1 ring-white/30 backdrop-blur-md drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`
-        : `${base} text-white/95 hover:text-white hover:bg-white/20 hover:shadow-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`
+        ? `${base} bg-white/25 text-white shadow-xs ring-1 ring-white/30 backdrop-blur-md`
+        : `${base} text-white/85 hover:text-white hover:bg-white/15`
     }
     return active
-      ? `${base} bg-neutral-900 text-[#F4EFEA] shadow-sm`
-      : `${base} text-neutral-800 hover:text-white hover:bg-black`
+      ? `${base} bg-neutral-900 text-white shadow-xs`
+      : `${base} text-neutral-700 hover:text-black hover:bg-neutral-100`
   }
 
   // Hover menu state
@@ -113,200 +113,198 @@ export function StoreLayout() {
       {/* ─── Header Container ───────────────────────── */}
       <header className={`w-full z-50 transition-all duration-300 ${
         isHome ? "fixed top-0 left-0 right-0" : "sticky top-0"
-      }`}>
-        {/* Main Navbar */}
-        <div className={`w-full transition-all duration-300 ${
+      } px-2 sm:px-4 md:px-6 pt-2 sm:pt-3 pointer-events-none`}>
+        {/* Main Floating Capsule Navbar */}
+        <div className={`max-w-[1580px] mx-auto pointer-events-auto transition-all duration-300 rounded-full ${
           isTransparent
-            ? "bg-gradient-to-b from-black/90 via-black/50 to-transparent text-white border-transparent pt-2 pb-6"
-            : "bg-[#F4EFEA]/95 backdrop-blur-xl border-b border-black/[0.08] shadow-[0_4px_20px_rgba(0,0,0,0.04)] text-neutral-900 py-2 sm:py-2.5"
+            ? "bg-black/40 backdrop-blur-xl text-white border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.35)] py-2 sm:py-2.5 px-3.5 sm:px-5"
+            : "bg-white/95 backdrop-blur-2xl text-neutral-900 border border-black/[0.08] shadow-[0_10px_35px_rgba(0,0,0,0.06)] py-2 sm:py-2.5 px-3.5 sm:px-5"
         }`}>
-          <div className="max-w-[1700px] mx-auto px-4 md:px-8">
-            <div className="flex h-18 sm:h-20 items-center justify-between gap-4">
+          <div className="flex h-12 sm:h-14 items-center justify-between gap-2 sm:gap-3">
 
-              {/* Official Printed Soul Unified Horizontal Logo */}
-              <Link to="/" onMouseEnter={handleMenuClose} className="flex items-center shrink-0 group py-1">
-                <img
-                  src={isTransparent ? "/logo-horizontal-white.png" : "/logo-horizontal.png"}
-                  alt="Printed Soul"
-                  className="h-9 sm:h-10 md:h-12 w-auto object-contain transition-all duration-300 group-hover:scale-105 drop-shadow-sm"
-                />
+            {/* Official Printed Soul Unified Horizontal Logo */}
+            <Link to="/" onMouseEnter={handleMenuClose} className="flex items-center shrink-0 group py-1">
+              <img
+                src={isTransparent ? "/logo-horizontal-white.png" : "/logo-horizontal.png"}
+                alt="Printed Soul"
+                className="h-7 sm:h-8 md:h-9 w-auto object-contain transition-all duration-300 group-hover:scale-105"
+              />
+            </Link>
+
+            {/* ─── Category Nav (desktop) ───────────── */}
+            <nav className="hidden lg:flex items-center gap-1 flex-1 overflow-x-auto hide-scrollbar px-1 justify-center">
+              <Link
+                to="/"
+                onMouseEnter={handleMenuClose}
+                className={getLinkClasses("/")}
+              >
+                Home
               </Link>
 
-              {/* ─── Category Nav (desktop) ───────────── */}
-              <nav className="hidden lg:flex items-center gap-1.5 flex-1 overflow-x-auto hide-scrollbar px-3">
-                <Link
-                  to="/"
-                  onMouseEnter={handleMenuClose}
-                  className={getLinkClasses("/")}
-                >
-                  Home
-                </Link>
+              <Link
+                to="/products?sort=new"
+                onMouseEnter={() =>
+                  handleCategoryMouseEnter({
+                    type: "new",
+                    name: "New Arrivals",
+                    slug: "new",
+                  })
+                }
+                onMouseLeave={handleCategoryMouseLeave}
+                className={`${getLinkClasses("/products?sort=new")} flex items-center gap-1.5`}
+              >
+                <span>New Arrivals</span>
+                <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
+              </Link>
 
-                <Link
-                  to="/products?sort=new"
-                  onMouseEnter={() =>
-                    handleCategoryMouseEnter({
-                      type: "new",
-                      name: "New Arrivals",
-                      slug: "new",
-                    })
-                  }
-                  onMouseLeave={handleCategoryMouseLeave}
-                  className={`${getLinkClasses("/products?sort=new")} flex items-center gap-1.5`}
-                >
-                  <span>New Arrivals</span>
-                  <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse" />
-                </Link>
+              {/* Dynamic categories from DB */}
+              {categories.map((cat: any) => {
+                const catPath = `/products?category=${cat.slug || cat._id}`
+                return (
+                  <Link
+                    key={cat._id}
+                    to={catPath}
+                    onMouseEnter={() =>
+                      handleCategoryMouseEnter({
+                        type: "category",
+                        _id: cat._id,
+                        name: cat.name,
+                        slug: cat.slug,
+                        description: cat.description,
+                        subcategories: cat.subcategories,
+                      })
+                    }
+                    onMouseLeave={handleCategoryMouseLeave}
+                    className={getLinkClasses(catPath)}
+                  >
+                    {cat.name}
+                  </Link>
+                )
+              })}
 
-                {/* Dynamic categories from DB */}
-                {categories.map((cat: any) => {
-                  const catPath = `/products?category=${cat.slug || cat._id}`
-                  return (
-                    <Link
-                      key={cat._id}
-                      to={catPath}
-                      onMouseEnter={() =>
-                        handleCategoryMouseEnter({
-                          type: "category",
-                          _id: cat._id,
-                          name: cat.name,
-                          slug: cat.slug,
-                          description: cat.description,
-                          subcategories: cat.subcategories,
-                        })
-                      }
-                      onMouseLeave={handleCategoryMouseLeave}
-                      className={getLinkClasses(catPath)}
-                    >
-                      {cat.name}
-                    </Link>
-                  )
-                })}
+              <Link
+                to="/products"
+                onMouseEnter={() =>
+                  handleCategoryMouseEnter({
+                    type: "all",
+                    name: "All Collections",
+                    slug: "all",
+                  })
+                }
+                onMouseLeave={handleCategoryMouseLeave}
+                className={getLinkClasses("/products")}
+              >
+                Shop All
+              </Link>
+            </nav>
 
-                <Link
-                  to="/products"
-                  onMouseEnter={() =>
-                    handleCategoryMouseEnter({
-                      type: "all",
-                      name: "All Collections",
-                      slug: "all",
-                    })
-                  }
-                  onMouseLeave={handleCategoryMouseLeave}
-                  className={getLinkClasses("/products")}
-                >
-                  Shop All
-                </Link>
-              </nav>
+            {/* ─── Action Icons ────────────────────── */}
+            <div onMouseEnter={handleMenuClose} className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              {/* Search */}
+              <button
+                onClick={() => setSearchOpen(true)}
+                className={`h-9 px-3 rounded-full text-xs font-bold flex items-center gap-2 transition-all cursor-pointer hover:scale-105 active:scale-95 ${
+                  isTransparent
+                    ? "text-white bg-white/15 border border-white/20 hover:bg-white/25 backdrop-blur-md"
+                    : "text-neutral-700 bg-neutral-100/80 border border-black/[0.06] hover:bg-white hover:border-black"
+                }`}
+                aria-label="Search"
+              >
+                <Search className="h-3.5 w-3.5" strokeWidth={2.5} />
+                <span className="hidden xl:inline">Search…</span>
+              </button>
 
-              {/* ─── Action Icons ────────────────────── */}
-              <div onMouseEnter={handleMenuClose} className="flex items-center gap-2 sm:gap-3 shrink-0">
-                {/* Search */}
-                <button
-                  onClick={() => setSearchOpen(true)}
-                  className={`p-2.5 transition-all rounded-full lg:px-4 lg:py-2.5 lg:text-xs lg:font-bold lg:flex lg:items-center lg:gap-2.5 shadow-sm cursor-pointer hover:scale-105 active:scale-95 ${
-                    isTransparent
-                      ? "text-white hover:bg-white/30 lg:bg-white/20 lg:border lg:border-white/40 lg:text-white lg:hover:bg-white/35 backdrop-blur-md shadow-md"
-                      : "text-neutral-800 hover:bg-black/5 lg:text-neutral-700 lg:bg-white lg:border lg:border-black/15 lg:hover:border-black"
-                  }`}
-                  aria-label="Search"
-                >
-                  <Search className="h-4 w-4 lg:h-4 lg:w-4" strokeWidth={2.5} />
-                  <span className="hidden lg:inline">Search…</span>
-                </button>
+              {/* Wishlist */}
+              <Link
+                to="/products?wishlist=true"
+                aria-label="Wishlist"
+                className={`relative h-9 w-9 flex items-center justify-center transition-all group cursor-pointer rounded-full hover:scale-110 active:scale-95 ${
+                  isTransparent ? "hover:bg-white/20 text-white" : "hover:bg-neutral-100 text-neutral-800"
+                }`}
+              >
+                <Heart className="h-4.5 w-4.5" strokeWidth={2.2} />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 h-4 w-4 text-[9px] font-black flex items-center justify-center rounded-full bg-rose-500 text-white shadow-sm">
+                    {wishlistCount > 9 ? "9+" : wishlistCount}
+                  </span>
+                )}
+              </Link>
 
-                {/* Wishlist */}
-                <Link
-                  to="/products?wishlist=true"
-                  aria-label="Wishlist"
-                  className={`relative p-2.5 transition-all group cursor-pointer rounded-full hover:scale-110 active:scale-95 ${
-                    isTransparent ? "hover:bg-white/25 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" : "hover:bg-black/5 text-neutral-900"
-                  }`}
-                >
-                  <Heart className="h-6 w-6" strokeWidth={2.2} />
-                  {wishlistCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 h-5 w-5 text-[10px] font-black flex items-center justify-center rounded-full bg-rose-500 text-white shadow-md">
-                      {wishlistCount > 9 ? "9+" : wishlistCount}
-                    </span>
-                  )}
-                </Link>
+              {/* Cart */}
+              <button
+                onClick={() => setCartDrawerOpen(true)}
+                className={`relative h-9 w-9 flex items-center justify-center transition-all group cursor-pointer rounded-full hover:scale-110 active:scale-95 ${
+                  isTransparent ? "hover:bg-white/20 text-white" : "hover:bg-neutral-100 text-neutral-900"
+                }`}
+              >
+                <ShoppingBag className="h-4.5 w-4.5" strokeWidth={2.2} />
+                {totalItems > 0 && (
+                  <span className={`absolute -top-0.5 -right-0.5 h-4 w-4 text-[9px] font-black flex items-center justify-center rounded-full shadow-sm ${
+                    isTransparent ? "bg-white text-black" : "bg-neutral-900 text-white"
+                  }`}>
+                    {totalItems > 9 ? "9+" : totalItems}
+                  </span>
+                )}
+              </button>
 
-                {/* Cart */}
-                <button
-                  onClick={() => setCartDrawerOpen(true)}
-                  className={`relative p-2.5 transition-all group cursor-pointer rounded-full hover:scale-110 active:scale-95 ${
-                    isTransparent ? "hover:bg-white/25 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" : "hover:bg-black/5 text-neutral-900"
-                  }`}
-                >
-                  <ShoppingBag className="h-6 w-6" strokeWidth={2.2} />
-                  {totalItems > 0 && (
-                    <span className={`absolute -top-0.5 -right-0.5 h-5 w-5 text-[10px] font-black flex items-center justify-center rounded-full shadow-md ${
-                      isTransparent ? "bg-white text-black" : "bg-neutral-900 text-white"
-                    }`}>
-                      {totalItems > 9 ? "9+" : totalItems}
-                    </span>
-                  )}
-                </button>
-
-                {/* Account */}
-                {isAuthenticated ? (
-                  <div className="relative">
-                    <button
-                      onClick={() => setAccountOpen(!accountOpen)}
-                      className={`flex items-center gap-1.5 p-1 transition-all cursor-pointer rounded-full hover:scale-105 ${
-                        isTransparent ? "hover:bg-white/20" : "hover:bg-black/5"
-                      }`}
-                    >
-                      <div className="w-9 h-9 rounded-full bg-neutral-900 flex items-center justify-center text-white text-xs font-black shadow-md border-2 border-white/20">
-                        {user?.name[0].toUpperCase()}
-                      </div>
-                      <ChevronDown className={`h-3.5 w-3.5 hidden md:block ${isTransparent ? "text-white" : "text-neutral-700"}`} />
-                    </button>
-                    {accountOpen && (
-                      <div
-                        className="absolute right-0 mt-2 w-52 rounded-2xl border border-black/[0.08] bg-white shadow-2xl py-2 z-50 overflow-hidden text-neutral-900"
-                        onMouseLeave={() => setAccountOpen(false)}
-                      >
-                        <div className="px-4 py-2.5 border-b border-black/[0.05]">
-                          <p className="text-xs font-bold text-gray-900">{user?.name}</p>
-                          <p className="text-[10px] text-gray-500 truncate">{user?.email}</p>
-                        </div>
-                        <Link to="/account" onClick={() => setAccountOpen(false)} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
-                          <User className="h-3.5 w-3.5 text-gray-500" /> My Account
-                        </Link>
-                        <Link to="/account/orders" onClick={() => setAccountOpen(false)} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
-                          <Package className="h-3.5 w-3.5 text-gray-500" /> My Orders
-                        </Link>
-                        <div className="border-t border-black/[0.05] my-1" />
-                        <button onClick={() => { logout(); setAccountOpen(false) }} className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer">
-                          <LogOut className="h-3.5 w-3.5" /> Sign Out
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                ) : (
+              {/* Account */}
+              {isAuthenticated ? (
+                <div className="relative">
                   <button
-                    onClick={openAuthModal}
-                    className={`hidden md:flex items-center justify-center px-6 py-2.5 text-xs font-black tracking-wider rounded-full active:scale-95 hover:scale-105 transition-all cursor-pointer shadow-md uppercase ${
-                      isTransparent
-                        ? "bg-white text-neutral-950 hover:bg-neutral-100"
-                        : "bg-neutral-900 text-white hover:bg-black"
+                    onClick={() => setAccountOpen(!accountOpen)}
+                    className={`flex items-center gap-1.5 p-0.5 transition-all cursor-pointer rounded-full hover:scale-105 ${
+                      isTransparent ? "hover:bg-white/20" : "hover:bg-black/5"
                     }`}
                   >
-                    Sign In
+                    <div className="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center text-white text-xs font-black shadow-md border-2 border-white/20">
+                      {user?.name[0].toUpperCase()}
+                    </div>
+                    <ChevronDown className={`h-3 w-3 hidden md:block ${isTransparent ? "text-white" : "text-neutral-700"}`} />
                   </button>
-                )}
-
-                {/* Mobile Menu */}
+                  {accountOpen && (
+                    <div
+                      className="absolute right-0 mt-2 w-52 rounded-2xl border border-black/[0.08] bg-white shadow-2xl py-2 z-50 overflow-hidden text-neutral-900"
+                      onMouseLeave={() => setAccountOpen(false)}
+                    >
+                      <div className="px-4 py-2.5 border-b border-black/[0.05]">
+                        <p className="text-xs font-bold text-gray-900">{user?.name}</p>
+                        <p className="text-[10px] text-gray-500 truncate">{user?.email}</p>
+                      </div>
+                      <Link to="/account" onClick={() => setAccountOpen(false)} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+                        <User className="h-3.5 w-3.5 text-gray-500" /> My Account
+                      </Link>
+                      <Link to="/account/orders" onClick={() => setAccountOpen(false)} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+                        <Package className="h-3.5 w-3.5 text-gray-500" /> My Orders
+                      </Link>
+                      <div className="border-t border-black/[0.05] my-1" />
+                      <button onClick={() => { logout(); setAccountOpen(false) }} className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer">
+                        <LogOut className="h-3.5 w-3.5" /> Sign Out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
                 <button
-                  onClick={() => setMobileOpen(!mobileOpen)}
-                  className={`lg:hidden p-2 rounded-full cursor-pointer transition-colors ${
-                    isTransparent ? "text-white hover:bg-white/20 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" : "text-gray-700 hover:bg-gray-100"
+                  onClick={openAuthModal}
+                  className={`hidden md:flex items-center justify-center h-9 px-4.5 text-[11px] font-black tracking-wider rounded-full active:scale-95 hover:scale-105 transition-all cursor-pointer shadow-xs uppercase ${
+                    isTransparent
+                      ? "bg-white text-neutral-950 hover:bg-neutral-100"
+                      : "bg-neutral-900 text-white hover:bg-black"
                   }`}
                 >
-                  {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                  Sign In
                 </button>
-              </div>
+              )}
+
+              {/* Mobile Menu */}
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className={`lg:hidden p-1.5 rounded-full cursor-pointer transition-colors ${
+                  isTransparent ? "text-white hover:bg-white/20 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" : "text-gray-700 hover:bg-gray-100"
+                }`}
+              >
+                {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
             </div>
           </div>
         </div>
@@ -454,7 +452,7 @@ export function StoreLayout() {
       </header>
 
       {/* Page Content */}
-      <main className="flex-1">
+      <main className={`flex-1 ${!isHome ? "pt-2 sm:pt-3" : ""}`}>
         <Outlet />
       </main>
 
