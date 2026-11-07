@@ -85,9 +85,14 @@ export function ProductDetailPage() {
     queryFn: () => catalogApi.getCategories(),
   })
 
+  const currentModelId =
+    product?.relatedModels?.find((m: any) => m.productSlug === slug)?._id ||
+    product?.deviceModels?.[0]?._id ||
+    selectedDeviceModel
+
   const { data: designVariantsData } = useQuery({
-    queryKey: ["design-variants", product?.designSlug],
-    queryFn: () => productApi.getDesignVariants(product?.designSlug),
+    queryKey: ["design-variants", product?.designSlug, currentModelId],
+    queryFn: () => productApi.getDesignVariants(product?.designSlug, currentModelId),
     enabled: !!product?.designSlug,
   })
 
@@ -574,14 +579,17 @@ export function ProductDetailPage() {
                   <select 
                     value={
                       product.relatedModels?.find((m: any) => m.productSlug === slug)?._id ||
+                      (product.deviceModels && product.deviceModels.find((m: any) => (m.slug && slug?.includes(m.slug)) || (m.name && slug?.includes(m.name)))?._id) ||
+                      product.deviceModels?.[0]?._id ||
                       selectedDeviceModel ||
-                      product.deviceModels?.[0]?._id
+                      ""
                     }
                     onChange={(e) => {
                       const chosenId = e.target.value
                       setSelectedDeviceModel(chosenId)
-                      const target = product.relatedModels?.find((m: any) => m._id === chosenId)
+                      const target = (product.relatedModels || []).find((m: any) => String(m._id) === String(chosenId))
                       if (target?.productSlug && target.productSlug !== slug) {
+                        setActiveImageIdx(0)
                         navigate(`/products/${target.productSlug}`)
                       }
                     }}
