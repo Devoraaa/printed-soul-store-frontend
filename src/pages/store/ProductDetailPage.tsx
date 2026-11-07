@@ -558,18 +558,36 @@ export function ProductDetailPage() {
             )}
 
             {/* Mobile Model Selection (like original website) */}
-            {product.deviceModels?.length > 0 && (
+            {((product.relatedModels && product.relatedModels.length > 0) || (product.deviceModels && product.deviceModels.length > 0)) && (
               <div className="p-4 rounded-2xl bg-white border border-black/[0.05] shadow-sm space-y-2">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 block">
-                  Mobile Model:
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 block">
+                    Mobile Model:
+                  </label>
+                  {product.relatedModels?.length > 1 && (
+                    <span className="text-[10px] font-bold text-neutral-400">
+                      {product.relatedModels.length} models available
+                    </span>
+                  )}
+                </div>
                 <div className="relative">
                   <select 
-                    value={selectedDeviceModel || product.deviceModels[0]?._id}
-                    onChange={(e) => setSelectedDeviceModel(e.target.value)}
+                    value={
+                      product.relatedModels?.find((m: any) => m.productSlug === slug)?._id ||
+                      selectedDeviceModel ||
+                      product.deviceModels?.[0]?._id
+                    }
+                    onChange={(e) => {
+                      const chosenId = e.target.value
+                      setSelectedDeviceModel(chosenId)
+                      const target = product.relatedModels?.find((m: any) => m._id === chosenId)
+                      if (target?.productSlug && target.productSlug !== slug) {
+                        navigate(`/products/${target.productSlug}`)
+                      }
+                    }}
                     className="w-full h-11 px-4 pr-10 rounded-xl bg-neutral-50 border border-neutral-200 font-semibold text-xs text-neutral-900 focus:outline-none focus:ring-1 focus:ring-black appearance-none cursor-pointer"
                   >
-                    {product.deviceModels.map((m: any) => (
+                    {(product.relatedModels && product.relatedModels.length > 0 ? product.relatedModels : product.deviceModels).map((m: any) => (
                       <option key={m._id} value={m._id}>
                         {(m.displayName || m.name).toUpperCase()}
                       </option>
